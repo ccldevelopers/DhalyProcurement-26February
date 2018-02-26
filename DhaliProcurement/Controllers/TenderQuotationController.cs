@@ -87,6 +87,8 @@ namespace DhaliProcurement.Controllers
 
         }
 
+
+
         public ActionResult Edit(int TenderId)
         {
 
@@ -152,6 +154,90 @@ namespace DhaliProcurement.Controllers
             ViewBag.ItemName = new SelectList(db.Item, "Id", "Name");
             ViewBag.VendorId = new SelectList(db.Vendor, "Id", "Name");
             return View(vm);
+        }
+
+        public JsonResult checkQuotationNo(string QtnNo)
+        {
+            var check = db.Proc_TenderDet.Where(x => x.TQNo.Trim() == QtnNo.Trim()).ToList();
+            if (check.Count == 0)
+            {
+                var result = new
+                {
+                    flag = true,
+                    message = "OK !"
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = new
+                {
+                    flag = false,
+                    message = "This Qtn No. already exists!"
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+
+        }
+
+        public JsonResult RebindModal(int ProjectId, int SiteId, int RCode, int itemId)
+        {
+
+            var requisitionProjects = (from requisitionMas in db.Proc_RequisitionMas
+                                       join procproject in db.ProcProject on requisitionMas.ProcProjectId equals procproject.Id
+                                       join site in db.ProjectSite on procproject.ProjectSiteId equals site.Id
+                                       join project in db.Project on site.ProjectId equals project.Id
+                                       where project.Id == ProjectId && requisitionMas.Status == "A"
+                                       select site).Distinct().ToList();
+
+            List<SelectListItem> siteList = new List<SelectListItem>();
+
+            foreach (var i in requisitionProjects)
+            {
+                var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.Id);
+                siteList.Add(new SelectListItem { Text = i.Name, Value = i.Id.ToString() });
+            }
+
+            List<SelectListItem> ReqList = new List<SelectListItem>();
+            var requisitions = (from requisitionDet in db.Proc_RequisitionDet
+                                join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                                join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                                join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                                join project in db.Project on site.ProjectId equals project.Id
+                                where project.Id == ProjectId && site.Id == SiteId && requisitionMas.Status == "A"
+                                select requisitionMas).ToList().Distinct();
+
+            foreach (var x in requisitions)
+            {
+                ReqList.Add(new SelectListItem { Text = x.Rcode, Value = x.Id.ToString() });
+            }
+
+            List<SelectListItem> ItemList = new List<SelectListItem>();
+
+            var items = (from requisitionDet in db.Proc_RequisitionDet
+                         join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                         join reqItem in db.Item on requisitionDet.ItemId equals reqItem.Id
+                         where requisitionMas.Id == RCode
+                         select reqItem).Distinct().ToList();
+
+            foreach (var x in items)
+            {
+                var itemName = db.Item.SingleOrDefault(m => m.Id == x.Id);
+                ItemList.Add(new SelectListItem { Text = itemName.Name, Value = x.Id.ToString() });
+            }
+
+
+
+
+            var result = new
+            {
+                Sites = siteList,
+                Reqs = ReqList,
+                Items = ItemList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+
         }
 
         [HttpPost]
@@ -532,7 +618,7 @@ namespace DhaliProcurement.Controllers
                     vm.VendorId = i.VendorId;
                     vm.VendorName = db.Vendor.SingleOrDefault(x => x.Id == i.VendorId).Name;
 
-                    if (i.TQNo == "null" || i.TQNo == "" || i.TQNo==null)
+                    if (i.TQNo == "null" || i.TQNo == "" || i.TQNo == null)
                     {
                         vm.TQNo = "";
                     }
@@ -659,10 +745,11 @@ namespace DhaliProcurement.Controllers
                                 //getItem.TQDate = item.TQDate;
                                 getItem.Proc_RequisitionDetId = item.Proc_RequisitionDetId;
 
-                                if (getItem.VendorId!=item.VendorId)
+                                if (getItem.VendorId != item.VendorId)
                                 {
                                     var vendorCheck = (from purMas in db.Proc_PurchaseOrderMas
                                                        join tenderDet in db.Proc_TenderDet on purMas.VendorId equals tenderDet.VendorId
+                                                       where tenderDet.Id==item.TenderDetailId
                                                        select tenderDet).ToList();
 
                                     if (vendorCheck.Count == 0)

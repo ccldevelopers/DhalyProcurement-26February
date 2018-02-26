@@ -589,7 +589,7 @@
                         var row = $(this).closest('tr');
                         selRow = $(this).closest('tr');
 
-                        var TaskId = row.find('input[name=TaskId]').val();
+                        var TaskId = row.find('input[name=SLNo]').val();
                         var ProjectId = row.find('input[name=ProjectId]').val();
                         var ProjectName = row.find('input[name=ProjectName]').val();
                         var SiteId = row.find('input[name=SiteId]').val();
@@ -730,7 +730,7 @@
                 $('#ModalReqNo_Error').hide();
             }
             if (ModalItemName.trim() == "" || ModalItemName.trim() == "--Select--") {
-                $('#ModalItemName_Error').stext("Item required").show();
+                $('#ModalItemName_Error').text("Item required").show();
                 isAllValid = false;
             }
             else {
@@ -792,8 +792,8 @@
             $('table.Resource-list tbody tr').each(function () {
                 var Itemname = $(this).find("td input[name=ItemId]").val();
                 var Vendorname = $(this).find("td input[name=Vendor]").val();
-                var task = $(this).find("td input[name=TaskId]").val();
-
+                var task = $(this).find("td input[name=SLNo]").val();
+                //alert(task+'-->'+TaskId);
                 if (task != TaskId.trim()) {
                     if (ModalItemId.trim() == Itemname.trim() && ModalVendorId.trim() == Vendorname.trim()) {
                         alert('Same Vendor against this item exists!');

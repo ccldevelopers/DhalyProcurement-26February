@@ -652,7 +652,28 @@
         }
     }, 'input[name=TQPrice]');
 
+    $('#TQNo').change(function () {
+        var qtn = $('#TQNo').val();
+        if (qtn == "") {
 
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/TenderQuotation/checkQuotationNo",
+                data: { QtnNo: qtn },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    if (data.flag == false) {
+                        alert(data.message);
+                        $('#TQNo').val("");
+                    }
+                }
+
+            });
+        }
+    });
 
     //add new row
     $('#addNewRow').click(function (event) {
@@ -829,11 +850,13 @@
                 var TQPrice = row.find('input[name=TQPrice]').val();
                 var TotalPrice = row.find('input[name=TotalPrice]').val();
 
+                RebindModalfields(ProjectId, SiteId, RCode, itemId);
+
                 $('#ModalTaskId').val(TaskId);
                 $('#ModalProjectId').val(ProjectId);
-                $('#ModalSiteId').val(SiteId);
-                $('#ModalRequisition').val(RCode);
-                $('#ModalItemName').val(itemId);
+                //$('#ModalSiteId').val(SiteId);
+                //$('#ModalRequisition').val(RCode);
+                //$('#ModalItemName').val(itemId);
                 $('#ModalQty').val(Qty);
                 $('#ModalUnit').val(UnitId);
                 $('#ModalUnitName').val(UnitName);
@@ -844,9 +867,9 @@
                 $('#ModalTotal').val(TotalPrice);
 
 
-                $('#ModalSiteId').attr("disabled", "true");
-                $('#ModalRequisition').attr("disabled", "true");
-                $('#ModalItemName').attr("disabled", "true");
+                //$('#ModalSiteId').attr("disabled", "true");
+                //$('#ModalRequisition').attr("disabled", "true");
+                //$('#ModalItemName').attr("disabled", "true");
                 $('#ModalQty').attr("disabled", "true");
                 $('#ModalUnitName').attr("disabled", "true");
                 $('#ModalTotal').attr("disabled", "true");
@@ -856,6 +879,47 @@
 
     });
 
+    function RebindModalfields(ProjectId, SiteId, RCode, itemId) {
+        $.ajax({
+            type: "post",
+            url: "/TenderQuotation/RebindModal",
+            data: {ProjectId: ProjectId,SiteId: SiteId,RCode: RCode,itemId: itemId },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var listOfSites = data.Sites.length;
+                var sites = "<select id='ModalSiteId'>";
+                sites = sites + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfSites; i++) {
+                    sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+                }
+                sites = sites + '</select>';
+                $('#ModalSiteId').html(sites);
+                $('#ModalSiteId').val(SiteId);
+
+                var listOfReqs = data.Reqs.length;
+                var Reqs = "<select id=''>";
+                Reqs = Reqs + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfReqs; i++) {
+                    Reqs = Reqs + '<option value=' + data.Reqs[i].Value + '>' + data.Reqs[i].Text + '</option>';
+                }
+                Reqs = Reqs + '</select>';
+                $('#ModalRequisition').html(Reqs);
+                $('#ModalRequisition').val(RCode);
+
+                var listOfitems = data.Items.length;
+                var Items = "<select id=''>";
+                Items = Items + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfitems; i++) {
+                    Items = Items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                }
+                Items = Items + '</select>';
+                $('#ModalItemName').html(Items);
+                $('#ModalItemName').val(itemId);
+            }
+
+        });
+    }
 
 
     $('#ModalDetailSave').click(function () {
@@ -870,6 +934,7 @@
         var ModalRCodeName = $('#ModalRequisition option:selected').text();
         var ModalItemId = $('#ModalItemName option:selected').val();
         var ModalItemName = $('#ModalItemName option:selected').text();
+        var ModalProc_RequisitionDetId = $('#ModalProc_RequisitionDetId').val();
         var ModalQty = $('#ModalQty').val();
         var ModalUnit = $('#ModalUnit').val();
         var ModalUnitName = $('#ModalUnitName').val();
@@ -879,6 +944,7 @@
         var ModalQtnDate = $('#ModalQtnDate').val();
         var ModalUnitPrice = $('#ModalUnitPrice').val();
         var ModalTotal = $('#ModalTotal').val();
+
 
         if (ModalProjectName.trim() == "" || ModalProjectName.trim() == "--Select--") {
             $('#ModalProjectName_Error').text("Project required").show();
@@ -902,18 +968,18 @@
             $('#ModalReqNo_Error').hide();
         }
         if (ModalItemName.trim() == "" || ModalItemName.trim() == "--Select--") {
-            $('#ModalItemName_Error').stext("Item required").show();
+            $('#ModalItemName_Error').text("Item required").show();
             isAllValid = false;
         }
         else {
             $('#ModalItemName_Error').hide();
         }
         if (ModalVendorName.trim() == "" || ModalVendorName.trim() == "--Select--") {
-            $('#VendorName_Error').text("Vendor required").show();
+            $('#ModalVendorName_Error').text("Vendor required").show();
             isAllValid = false;
         }
         else {
-            $('#VendorName_Error').hide();
+            $('#ModalVendorName_Error').hide();
         }
         if (ModalUnitPrice.trim() == "") {
             $('#ModalUnitPrice_Error').text("Unit Price required").show();
@@ -973,8 +1039,8 @@
             selRow.find('input[name=TQDate]').val(ModalQtnDate);
             selRow.find('input[name=TQPrice]').val(ModalUnitPrice);
             selRow.find('input[name=TotalPrice]').val(ModalTotal);
-
-
+            selRow.find('input[name= Proc_RequisitionDetId]').val(ModalProc_RequisitionDetId);
+           
             selRow.find('label[name=label_ProjectName]').text(ModalProjectName);
             selRow.find('label[name=label_SiteName]').text(ModalSiteName);
             selRow.find('label[name=label_RCodeName]').text(ModalRCodeName);
@@ -991,8 +1057,73 @@
             $('#detailForm').modal('hide');
             totalItemCost();
         }
+        //else {
+        //    var TaskId = selRow.find('input[name=TaskId]').val();
+        //    var ProjectId = selRow.find('input[name=ProjectId]').val();
+        //    var ProjectName = selRow.find('input[name=ProjectName]').val();
+        //    var SiteId = selRow.find('input[name=SiteId]').val();
+        //    var SiteName = selRow.find('input[name=SiteName]').val();
+        //    var RCode = selRow.find('input[name=RCode]').val();
+        //    var itemId = selRow.find('input[name=ItemId]').val();
+        //    var Qty = selRow.find('input[name=Qty]').val();
+        //    var UnitId = selRow.find('input[name=UnitId]').val();
+        //    var UnitName = selRow.find('input[name=UnitName]').val();
+        //    var Vendor = selRow.find('input[name=Vendor]').val();
+        //    var TQNo = selRow.find('input[name=TQNo]').val();
+        //    var TQDate = selRow.find('input[name=TQDate]').val();
+        //    var TQPrice = selRow.find('input[name=TQPrice]').val();
+        //    var TotalPrice = selRow.find('input[name=TotalPrice]').val();
+
+        //    $('#ModalTaskId').val(TaskId);
+        //    $('#ModalProjectId').val(ProjectId);
+        //    $('#ModalSiteId').val(SiteId);
+        //    $('#ModalRequisition').val(RCode);
+        //    $('#ModalItemName').val(itemId);
+        //    $('#ModalQty').val(Qty);
+        //    $('#ModalUnit').val(UnitId);
+        //    $('#ModalUnitName').val(UnitName);
+        //    $('#ModalVendor').val(Vendor);
+        //    $('#ModalQtnNo').val(TQNo);
+        //    $('#ModalQtnDate').val(TQDate);
+        //    $('#ModalUnitPrice').val(TQPrice);
+        //    $('#ModalTotal').val(TotalPrice);
+        //}
 
 
+    });
+
+    $('#ModalClose').hide(function () {
+
+            var TaskId = selRow.find('input[name=TaskId]').val();
+            var ProjectId = selRow.find('input[name=ProjectId]').val();
+            var ProjectName = selRow.find('input[name=ProjectName]').val();
+            var SiteId = selRow.find('input[name=SiteId]').val();
+            var SiteName = selRow.find('input[name=SiteName]').val();
+            var RCode = selRow.find('input[name=RCode]').val();
+            var itemId = selRow.find('input[name=ItemId]').val();
+            var Qty = selRow.find('input[name=Qty]').val();
+            var UnitId = selRow.find('input[name=UnitId]').val();
+            var UnitName = selRow.find('input[name=UnitName]').val();
+            var Vendor = selRow.find('input[name=Vendor]').val();
+            var TQNo = selRow.find('input[name=TQNo]').val();
+            var TQDate = selRow.find('input[name=TQDate]').val();
+            var TQPrice = selRow.find('input[name=TQPrice]').val();
+            var TotalPrice = selRow.find('input[name=TotalPrice]').val();
+
+            $('#ModalTaskId').val(TaskId);
+            $('#ModalProjectId').val(ProjectId);
+            $('#ModalSiteId').val(SiteId);
+            $('#ModalRequisition').val(RCode);
+            $('#ModalItemName').val(itemId);
+            $('#ModalQty').val(Qty);
+            $('#ModalUnit').val(UnitId);
+            $('#ModalUnitName').val(UnitName);
+            $('#ModalVendor').val(Vendor);
+            $('#ModalQtnNo').val(TQNo);
+            $('#ModalQtnDate').val(TQDate);
+            $('#ModalUnitPrice').val(TQPrice);
+            $('#ModalTotal').val(TotalPrice);
+        
     });
 
     $('#ModalClose').click(function () {
@@ -1000,113 +1131,187 @@
         $('#ModalSiteName_Error').hide();
         $('#ModalReqNo_Error').hide();
         $('#ModalItemName_Error').hide();
-        $('#VendorName_Error').hide();
+        $('#ModalVendorName_Error').hide();
         $('#ModalUnitPrice_Error').hide();
         $('#ModalQtnNo_Error').hide();
     });
 
     $('#ModalProjectId').change(function () {
         var id = $('#ModalProjectId option:selected').val();
+        if ($('#ModalProjectId option:selected').text() == "--Select--") {
+            $('#ModalSiteId').empty();
+            $('#ModalRequisition').empty();
+            $('#ModalItemName').empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ModalSiteId').html(sites);
+            $('#ModalRequisition').html(sites);
+            $('#ModalItemName').html(sites);
+            $('#ModalUnit').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalQty').val("");
+            $('#ModalVendor').val("");
+            $('#ModalQtnNo').val("");
+            $('#ModalQtnDate').val("");
+            $('#ModalUnitPrice').val("");
+            $('#ModalTotal').val("");
+        }
+        else {
+            $.ajax({
+                url: "/TenderQuotation/GetSites",
+                type: "post",
+                data: {
+                    ProjectId: id
+                },
+                dataType: "json",
+                success: function (data) {
+                    //$('#SiteId').removeAttr("disabled");
+                    var listOfSites = data.Sites.length;
+                    $('#ModalSiteId').removeAttr("disabled");
+                    $('#ModalSiteId').empty();
+                    $('#ModalRequisition').empty();
+                    $('#ModalItemName').empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#ModalRequisition').html(sites);
+                    $('#ModalItemName').html(sites);
+                    $('#ModalUnit').val("");
+                    $('#ModalUnitName').val("");
+                    $('#ModalQty').val("");
+                    $('#ModalVendor').val("");
+                    $('#ModalQtnNo').val("");
+                    $('#ModalQtnDate').val("");
+                    $('#ModalUnitPrice').val("");
+                    $('#ModalTotal').val("");
+                    var sites = "<select id='ModalSiteId'>";
+                    sites = sites + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfSites; i++) {
+                        sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+                    }
+                    sites = sites + '</select>';
+                    $('#ModalSiteId').html(sites);
 
-        $.ajax({
-            url: "/TenderQuotation/GetSites",
-            type: "post",
-            data: {
-                ProjectId: id
-            },
-            dataType: "json",
-            success: function (data) {
-                //$('#SiteId').removeAttr("disabled");
-                var listOfSites = data.Sites.length;
-                $('#ModalSiteId').removeAttr("disabled");
-                $('#ModalSiteId').empty();
-                $('#ModalRequisition').empty();
-                $('#ModalItemName').empty();
-                $('#ModalUnit').val("");
-                $('#ModalUnitName').val("");
-                $('#ModalQty').val("");
-                $('#ModalVendor').val("");
-                $('#ModalQtnNo').val("");
-                $('#ModalQtnDate').val("");
-                $('#ModalUnitPrice').val("");
-                $('#ModalTotal').val("");
-                var sites = "<select id='ModalSiteId'>";
-                sites = sites + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfSites; i++) {
-                    sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+                },
+                error: function (xhr) {
+                    alert('error');
                 }
-                sites = sites + '</select>';
-                $('#ModalSiteId').html(sites);
-
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
+            });
+        }
+ 
     });
 
     $("#ModalSiteId").change(function () {
         var SiteId = $('#ModalSiteId option:selected ').val();
         var ProjectId = $('#ModalProjectId option:selected').val();
         //alert(ProjectId);
+        if ($('#ModalSiteId option:selected ').text() == "--Select--") {
+            $('#ModalRequisition').empty();
+            $('#ModalItemName').empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ModalRequisition').html(sites);
+            $('#ModalItemName').html(sites);
+            $('#ModalUnit').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalQty').val("");
+            $('#ModalVendor').val("");
+            $('#ModalQtnNo').val("");
+            $('#ModalQtnDate').val("");
+            $('#ModalUnitPrice').val("");
+            $('#ModalTotal').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/TenderQuotation/GetReqNo",
+                data: { SiteId, ProjectId },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    //$('#SiteEngineer').val(data.siteEngineer);
+                    //$('#RCode').removeAttr("disabled");
+                    $('#ModalRequisition').removeAttr("disabled");
+                    $('#ModalRequisition').empty();
+                    $('#ModalItemName').empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#ModalItemName').html(sites);
+                    $('#ModalUnit').val("");
+                    $('#ModalUnitName').val("");
+                    $('#ModalQty').val("");
+                    $('#ModalVendor').val("");
+                    $('#ModalQtnNo').val("");
+                    $('#ModalQtnDate').val("");
+                    $('#ModalUnitPrice').val("");
+                    $('#ModalTotal').val("");
 
-        $.ajax({
-            type: "post",
-            url: "/TenderQuotation/GetReqNo",
-            data: { SiteId, ProjectId },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                //$('#SiteEngineer').val(data.siteEngineer);
-                //$('#RCode').removeAttr("disabled");
-                $('#ModalRequisition').removeAttr("disabled");
-                var listOfitems = data.Items.length;
-                var items = "<select id='ModalRequisition'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                    var listOfitems = data.Items.length;
+                    var items = "<select id='ModalRequisition'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ModalRequisition').html(items);
+
+
+
                 }
-                items = items + '</select>';
-                $('#ModalRequisition').html(items);
 
-            }
-
-        });
+            });
+        }
+  
     });
 
     $("#ModalRequisition").change(function () {
         var Rcode = $('#ModalRequisition  option:selected').text();
         var SiteId = $('#ModalSiteId  option:selected').val();
         var ProjectId = $('#ModalProjectId option:selected').val();
-        //alert(ProjectId);
+       
+        if ($('#ModalRequisition  option:selected').text() == "--Select--") {
+            $('#ModalItemName').empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ModalItemName').html(sites);
 
-        $.ajax({
-            type: "post",
-            url: "/TenderQuotation/GetReqitem",
-            data: { Rcode },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                //$('#SiteEngineer').val(data.siteEngineer);
-                //$('#ItemName').removeAttr("disabled");
-                //$('#ModalProc_RequisitionDetId').val(data.Proc_RequisitionDetId);
-                //alert('Requisition ID' + data.Proc_RequisitionDetId);
-                //alert($('#Proc_RequisitionDetId').val());
-                var listOfitems = data.Items.length;
-                //alert('List: ' + listOfitems);
-                $('#ModalItemName').removeAttr("disabled");
+            $('#ModalUnit').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalQty').val("");
+            $('#ModalVendor').val("");
+            $('#ModalQtnNo').val("");
+            $('#ModalQtnDate').val("");
+            $('#ModalUnitPrice').val("");
+            $('#ModalTotal').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/TenderQuotation/GetReqitem",
+                data: { Rcode },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var listOfitems = data.Items.length;
+                    //alert('List: ' + listOfitems);
+                    $('#ModalItemName').empty();
+                    $('#ModalUnit').val("");
+                    $('#ModalUnitName').val("");
+                    $('#ModalQty').val("");
+                    $('#ModalVendor').val("");
+                    $('#ModalQtnNo').val("");
+                    $('#ModalQtnDate').val("");
+                    $('#ModalUnitPrice').val("");
+                    $('#ModalTotal').val("");
+                    $('#ModalItemName').removeAttr("disabled");
 
-                var items = "<select id='ModalItemName'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                    var items = "<select id='ModalItemName'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ModalItemName').html(items);
+
                 }
-                items = items + '</select>';
-                $('#ModalItemName').html(items);
 
-            }
-
-        });
+            });
+        }
+ 
     });
 
     $("#ModalItemName").change(function () {
@@ -1129,6 +1334,29 @@
             }
 
         });
+    });
+
+    $('#ModalQtnNo').change(function () {
+        var qtn = $('#ModalQtnNo').val();
+        if (qtn == "") {
+
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/TenderQuotation/checkQuotationNo",
+                data: { QtnNo: qtn },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    if (data.flag == false) {
+                        alert(data.message);
+                        $('#ModalQtnNo').val("");
+                    }
+                }
+
+            });
+        }
     });
 
     $(document).on({
