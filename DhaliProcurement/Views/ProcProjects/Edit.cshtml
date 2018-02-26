@@ -457,6 +457,14 @@
 
         var ProcProjectId = @ViewBag.ProcProjectId;
 
+        $('#ModalItemName').change(function(){
+            if($('#ModalItemName option:selected').text()=="--Select--"){
+               $('#ModalQty').val("");
+               $('#ModalUnit').val("").change();
+               $('#ModalCost').val("");
+               $('#ModalRemarks').val("");
+            }
+        });
 
         $('#ModalDetailSave').click(function () {
             var isValidItem = true;
@@ -894,6 +902,7 @@
                     $('#ModalItemName').val(itemId).change();
                     $('#ModalUnit').val(UnitId).change();
                 });
+
                 $('#Qty').val("");
                 $('#Cost').val("");
                 $('#ItemRemarks').val("");
