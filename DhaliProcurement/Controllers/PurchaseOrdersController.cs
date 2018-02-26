@@ -1051,6 +1051,8 @@ namespace DhaliProcurement.Controllers
             //                 select purMas
             //            ).Distinct().ToList();
 
+
+            //new feb
             var getPos = (from purMas in db.Proc_PurchaseOrderMas
                           join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
                           join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
