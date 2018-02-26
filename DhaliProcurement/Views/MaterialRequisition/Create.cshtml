@@ -254,7 +254,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.Label("Qty", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.Label("Req Qty", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalQty", null, new { @class = "form-control" })
@@ -340,73 +340,126 @@
 
     $('#ProjectId').change(function () {
         var id = $('#ProjectId option:selected').val();
+        if ($('#ProjectId option:selected').text() == "--Select--")
+        {
+            $('#SiteId').empty();
+            $('#ItemName').empty();
 
-        $.ajax({
-            url: "/MaterialRequisition/GetSites",
-            type: "post",
-            data: {
-                ProjectId: id
-            },
-            dataType: "json",
-            success: function (data) {
-                $('#SiteId').removeAttr("disabled");
-                $('#ProjectManager').val(data.manager);
-                var listOfSites = data.Sites.length;
+            var sites = "<select id='sites'>";
+            sites = sites + '<option value="">--Select--</option>';
+            sites = sites + '</select>';
 
-                var sites = "<select id='sites'>";
-                sites = sites + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfSites; i++) {
-                    sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+            $('#ItemName').html(sites);
+            $('#SiteId').html(sites);
+            $('#SiteEngineer').val("");
+            $('#ProjectManager').val("");
+
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#TotalRequired').val("");
+            $('#TotalReceived').val("");
+            $('#RemainingBalance').val("");
+        }
+        else {
+            $.ajax({
+                url: "/MaterialRequisition/GetSites",
+                type: "post",
+                data: {
+                    ProjectId: id
+                },
+                dataType: "json",
+                success: function (data) {
+                    $('#SiteId').removeAttr("disabled");
+
+                    $('#SiteEngineer').val("");
+                    $('#ProjectManager').val(data.manager);
+                    var listOfSites = data.Sites.length;
+
+                    var sites = "<select id='sites'>";
+                    sites = sites + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfSites; i++) {
+                        sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+                    }
+                    sites = sites + '</select>';
+                    $('#SiteId').html(sites);
+
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#TotalRequired').val("");
+                    $('#TotalReceived').val("");
+                    $('#RemainingBalance').val("");
+
+                    RebindDatePicker();
+
+                },
+                error: function (xhr) {
+                    alert('error');
                 }
-                sites = sites + '</select>';
-                $('#SiteId').html(sites);
+            });
+        }
 
-                RebindDatePicker();
-
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
     });
 
 
     $("#SiteId").change(function () {
         var SiteId = $('#SiteId').val();
         var ProjectId = $('#ProjectId option:selected').val();
-        //alert(ProjectId);
+        
+        if ($('#SiteId option:selected').text() == "--Select--") {
+            $('#ItemName').empty();
+            var sites = "<select id='sites'>";
+            sites = sites + '<option value="">--Select--</option>';
+            sites = sites + '</select>';
 
-        $.ajax({
-            type: "post",
-            url: "/MaterialRequisition/GetSiteEngineer",
-            data: { SiteId, ProjectId },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                $('#SiteEngineer').val(data.siteEngineer);
-                $('#ItemName').removeAttr("disabled");
+            $('#ItemName').html(sites);
+            $('#ProjectManager').val("");
 
-                var listOfitems = data.Items.length;
-                var items = "<select id='ItemName'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#TotalRequired').val("");
+            $('#TotalReceived').val("");
+            $('#RemainingBalance').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/MaterialRequisition/GetSiteEngineer",
+                data: { SiteId, ProjectId },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#SiteEngineer').val(data.siteEngineer);
+                    $('#ItemName').removeAttr("disabled");
+
+                    var listOfitems = data.Items.length;
+                    var items = "<select id='ItemName'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ItemName').html(items);
+
+
+                    var items = "<select id='ModalItemName'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ModalItemName').html(items);
+
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#TotalRequired').val("");
+                    $('#TotalReceived').val("");
+                    $('#RemainingBalance').val("");
+
                 }
-                items = items + '</select>';
-                $('#ItemName').html(items);
 
-
-                var items = "<select id='ModalItemName'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
-                }
-                items = items + '</select>';
-                $('#ModalItemName').html(items);
-
-            }
-
-        });
+            });
+        }
+      
     });
 
     $("#ItemName").change(function () {
@@ -645,30 +698,37 @@
             alert('Please Select Project Id and Site Id');
         }
 
-        //alert(ProjectId);
-        //alert(SiteId);
+        if ($('#ModalItemName option:selected').text() == "--Select--") {
+            $('#modalunitId').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalTotalRequired').val("");
+            $('#ModalTotalReceived').val("");
+            $('#ModalRemainingBalance').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/MaterialRequisition/GetUnit",
+                data: { ItemId, ProjectId, SiteId },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#modalunitId').val(data.UnitId);
+                    $('#ModalUnitName').val(data.UnitName);
+                    $('#ModalTotalRequired').val(data.TotalRequired);
+                    //alert(data.TotalReceived);
+                    $('#ModalTotalReceived').val(data.TotalReceived);
+                    //$('#TotalReceived').val(0);
+                    var TotalRequired = $('#ModalTotalRequired').val();
+                    var TotalReceived = $('#ModalTotalReceived').val();
+                    var RemainingBalance = TotalRequired - TotalReceived;
 
-        $.ajax({
-            type: "post",
-            url: "/MaterialRequisition/GetUnit",
-            data: { ItemId, ProjectId, SiteId },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                $('#modalunitId').val(data.UnitId);
-                $('#ModalUnitName').val(data.UnitName);
-                $('#ModalTotalRequired').val(data.TotalRequired);
-                //alert(data.TotalReceived);
-                $('#ModalTotalReceived').val(data.TotalReceived);
-                //$('#TotalReceived').val(0);
-                var TotalRequired = $('#ModalTotalRequired').val();
-                var TotalReceived = $('#ModalTotalReceived').val();
-                var RemainingBalance = TotalRequired - TotalReceived;
+                    $('#ModalRemainingBalance').val(RemainingBalance);
+                }
 
-                $('#ModalRemainingBalance').val(RemainingBalance);
-            }
-
-        });
+            });
+        }
+ 
     });
 
     $('#ModalDetailSave').click(function () {
