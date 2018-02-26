@@ -84,6 +84,30 @@ namespace DhaliProcurement.Controllers
                                                          companyInfo.Id);
 
 
+            if (companyInfo != null)
+            {
+                dsProjInfoCost.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                dsProjInfoCost.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
+
+
+
+
             var PrManMobile = (from projRes in db.ProjectResource
                                join compRes in db.CompanyResource on projRes.CompanyResourceId equals compRes.Id
                                where projRes.ProjectId == ProjectId && projRes.CompanyResourceId == compRes.Id
@@ -297,12 +321,35 @@ namespace DhaliProcurement.Controllers
             MaterialRequisitionDetail dsMaterialRequisition = new MaterialRequisitionDetail();
 
 
-            dsMaterialRequisition.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //dsMaterialRequisition.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+            if (companyInfo != null)
+            {
+                dsMaterialRequisition.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                dsMaterialRequisition.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
+
+
+
 
             //var matchingExistingReqNo = db.Proc_RequisitionMas.Where(x => x.Id == ReqNo).SingleOrDefault();
             //var REQNo = matchingExistingReqNo.Rcode;
@@ -532,12 +579,36 @@ namespace DhaliProcurement.Controllers
             PurchaseOrderDetail dsPurchaseOrder = new PurchaseOrderDetail();
 
 
-            dsPurchaseOrder.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //dsPurchaseOrder.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+
+            if (companyInfo != null)
+            {
+                dsPurchaseOrder.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                dsPurchaseOrder.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
+
+
+
             //feb
 
             var purchaseOrderMasters = (from purDet in db.Proc_PurchaseOrderDet
@@ -788,12 +859,37 @@ namespace DhaliProcurement.Controllers
             MaterialRequisitionSummary dsMaterialRequisition = new MaterialRequisitionSummary();
 
 
-            dsMaterialRequisition.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //dsMaterialRequisition.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+
+
+
+            if (companyInfo != null)
+            {
+                dsMaterialRequisition.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                dsMaterialRequisition.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
+
+
 
             //var matchingExistingReqNo = db.Proc_RequisitionMas.Where(x => x.Id == ReqNo).SingleOrDefault();
             //var REQNo = matchingExistingReqNo.Rcode;
@@ -1115,12 +1211,36 @@ namespace DhaliProcurement.Controllers
             MaterialsEntryDS dsMaterialsEntry = new MaterialsEntryDS();
 
 
-            dsMaterialsEntry.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //dsMaterialsEntry.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+
+
+            if (companyInfo != null)
+            {
+                dsMaterialsEntry.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                dsMaterialsEntry.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
+
+
 
             //var matchingExistingReqNo = db.Proc_RequisitionMas.Where(x => x.Id == ReqNo).SingleOrDefault();
             //var REQNo = matchingExistingReqNo.Rcode;
@@ -1340,12 +1460,34 @@ namespace DhaliProcurement.Controllers
             MaterialRequisitionListDS dsMaterialsRequisition = new MaterialRequisitionListDS();
 
 
-            dsMaterialsRequisition.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //dsMaterialsRequisition.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+
+            if (companyInfo != null)
+            {
+                dsMaterialsRequisition.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                dsMaterialsRequisition.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
+
 
 
             //var requisitionPending = (from reqMas in db.Proc_RequisitionMas
@@ -1685,12 +1827,34 @@ namespace DhaliProcurement.Controllers
             VendorPaymentDS dsVendorPaymentDS = new VendorPaymentDS();
 
 
-            dsVendorPaymentDS.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //dsVendorPaymentDS.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+
+
+            if (companyInfo != null)
+            {
+                dsVendorPaymentDS.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                dsVendorPaymentDS.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
 
 
 
@@ -1936,12 +2100,35 @@ namespace DhaliProcurement.Controllers
             TenderDetails dsTender = new TenderDetails();
 
 
-            dsTender.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //dsTender.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+
+
+
+            if (companyInfo != null)
+            {
+                dsTender.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                dsTender.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
 
 
 
@@ -2172,12 +2359,37 @@ namespace DhaliProcurement.Controllers
             TenderDetailsAccepted dsTender = new TenderDetailsAccepted();
 
 
-            dsTender.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //dsTender.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+
+
+
+            if (companyInfo != null)
+            {
+                dsTender.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                dsTender.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
+
+
 
 
 
@@ -2496,12 +2708,35 @@ namespace DhaliProcurement.Controllers
             VendorPaymentItemWiseDS vendorPaymentItemWise = new VendorPaymentItemWiseDS();
 
 
-            vendorPaymentItemWise.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //vendorPaymentItemWise.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+
+
+
+            if (companyInfo != null)
+            {
+                vendorPaymentItemWise.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                vendorPaymentItemWise.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
 
 
 
@@ -2652,12 +2887,35 @@ namespace DhaliProcurement.Controllers
             ProjectList projectListDS = new ProjectList();
 
 
-            projectListDS.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //projectListDS.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+
+
+            if (companyInfo != null)
+            {
+                projectListDS.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                projectListDS.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
+
 
 
             var projectLists = (from projSite in db.ProjectSite
@@ -2796,12 +3054,37 @@ namespace DhaliProcurement.Controllers
             VendorPaymentProject dsVendorPaymentProject = new VendorPaymentProject();
 
 
-            dsVendorPaymentProject.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
-                                                         companyInfo.Address,
-                                                         companyInfo.Phone,
-                                                         companyInfo.Web,
-                                                         companyInfo.Email,
-                                                         companyInfo.Id);
+            //dsVendorPaymentProject.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+            //                                             companyInfo.Address,
+            //                                             companyInfo.Phone,
+            //                                             companyInfo.Web,
+            //                                             companyInfo.Email,
+            //                                             companyInfo.Id);
+
+
+
+            if (companyInfo != null)
+            {
+                dsVendorPaymentProject.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                             companyInfo.Address,
+                                                             companyInfo.Phone,
+                                                             companyInfo.Web,
+                                                             companyInfo.Email,
+                                                             companyInfo.Id);
+            }
+            else
+            {
+
+                dsVendorPaymentProject.CompanyInfo.AddCompanyInfoRow("",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             0);
+
+            }
+
+
 
             var projVendorPaymentMasters = (from vendorDet in db.Proc_VendorPaymentDet
                                             join vendorMas in db.Proc_VendorPaymentMas on vendorDet.Proc_VendorPaymentMasId equals vendorMas.Id
@@ -2828,6 +3111,12 @@ namespace DhaliProcurement.Controllers
                                                 PoTotalAmt = purMas.POTotalAmt,
                                                 purMasId = purMas.Id
                                             }).Distinct().ToList();
+
+
+
+
+            
+
 
 
             if (ProjectId != null && SiteId != null)
@@ -2858,6 +3147,25 @@ namespace DhaliProcurement.Controllers
                 dueAmt[i] = 0;
                 duePoarray[i] = 0;
             }
+
+
+
+
+
+            //if (projVendorPaymentMasters.Count==0)
+            //{
+            //    var companyInfos = db.CompanyInformation.SingleOrDefault();
+
+            //    dsVendorPaymentProject.CompanyInfo.AddCompanyInfoRow(companyInfos.Name,
+            //                                               companyInfos.Address,
+            //                                               companyInfos.Phone,
+            //                                               companyInfos.Web,
+            //                                               companyInfos.Email,
+            //                                               companyInfos.Id);
+            //}
+
+
+
 
             foreach (var vendorMaster in projVendorPaymentMasters)
             {
