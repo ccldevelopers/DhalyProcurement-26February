@@ -253,7 +253,7 @@
                                                             total = total + i;
                                                         }
                                                     }
-                                                    <label name="label_TotalReceived">@total</label>
+                                                    <label name="label_TotalReceived">@total </label>
                                                     <input type="hidden" value="@total" class="form-control" name="TotalReceived" disabled="disabled" style="width:90px;" />
                                                     @*<input type="text" value="@totalReceived.EntryQty" class="form-control" name="TotalReceived" disabled="disabled" />*@
                                                 </td>
@@ -263,7 +263,7 @@
 
                                                         var remaining = totalRequired.PQuantity - total;
                                                     }
-                                                    <label name="label_RemainingBalance">@remaining</label>
+                                                    <label name="label_RemainingBalance">@remaining </label>
                                                     <input type="hidden" value="@remaining" class="form-control" name="RemainingBalance" disabled="disabled" style="width:90px;" />
                                                 </td>
                                                 <td>
@@ -406,7 +406,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.Label("Qty", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.Label("Req Qty", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalQty", null, new { @class = "form-control" })
