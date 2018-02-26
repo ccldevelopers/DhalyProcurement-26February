@@ -191,8 +191,8 @@
 
         $('#VendorId').change(function () {
             var id = $('#VendorId option:selected').val();
-            var siteId = $('#ProjectId option:selected').val();
-            var projId = $('#SiteId option:selected').val();
+            var siteId = $('#SiteId option:selected').val();
+            var projId = $('#ProjectId option:selected').val();
             $.ajax({
                 url: "/PurchaseOrders/GetPOReport",
                 type: "post",

@@ -1061,7 +1061,7 @@ namespace DhaliProcurement.Controllers
                           join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
                           join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
                           join proj in db.Project on projSite.ProjectId equals proj.Id
-                          where purMas.VendorId == VendorId && purMas.Proc_TenderMasId == tenderMas.Id
+                          where purMas.VendorId == VendorId
                           && proj.Id == ProjectId && projSite.Id == SiteId
                           && tenderMas.isApproved=="A" && tenderDet.Status=="A"
                           select purMas
