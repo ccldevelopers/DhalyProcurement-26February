@@ -337,7 +337,7 @@
                     var newRow = jQuery('<tr>'
                         +'<td><input class="form-control" value="' + data[i].ProjectSiteId + '" type="hidden" name="ProjectSiteId"/><input class="form-control" value="' + data[i].SiteName + '" type="hidden" name="SiteName"/><label name="label_SiteName">' + data[i].SiteName + '</label><input type="hidden" name="TaskId" value="' + taskCounter + '"/></td>'
                        + '<td><input class="form-control" value="' + data[i].SiteLocation + '" type="hidden" name="SiteLocation"/><label name="label_SiteLocation">' + data[i].SiteLocation + '</label></td>'
-                       + '<td><input value="' + data[i].SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input class="form-control" value="' + data[i].SiteEngineer + '"  type="hidden" name="SiteEngineer" disabled="disabled"/><label name="label_SiteEngineer">' +  data[i].SiteEngineer  + '</label></td>'
+                       + '<td><input value="' + data[i].SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input value="' + data[i].SiteEngineerId + '" type="hidden" name="TempSiteEngineerId"/><input class="form-control" value="' + data[i].SiteEngineer + '"  type="hidden" name="SiteEngineer" disabled="disabled"/><label name="label_SiteEngineer">' +  data[i].SiteEngineer  + '</label></td>'
                        +'<td>'
                        //+'<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'
                        + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
@@ -595,10 +595,11 @@
         //Add site to list if valid
         if (isValidSite)
         {
+            var TempSiteEngineerId=0;
             taskCounter++;
             var newRow = jQuery('<tr><td><input class="form-control" value="' + ProjectSiteId + '" type="hidden" name="ProjectSiteId"/><label name="label_SiteName">' + SiteName + '</label><input class="form-control" value="' + SiteName + '" type="hidden" name="SiteName"/><input type="hidden" name="TaskId" value="' + taskCounter + '"/></td>'
                 + '<td><input class="form-control" value="' + SiteLocation + '" type="hidden" name="SiteLocation"/><label name="label_SiteLocation">' + SiteLocation + '</label></td>'
-                + '<td><input value="' + SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input class="form-control" value="' + SiteEngineer + '"  type="hidden" name="SiteEngineer"/><label name="label_SiteEngineer">' + SiteEngineer + '</label></td>'
+                + '<td><input value="' + SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input value="' + TempSiteEngineerId + '" type="hidden" name="TempSiteEngineerId"/><input class="form-control" value="' + SiteEngineer + '"  type="hidden" name="SiteEngineer"/><label name="label_SiteEngineer">' + SiteEngineer + '</label></td>'
                 +'<td>'
                 + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                 +' <button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button>'
@@ -743,7 +744,7 @@
         var EndDate = $('#EndDate').val();
         var Remarks = $('#ProjectRemarks').val();
         var TempPrMan = $('#TempPrMan').val();
-        alert('TempPrMan '+TempPrMan);
+       // alert('TempPrMan '+TempPrMan);
 
         if (Remarks.trim().length > 200) {
             isValid = false;
@@ -760,8 +761,9 @@
         var SiteLocation = document.getElementsByName("SiteLocation");
         var SiteEngineerId = document.getElementsByName("SiteEngineerId");
         var SiteEngineer = document.getElementsByName("SiteEngineer");
-
-
+        
+        var TempSiteEngineerId = document.getElementsByName("TempSiteEngineerId");
+       
         var Length = $('.Resource-list tr').length; //detail table length
         //  alert('L '+Length);
 
@@ -782,7 +784,8 @@
                     SiteName: SiteName[i].value,
                     SiteLocation: SiteLocation[i].value,
                     SiteEngineerId: SiteEngineerId[i].value,
-                    SiteEngineer:SiteEngineer[i].value
+                    SiteEngineer:SiteEngineer[i].value,
+                    TempSiteEngineerId:TempSiteEngineerId[i].value
                 });
                 // alert(SiteEngineer[i].value);
                 // alert(ProjectSiteId[i].value);

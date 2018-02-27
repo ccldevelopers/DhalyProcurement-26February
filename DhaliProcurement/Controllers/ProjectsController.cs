@@ -330,30 +330,53 @@ namespace DhaliProcurement.Controllers
                                         sites.ProjectId = ProjectId;
                                         sites.Name = item.SiteName;
                                         sites.Location = item.SiteLocation;
-                                        pSiteRes.CompanyResourceId = item.SiteEngineerId;
+                                       
 
                                         var checkingProjectSites = db.ProjectSite.FirstOrDefault(x => x.Id == item.ProjectSiteId);
 
                                         flag = false;
                                         if (checkingProjectSites == null)
                                         {
+
                                             db.Entry(sites).State = EntityState.Added;
+                                            db.SaveChanges();
+
+                                            pSiteRes.ProjectSiteId = sites.Id;
+                                            pSiteRes.CompanyResourceId = item.SiteEngineerId;
                                             db.Entry(pSiteRes).State = EntityState.Added;
                                         }
                                         else
                                         {
                                             var ProjectSite = db.ProjectSite.Where(x => x.ProjectId == ProjectId && x.Id == item.ProjectSiteId).FirstOrDefault();
 
-                                            var ProjectSiteEngineer = db.ProjectSiteResource.Where(x => x.ProjectSiteId == ProjectSite.Id && ProjectSite.ProjectId == ProjectId).FirstOrDefault();
-                                            ProjectSite.ProjectId = ProjectId;
+                                            if (item.TempSiteEngineerId==item.SiteEngineerId)
+                                            {
+                                                
+
+
+                                            }
+                                            else
+                                            {
+                                                var ProjectSiteEngineer = db.ProjectSiteResource.Where(x => x.ProjectSiteId == item.ProjectSiteId && x.CompanyResourceId == item.TempSiteEngineerId);
+
+                                                db.ProjectSiteResource.RemoveRange(ProjectSiteEngineer);
+                                                pSiteRes.ProjectSiteId = item.ProjectSiteId;
+                                                pSiteRes.CompanyResourceId = item.SiteEngineerId;
+
+                                                db.ProjectSiteResource.Add(pSiteRes);
+
+                                            }
+
+
+                                           
                                             ProjectSite.Name = item.SiteName;
                                             ProjectSite.Location = item.SiteLocation;
-                                            pSiteRes.CompanyResourceId = item.SiteEngineerId;
-                                            ProjectSiteEngineer.CompanyResource.Name = item.SiteEngineer;
+
+
 
 
                                             db.Entry(ProjectSite).State = EntityState.Modified;
-                                            db.Entry(ProjectSiteEngineer).State = EntityState.Modified;
+                                            //  db.Entry(ProjectSiteEngineer).State = EntityState.Modified;
 
                                         }
 
