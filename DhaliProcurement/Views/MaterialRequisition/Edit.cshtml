@@ -294,7 +294,15 @@
                                                     <input type="hidden" value="@item.Remarks" class="form-control" name="ItemRemarks" style="width:80px;" />
                                                 </td>
                                                 <td>
-                                                    <button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>
+                                                    @{
+                                                        var check = db.Proc_TenderDet.Where(x => x.Proc_RequisitionDetId == item.Id).ToList();
+
+                                                        if (check.Count == 0)
+                                                        {
+                                                            <button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>
+                                                        }
+
+                                                    }
                                                     <button type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded deleteRequisitionItem"><i class="icon-cross"></i></button>
                                                     @*<input type="button" class="btn btn-danger btn-xs deleteRequisitionItem" value="Delete"/>*@
                                                     @*<input type="button" class="btn btn-danger btn-xs deleteItem" value="Delete" onclick="$(this).parent().parent().remove();" />*@

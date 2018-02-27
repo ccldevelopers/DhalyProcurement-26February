@@ -19,6 +19,7 @@ namespace DhaliProcurement.ViewModel
         public int PurchaseOrderDetId { get; set; }
         public decimal ReqQty { get; set; }
         //public int TenderMasId { get; set; }
+        public int Checkflag { get; set; }
     }
 
     public class VMUpdatePO

@@ -126,6 +126,17 @@ namespace DhaliProcurement.Controllers
                 p.UnitName = unit.Name;
                 p.ReqQty = size.ReqQty;
 
+                var editCheck = db.Proc_MaterialEntryDet.Where(x => x.Proc_PurchaseOrderDetId == i.purchaseDet.Id).ToList();
+
+                if (editCheck.Count == 0)
+                {
+                    p.Checkflag = 0;
+                }
+                else
+                {
+                    p.Checkflag = 1;
+                }
+
                 check.Add(p);
             }
 

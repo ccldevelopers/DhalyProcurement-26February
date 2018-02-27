@@ -1,6 +1,8 @@
 ﻿@model DhaliProcurement.ViewModel.VMPurchaseOrderEdit
 @{
     ViewBag.Title = "Edit Purchase Order";
+    DhaliProcurement.Models.DCPSContext db = new DhaliProcurement.Models.DCPSContext();
+    var purchaseDetail = 0;
 }
 
 <div class="row">
@@ -702,21 +704,54 @@
             success: function (data) {
                 console.log(data);
                 for (var i = 0; i < data.length; i++) {
-                    //alert(data[i].ItemName);
-                    taskCounter++;
-                    var newRow = jQuery('<tr><td><input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + data[i].PurchaseOrderDetId + '" type="hidden" name="PurchaseOrderDetId"/><input value="' + data[i].ItemId + '" type="hidden" name="ItemId"/> <label name="label_ItemName" style="width:150px;">' + data[i].ItemName + '</label><input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName1"/></td>'
-                        +'<td><input value="' + data[i].UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + data[i].UnitName + '</label><input class="form-control" value="' + data[i].UnitName + '" readonly="true" type="hidden" name="UnitName"/></td>'
-                     +'<td><input class="form-control" value="' + data[i].Size + '" type="hidden" name="Size" readonly="true"/><label name="label_Size">' + data[i].Size  + '</label></td>'
-                     +'<td><input class="form-control UnitPriceNew" value="' + data[i].UnitPrice + '"  type="hidden" name="UnitPrice" readonly="true"/><label name="label_UnitPrice">' + data[i].UnitPrice + '</label></td>'
-                       + '<td><input class="form-control RequisitionQty" value="' + data[i].ReqQty + '" type="hidden" name="RequisitionQty" disabled="disabled"/><label name="label_RequisitionQty">' + data[i].ReqQty + '</label></td>'
-                     + '<td><input class="form-control POQuantityNew" value="' + data[i].POQuantity + '" type="hidden" name="POQuantity"/><label name="label_POQuantity">' +  data[i].POQuantity + '</label></td>'
-                     +'<td><input class="form-control TotalPriceNew" value="' + data[i].TotalPrice + '" type="hidden" readonly="true" name="TotalPrice"/><label name="label_TotalPrice">' + data[i].TotalPrice + '</label></td>'
-                     +'<td>'
-                                   + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
-                     +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
-                     +'</td></tr>');
 
-                    jQuery('table.Resource-list tbody').append(newRow);
+                    //alert(data[i].Checkflag);
+                    if(data[i].Checkflag==0){
+                        taskCounter++;
+                        var newRow = jQuery('<tr><td><input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + data[i].PurchaseOrderDetId + '" type="hidden" name="PurchaseOrderDetId"/><input value="' + data[i].ItemId + '" type="hidden" name="ItemId"/> <label name="label_ItemName" style="width:150px;">' + data[i].ItemName + '</label><input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName1"/></td>'
+                            +'<td><input value="' + data[i].UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + data[i].UnitName + '</label><input class="form-control" value="' + data[i].UnitName + '" readonly="true" type="hidden" name="UnitName"/></td>'
+                         +'<td><input class="form-control" value="' + data[i].Size + '" type="hidden" name="Size" readonly="true"/><label name="label_Size">' + data[i].Size  + '</label></td>'
+                         +'<td><input class="form-control UnitPriceNew" value="' + data[i].UnitPrice + '"  type="hidden" name="UnitPrice" readonly="true"/><label name="label_UnitPrice">' + data[i].UnitPrice + '</label></td>'
+                           + '<td><input class="form-control RequisitionQty" value="' + data[i].ReqQty + '" type="hidden" name="RequisitionQty" disabled="disabled"/><label name="label_RequisitionQty">' + data[i].ReqQty + '</label></td>'
+                         + '<td><input class="form-control POQuantityNew" value="' + data[i].POQuantity + '" type="hidden" name="POQuantity"/><label name="label_POQuantity">' +  data[i].POQuantity + '</label></td>'
+                         +'<td><input class="form-control TotalPriceNew" value="' + data[i].TotalPrice + '" type="hidden" readonly="true" name="TotalPrice"/><label name="label_TotalPrice">' + data[i].TotalPrice + '</label></td>'
+                         +'<td>'
+                         + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                         +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
+                         +'</td></tr>');
+
+                        jQuery('table.Resource-list tbody').append(newRow);
+                    }
+                    else{
+                        taskCounter++;
+                        var newRow = jQuery('<tr><td><input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + data[i].PurchaseOrderDetId + '" type="hidden" name="PurchaseOrderDetId"/><input value="' + data[i].ItemId + '" type="hidden" name="ItemId"/> <label name="label_ItemName" style="width:150px;">' + data[i].ItemName + '</label><input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName1"/></td>'
+                            +'<td><input value="' + data[i].UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + data[i].UnitName + '</label><input class="form-control" value="' + data[i].UnitName + '" readonly="true" type="hidden" name="UnitName"/></td>'
+                         +'<td><input class="form-control" value="' + data[i].Size + '" type="hidden" name="Size" readonly="true"/><label name="label_Size">' + data[i].Size  + '</label></td>'
+                         +'<td><input class="form-control UnitPriceNew" value="' + data[i].UnitPrice + '"  type="hidden" name="UnitPrice" readonly="true"/><label name="label_UnitPrice">' + data[i].UnitPrice + '</label></td>'
+                           + '<td><input class="form-control RequisitionQty" value="' + data[i].ReqQty + '" type="hidden" name="RequisitionQty" disabled="disabled"/><label name="label_RequisitionQty">' + data[i].ReqQty + '</label></td>'
+                         + '<td><input class="form-control POQuantityNew" value="' + data[i].POQuantity + '" type="hidden" name="POQuantity"/><label name="label_POQuantity">' +  data[i].POQuantity + '</label></td>'
+                         +'<td><input class="form-control TotalPriceNew" value="' + data[i].TotalPrice + '" type="hidden" readonly="true" name="TotalPrice"/><label name="label_TotalPrice">' + data[i].TotalPrice + '</label></td>'
+                         +'<td>'
+                                       //+ '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                         +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
+                         +'</td></tr>');
+
+                        jQuery('table.Resource-list tbody').append(newRow);
+                    }
+                    //taskCounter++;
+                    //var newRow = jQuery('<tr><td><input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + data[i].PurchaseOrderDetId + '" type="hidden" name="PurchaseOrderDetId"/><input value="' + data[i].ItemId + '" type="hidden" name="ItemId"/> <label name="label_ItemName" style="width:150px;">' + data[i].ItemName + '</label><input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName1"/></td>'
+                    //    +'<td><input value="' + data[i].UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + data[i].UnitName + '</label><input class="form-control" value="' + data[i].UnitName + '" readonly="true" type="hidden" name="UnitName"/></td>'
+                    // +'<td><input class="form-control" value="' + data[i].Size + '" type="hidden" name="Size" readonly="true"/><label name="label_Size">' + data[i].Size  + '</label></td>'
+                    // +'<td><input class="form-control UnitPriceNew" value="' + data[i].UnitPrice + '"  type="hidden" name="UnitPrice" readonly="true"/><label name="label_UnitPrice">' + data[i].UnitPrice + '</label></td>'
+                    //   + '<td><input class="form-control RequisitionQty" value="' + data[i].ReqQty + '" type="hidden" name="RequisitionQty" disabled="disabled"/><label name="label_RequisitionQty">' + data[i].ReqQty + '</label></td>'
+                    // + '<td><input class="form-control POQuantityNew" value="' + data[i].POQuantity + '" type="hidden" name="POQuantity"/><label name="label_POQuantity">' +  data[i].POQuantity + '</label></td>'
+                    // +'<td><input class="form-control TotalPriceNew" value="' + data[i].TotalPrice + '" type="hidden" readonly="true" name="TotalPrice"/><label name="label_TotalPrice">' + data[i].TotalPrice + '</label></td>'
+                    // +'<td>'
+                    //               + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                    // +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
+                    // +'</td></tr>');
+
+                    //jQuery('table.Resource-list tbody').append(newRow);
 
 
                     $('.editSite').click(function () {

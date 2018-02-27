@@ -958,6 +958,17 @@ namespace DhaliProcurement.Controllers
 
                     vm.UnitPrice = unitPrice.TQPrice;
                     vm.Status = i.Status;
+                    var editCheck = db.Proc_VendorPaymentDet.Where(x => x.Proc_MaterialEntryDetId == i.Id).ToList();
+
+                    if (editCheck.Count == 0)
+                    {
+                        vm.Checkflag = 0;
+                    }
+                    else
+                    {
+                        vm.Checkflag = 1;
+                    }
+
                     detailsList.Add(vm);
                 }
 

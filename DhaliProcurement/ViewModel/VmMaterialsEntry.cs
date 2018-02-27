@@ -51,5 +51,6 @@ namespace DhaliProcurement.ViewModel
         public string ChallanDate { get; set; }
         public decimal EntryQty { get; set; }
         public string Status { get; set; }
+        public int Checkflag { get; set; }
     }
 }
