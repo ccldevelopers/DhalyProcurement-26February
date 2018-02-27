@@ -1092,39 +1092,39 @@
 
     });
 
-    $('#ModalClose').hide(function () {
+    //$('#detailForm').hide(function () {
 
-            var TaskId = selRow.find('input[name=TaskId]').val();
-            var ProjectId = selRow.find('input[name=ProjectId]').val();
-            var ProjectName = selRow.find('input[name=ProjectName]').val();
-            var SiteId = selRow.find('input[name=SiteId]').val();
-            var SiteName = selRow.find('input[name=SiteName]').val();
-            var RCode = selRow.find('input[name=RCode]').val();
-            var itemId = selRow.find('input[name=ItemId]').val();
-            var Qty = selRow.find('input[name=Qty]').val();
-            var UnitId = selRow.find('input[name=UnitId]').val();
-            var UnitName = selRow.find('input[name=UnitName]').val();
-            var Vendor = selRow.find('input[name=Vendor]').val();
-            var TQNo = selRow.find('input[name=TQNo]').val();
-            var TQDate = selRow.find('input[name=TQDate]').val();
-            var TQPrice = selRow.find('input[name=TQPrice]').val();
-            var TotalPrice = selRow.find('input[name=TotalPrice]').val();
+    //        var TaskId = selRow.find('input[name=TaskId]').val();
+    //        var ProjectId = selRow.find('input[name=ProjectId]').val();
+    //        var ProjectName = selRow.find('input[name=ProjectName]').val();
+    //        var SiteId = selRow.find('input[name=SiteId]').val();
+    //        var SiteName = selRow.find('input[name=SiteName]').val();
+    //        var RCode = selRow.find('input[name=RCode]').val();
+    //        var itemId = selRow.find('input[name=ItemId]').val();
+    //        var Qty = selRow.find('input[name=Qty]').val();
+    //        var UnitId = selRow.find('input[name=UnitId]').val();
+    //        var UnitName = selRow.find('input[name=UnitName]').val();
+    //        var Vendor = selRow.find('input[name=Vendor]').val();
+    //        var TQNo = selRow.find('input[name=TQNo]').val();
+    //        var TQDate = selRow.find('input[name=TQDate]').val();
+    //        var TQPrice = selRow.find('input[name=TQPrice]').val();
+    //        var TotalPrice = selRow.find('input[name=TotalPrice]').val();
 
-            $('#ModalTaskId').val(TaskId);
-            $('#ModalProjectId').val(ProjectId);
-            $('#ModalSiteId').val(SiteId);
-            $('#ModalRequisition').val(RCode);
-            $('#ModalItemName').val(itemId);
-            $('#ModalQty').val(Qty);
-            $('#ModalUnit').val(UnitId);
-            $('#ModalUnitName').val(UnitName);
-            $('#ModalVendor').val(Vendor);
-            $('#ModalQtnNo').val(TQNo);
-            $('#ModalQtnDate').val(TQDate);
-            $('#ModalUnitPrice').val(TQPrice);
-            $('#ModalTotal').val(TotalPrice);
+    //        $('#ModalTaskId').val(TaskId);
+    //        $('#ModalProjectId').val(ProjectId);
+    //        $('#ModalSiteId').val(SiteId);
+    //        $('#ModalRequisition').val(RCode);
+    //        $('#ModalItemName').val(itemId);
+    //        $('#ModalQty').val(Qty);
+    //        $('#ModalUnit').val(UnitId);
+    //        $('#ModalUnitName').val(UnitName);
+    //        $('#ModalVendor').val(Vendor);
+    //        $('#ModalQtnNo').val(TQNo);
+    //        $('#ModalQtnDate').val(TQDate);
+    //        $('#ModalUnitPrice').val(TQPrice);
+    //        $('#ModalTotal').val(TotalPrice);
         
-    });
+    //});
 
     $('#ModalClose').click(function () {
         $('#ModalProjectName_Error').hide();
@@ -1138,6 +1138,7 @@
 
     $('#ModalProjectId').change(function () {
         var id = $('#ModalProjectId option:selected').val();
+        //alert(id);
         if ($('#ModalProjectId option:selected').text() == "--Select--") {
             $('#ModalSiteId').empty();
             $('#ModalRequisition').empty();
@@ -1249,9 +1250,6 @@
                     }
                     items = items + '</select>';
                     $('#ModalRequisition').html(items);
-
-
-
                 }
 
             });
