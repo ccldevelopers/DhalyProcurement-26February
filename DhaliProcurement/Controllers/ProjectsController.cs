@@ -226,7 +226,7 @@ namespace DhaliProcurement.Controllers
 
 
         // POST: Projects/ProjectCreate           
-        public JsonResult ProjectUpdate(List<VMProjectSite> SiteResourceDetails, int?[] DeleteItems, int ProjectId, string ProjectName, DateTime? StartDate, DateTime? EndDate, string Remarks, int RName)
+        public JsonResult ProjectUpdate(List<VMProjectSite> SiteResourceDetails, int?[] DeleteItems, int ProjectId, string ProjectName, DateTime? StartDate, DateTime? EndDate, string Remarks, int RName, int TempPrMan)
         {
             var flag = false;
             var result = new
@@ -281,10 +281,19 @@ namespace DhaliProcurement.Controllers
                             {
                                 db.Entry(checkdata).State = EntityState.Modified;
                                 //var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId && x.CompanyResourceId == );
-                                var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId);
-                                //projectResouce.CompanyResourceId = RName;
 
-                                db.Entry(projectResouce).State = EntityState.Modified;
+                                // var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId);
+
+                                //27feb
+                                var projectResouce = db.ProjectResource.Where(x => x.ProjectId == ProjectId && x.CompanyResourceId == TempPrMan);
+                                db.ProjectResource.RemoveRange(projectResouce);
+
+                                pres.ProjectId = ProjectId;
+                                pres.CompanyResourceId = RName;
+                                db.ProjectResource.Add(pres);
+                                //27feb end
+
+                                // db.Entry(projectResouce).State = EntityState.Modified;
 
                             }
                             catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
@@ -344,7 +353,7 @@ namespace DhaliProcurement.Controllers
 
 
                                             db.Entry(ProjectSite).State = EntityState.Modified;
-                                            db.Entry(ProjectSiteEngineer.CompanyResource).State = EntityState.Modified;
+                                            db.Entry(ProjectSiteEngineer).State = EntityState.Modified;
 
                                         }
 
@@ -414,7 +423,7 @@ namespace DhaliProcurement.Controllers
                          select comRes).FirstOrDefault();
 
             ViewBag.ProjectManager = new SelectList(db.CompanyResource, "Id", "Name", prMan.Id);
-
+            ViewBag.TempPrManId = prMan.Id;
             var startDate = NullHelper.DateToString(projectData.StartDate);
             ViewBag.StartDate = startDate;
 
@@ -428,7 +437,12 @@ namespace DhaliProcurement.Controllers
 
             var status = new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Active", Value = "A" }, new SelectListItem { Text = "Inactive", Value = "I" }, }, "Value", "Text");
             ViewBag.Statuses = status;
-            ViewBag.RName = new SelectList(db.CompanyResource, "Id", "Name");
+          //  ViewBag.RName = new SelectList(db.CompanyResource, "Id", "Name");
+
+         
+            ViewBag.RName= new SelectList(db.CompanyResource, "Id", "Name");
+            //var siteIdFind = db.ProjectSite.Where(x => x.ProjectId == id).FirstOrDefault();
+            //ViewBag.TempStEngId = siteIdFind.Id;
 
             return View();
         }
