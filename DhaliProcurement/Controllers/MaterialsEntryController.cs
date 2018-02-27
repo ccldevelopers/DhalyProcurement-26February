@@ -621,7 +621,7 @@ namespace DhaliProcurement.Controllers
                         {
                             Proc_MaterialEntryDet detail = new Proc_MaterialEntryDet();
                             detail.Proc_MaterialEntryMasId = EntryMasId;
-                            var purchaseOrderMasId = db.Proc_PurchaseOrderMas.FirstOrDefault(x => x.PONo == item.PONo).Id;
+                            var purchaseOrderMasId = db.Proc_PurchaseOrderMas.FirstOrDefault(x => x.Id == item.PONo).Id;
                             detail.Proc_PurchaseOrderDetId = db.Proc_PurchaseOrderDet.FirstOrDefault(x => x.Proc_PurchaseOrderMasId == purchaseOrderMasId && x.ItemId == item.ItemId).Id;
 
                             var challanCheck = db.Proc_MaterialEntryDet.Where(x => x.ChallanNo.Trim() == item.ChallanNo.Trim()).ToList();
@@ -1037,7 +1037,7 @@ namespace DhaliProcurement.Controllers
                                 detail.EntryQty = item.EntryQty;
                                 detail.Status = item.Status;
 
-                                var PurchaseOrderMasId = db.Proc_PurchaseOrderMas.FirstOrDefault(x => x.PONo == item.PONo);
+                                var PurchaseOrderMasId = db.Proc_PurchaseOrderMas.FirstOrDefault(x => x.Id == item.PONo);
                                 var PurchaseOrderDetId = db.Proc_PurchaseOrderDet.FirstOrDefault(y => y.Proc_PurchaseOrderMasId == PurchaseOrderMasId.Id && y.ItemId == item.ItemId);
 
                                 detail.Proc_PurchaseOrderDetId = PurchaseOrderDetId.Id;

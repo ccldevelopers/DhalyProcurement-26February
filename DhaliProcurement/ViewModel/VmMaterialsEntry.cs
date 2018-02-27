@@ -12,7 +12,7 @@ namespace DhaliProcurement.ViewModel
         public int Proc_MaterialEntryDetId { get; set; }
         public int ItemId { get; set; }
         public string RCode { get; set; }
-        public string PONo { get; set; }
+        public int PONo { get; set; }
         public string ChallanNo { get; set; }
         public string ChallanDate { get; set; }
         public decimal EntryQty { get; set; }
