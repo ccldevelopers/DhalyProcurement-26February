@@ -93,7 +93,8 @@
                                     @Html.DropDownList("RName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteRName", @tabindex = "8" })
                                 </td>
                                 <td>
-                                    <input type="button" id="addNewRow" value="ADD" class="btn btn-primary" style="background-color: grey;border: none;" tabindex="9" />
+                                    @*<input type="button" id="addNewRow" value="ADD" class="btn btn-primary" style="background-color: grey;border: none;" tabindex="9" />*@
+                                    <input type="button" id="addNewRow" value="ADD" class="btn btn-info btn-xs"/>
                                 </td>
                             </tr>
                             <tr>
@@ -105,7 +106,7 @@
                         <br />
                         <table class="Resource-list table table-bordered" id="Item-list">
                             <thead>
-                                <tr class="bg-grey">
+                                <tr class="bg-indigo-400">
                                     @*<th>SL No.</th>*@
                                     <th class="col-lg-4">Site Name</th>
                                     <th class="col-lg-4">Location</th>
