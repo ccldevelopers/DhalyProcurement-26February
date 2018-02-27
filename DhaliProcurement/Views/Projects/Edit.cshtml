@@ -39,17 +39,15 @@
                         <tr>
                             <td class="col-lg-">Project Manager</td>
                             <td class="col-lg-10">
-
                                 @Html.DropDownList("ProjectManager", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @tabindex = "2" })
-                                <input type="hidden" value="@ViewBag.TempPrManId" id="TempPrMan"/>
-                               
-                                  @*<button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal">Add</button>*@
+                                <input type="hidden" value="@ViewBag.TempPrManId" id="TempPrMan" />
+
+                                @*<button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal">Add</button>*@
                             </td>
                             <td class="col-lg-1">
                                 <button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal" style="background-color: grey;border: none;">Add</button>
                             </td>
                         </tr>
-
                         <tr>
                             <td>Project Start Date</td>
                             <td colspan="2">
@@ -82,7 +80,6 @@
                                 <span class="error" id="Remarks_Error">Site name required</span>
                             </td>
                         </tr>
-
                     </table>
                     <hr />
 
@@ -95,7 +92,6 @@
 
 
                 }
-
                 <div class="jumbotron" style="padding:10px;">
                     <table style="width: 100%;">
                         <tr>
@@ -147,7 +143,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="resourceProjectManagerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -170,7 +165,6 @@
                                 <input type="hidden" id="ProjectId" value="" />
                             </div>
                             <div class="form-group">
-
                                 @Html.Label("Name", htmlAttributes: new { @class = "control-label col-md-2" })
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
@@ -292,14 +286,12 @@
         </div>
     </div>
 </div>
-
 @*<style>
         .form-group .select2-container {
             width: 300px !important;
         }
     </style>*@
 @*<p><button type="button" class="btn btn-warning btn-sm" onclick="window.location.href='@Url.Action("Index")';"><i class="icon-circle-left2 position-left"></i> Go back</button></p>*@
-
 
 <script>
 
@@ -562,7 +554,7 @@
                 $('#SiteName_Error').hide();
             }
         }
- 
+
 
         if ($('#SiteLocation').val().trim() == '') {
 
@@ -692,7 +684,6 @@
     }
     //end
 </script>
-
 <script>
 
     var counter = 0;
@@ -753,7 +744,7 @@
         var Remarks = $('#ProjectRemarks').val();
         var TempPrMan = $('#TempPrMan').val();
         alert('TempPrMan '+TempPrMan);
-        
+
         if (Remarks.trim().length > 200) {
             isValid = false;
             $('#Remarks_Error').text("Remarks cannot be greater than 200 characters!").show();
@@ -879,11 +870,9 @@
 
 
 </script>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Plugins/select2/select2.min.js"></script>
-
     <script>
         $(".select2").select2();
     </script>

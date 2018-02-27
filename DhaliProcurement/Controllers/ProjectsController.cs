@@ -441,6 +441,14 @@ namespace DhaliProcurement.Controllers
 
          
             ViewBag.RName= new SelectList(db.CompanyResource, "Id", "Name");
+
+
+            var stEng = (from projSiteRes in db.ProjectSiteResource
+                         join comRes in db.CompanyResource on projSiteRes.CompanyResourceId equals comRes.Id
+                         where projSiteRes.ProjectSite.ProjectId==id
+                         select comRes).FirstOrDefault();
+            ViewBag.StEng = stEng.Id;
+
             //var siteIdFind = db.ProjectSite.Where(x => x.ProjectId == id).FirstOrDefault();
             //ViewBag.TempStEngId = siteIdFind.Id;
 

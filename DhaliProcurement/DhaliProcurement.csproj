@@ -732,6 +732,7 @@
     <Content Include="ReportDataset\MaterialRequisitionDetail.xsc">
       <DependentUpon>MaterialRequisitionDetail.xsd</DependentUpon>
     </Content>
+    <Content Include="ClassDiagram1.cd" />
     <None Include="ReportDataset\MaterialRequisitionDetail.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
