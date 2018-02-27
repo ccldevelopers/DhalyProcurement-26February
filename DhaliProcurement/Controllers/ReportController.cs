@@ -1328,7 +1328,7 @@ namespace DhaliProcurement.Controllers
                                       //EntryMasId = entryMaster.EntryMasId,
                                       ItemId = items.Id,
                                       ItemName = items.Name,
-                                      ReqQty = reqDet.ReqQty,
+                                     // ReqQty = reqDet.ReqQty,
                                       EntryDate = entryMas.EDate,
                                       TotalMaterialsRequired = procItem.PQuantity,
                                       UnitId = units.Id,

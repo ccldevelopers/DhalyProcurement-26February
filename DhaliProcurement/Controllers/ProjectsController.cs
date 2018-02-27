@@ -281,15 +281,19 @@ namespace DhaliProcurement.Controllers
                             {
                                 db.Entry(checkdata).State = EntityState.Modified;
                                 //var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId && x.CompanyResourceId == );
-                                
-                                var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId);
+
+                                // var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId);
 
                                 //27feb
-                                // var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId && x.CompanyResourceId== TempPrMan);                             
-                                //projectResouce.CompanyResourceId = RName;
+                                var projectResouce = db.ProjectResource.Where(x => x.ProjectId == ProjectId && x.CompanyResourceId == TempPrMan);
+                                db.ProjectResource.RemoveRange(projectResouce);
+
+                                pres.ProjectId = ProjectId;
+                                pres.CompanyResourceId = RName;
+                                db.ProjectResource.Add(pres);
                                 //27feb end
 
-                                db.Entry(projectResouce).State = EntityState.Modified;
+                                // db.Entry(projectResouce).State = EntityState.Modified;
 
                             }
                             catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
@@ -349,7 +353,7 @@ namespace DhaliProcurement.Controllers
 
 
                                             db.Entry(ProjectSite).State = EntityState.Modified;
-                                            db.Entry(ProjectSiteEngineer.CompanyResource).State = EntityState.Modified;
+                                            db.Entry(ProjectSiteEngineer).State = EntityState.Modified;
 
                                         }
 
@@ -433,7 +437,12 @@ namespace DhaliProcurement.Controllers
 
             var status = new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Active", Value = "A" }, new SelectListItem { Text = "Inactive", Value = "I" }, }, "Value", "Text");
             ViewBag.Statuses = status;
-            ViewBag.RName = new SelectList(db.CompanyResource, "Id", "Name");
+          //  ViewBag.RName = new SelectList(db.CompanyResource, "Id", "Name");
+
+         
+            ViewBag.RName= new SelectList(db.CompanyResource, "Id", "Name");
+            //var siteIdFind = db.ProjectSite.Where(x => x.ProjectId == id).FirstOrDefault();
+            //ViewBag.TempStEngId = siteIdFind.Id;
 
             return View();
         }
