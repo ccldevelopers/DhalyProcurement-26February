@@ -226,7 +226,7 @@ namespace DhaliProcurement.Controllers
 
 
         // POST: Projects/ProjectCreate           
-        public JsonResult ProjectUpdate(List<VMProjectSite> SiteResourceDetails, int?[] DeleteItems, int ProjectId, string ProjectName, DateTime? StartDate, DateTime? EndDate, string Remarks, int RName)
+        public JsonResult ProjectUpdate(List<VMProjectSite> SiteResourceDetails, int?[] DeleteItems, int ProjectId, string ProjectName, DateTime? StartDate, DateTime? EndDate, string Remarks, int RName, int TempPrMan)
         {
             var flag = false;
             var result = new
@@ -281,8 +281,13 @@ namespace DhaliProcurement.Controllers
                             {
                                 db.Entry(checkdata).State = EntityState.Modified;
                                 //var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId && x.CompanyResourceId == );
+                                
                                 var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId);
+
+                                //27feb
+                                // var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId && x.CompanyResourceId== TempPrMan);                             
                                 //projectResouce.CompanyResourceId = RName;
+                                //27feb end
 
                                 db.Entry(projectResouce).State = EntityState.Modified;
 
@@ -414,7 +419,7 @@ namespace DhaliProcurement.Controllers
                          select comRes).FirstOrDefault();
 
             ViewBag.ProjectManager = new SelectList(db.CompanyResource, "Id", "Name", prMan.Id);
-
+            ViewBag.TempPrManId = prMan.Id;
             var startDate = NullHelper.DateToString(projectData.StartDate);
             ViewBag.StartDate = startDate;
 

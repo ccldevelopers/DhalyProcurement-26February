@@ -39,8 +39,11 @@
                         <tr>
                             <td class="col-lg-">Project Manager</td>
                             <td class="col-lg-10">
+
                                 @Html.DropDownList("ProjectManager", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @tabindex = "2" })
-                                @*<button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal">Add</button>*@
+                                <input type="hidden" value="@ViewBag.TempPrManId" id="TempPrMan"/>
+                               
+                                  @*<button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal">Add</button>*@
                             </td>
                             <td class="col-lg-1">
                                 <button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal" style="background-color: grey;border: none;">Add</button>
@@ -748,7 +751,9 @@
         var StartDate = $('#StartDate').val();
         var EndDate = $('#EndDate').val();
         var Remarks = $('#ProjectRemarks').val();
-
+        var TempPrMan = $('#TempPrMan').val();
+        alert('TempPrMan '+TempPrMan);
+        
         if (Remarks.trim().length > 200) {
             isValid = false;
             $('#Remarks_Error').text("Remarks cannot be greater than 200 characters!").show();
@@ -816,7 +821,8 @@
                 StartDate: StartDate,
                 EndDate: EndDate,
                 Remarks: Remarks,
-                RName: RName
+                RName: RName,
+                TempPrMan:TempPrMan
             });
 
 
