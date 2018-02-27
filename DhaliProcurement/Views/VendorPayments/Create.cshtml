@@ -348,32 +348,72 @@
     $('#VendorId').change(function () {
         var id = $('#VendorId option:selected').val();
 
-        $.ajax({
-            url: "/VendorPayments/GetProjects",
-            type: "post",
-            data: {
-                VendorId: id
-            },
-            dataType: "json",
-            success: function (data) {
-                //alert('test');
-                $('#ProjectId').removeAttr("disabled");
+        if ($('#VendorId option:selected').text() == "--Select--")
+        {
+            $('#ProjectId').empty();
+            $("#SiteId").empty();
+            $("#ReqNo").empty();
+            $("#PONo").empty();
+            $("#ItemName").empty();
+            $("#ChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ProjectId').html(sites);
+            $('#SiteId').html(sites);
+            $('#ReqNo').html(sites);
+            $('#PONo').html(sites);
+            $('#ItemName').html(sites);
+            $('#ChallanNo').html(sites);
 
-                var listOfSites = data.ProjectList.length;
-                //alert('listOfSites' + listOfSites);
-                var sites = "<select id='ProjectId'>";
-                sites = sites + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfSites; i++) {
-                    sites = sites + '<option value=' + data.ProjectList[i].Value + '>' + data.ProjectList[i].Text + '</option>';
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#ReqQty').val("");
+            $('#TotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                url: "/VendorPayments/GetProjects",
+                type: "post",
+                data: {
+                    VendorId: id
+                },
+                dataType: "json",
+                success: function (data) {
+                    //alert('test');
+                    $('#ProjectId').removeAttr("disabled");
+                    $('#ProjectId').empty();
+                    $("#SiteId").empty();
+                    $("#ReqNo").empty();
+                    $("#PONo").empty();
+                    $("#ItemName").empty();
+                    $("#ChallanNo").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#SiteId').html(sites);
+                    $('#ReqNo').html(sites);
+                    $('#PONo').html(sites);
+                    $('#ItemName').html(sites);
+                    $('#ChallanNo').html(sites);
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#ReqQty').val("");
+                    $('#TotalAmount').val("");
+
+                    var listOfSites = data.ProjectList.length;
+                    //alert('listOfSites' + listOfSites);
+                    var sites = "<select id='ProjectId'>";
+                    sites = sites + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfSites; i++) {
+                        sites = sites + '<option value=' + data.ProjectList[i].Value + '>' + data.ProjectList[i].Text + '</option>';
+                    }
+                    sites = sites + '</select>';
+                    $('#ProjectId').html(sites);
+
+                },
+                error: function (xhr) {
+                    alert('error');
                 }
-                sites = sites + '</select>';
-                $('#ProjectId').html(sites);
+            });
+        }
 
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
     });
 
     $('#ProjectId').change(function () {
@@ -382,6 +422,24 @@
 
         if (vendorId == "" || vendorId == null) {
             alert('Please select Party!!');
+        }
+        else if ($('#ProjectId option:selected').text() == "--Select--")
+        {
+            $("#SiteId").empty();
+            $("#ReqNo").empty();
+            $("#PONo").empty();
+            $("#ItemName").empty();
+            $("#ChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#SiteId').html(sites);
+            $('#ReqNo').html(sites);
+            $('#PONo').html(sites);
+            $('#ItemName').html(sites);
+            $('#ChallanNo').html(sites);
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#ReqQty').val("");
+            $('#TotalAmount').val("");
         }
         else {
             $.ajax({
@@ -394,6 +452,22 @@
                 dataType: "json",
                 success: function (data) {
                     $('#SiteId').removeAttr("disabled");
+                    $("#SiteId").empty();
+                    $("#ReqNo").empty();
+                    $("#PONo").empty();
+                    $("#ItemName").empty();
+                    $("#ChallanNo").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#ReqNo').html(sites);
+                    $('#PONo').html(sites);
+                    $('#ItemName').html(sites);
+                    $('#ChallanNo').html(sites);
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#ReqQty').val("");
+                    $('#TotalAmount').val("");
+
+
                     var listOfSites = data.Sites.length;
 
                     var sites = "<select id='sites'>";
@@ -421,28 +495,58 @@
         var ProjectId = $('#ProjectId option:selected').val();
         var vendorId = $('#VendorId option:selected').val();
         //alert(ProjectId);
+        if ($('#SiteId option:selected').text() == "--Select--")
+        {
+            $("#ReqNo").empty();
+            $("#PONo").empty();
+            $("#ItemName").empty();
+            $("#ChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ReqNo').html(sites);
+            $('#PONo').html(sites);
+            $('#ItemName').html(sites);
+            $('#ChallanNo').html(sites);
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#ReqQty').val("");
+            $('#TotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/VendorPayments/ReqNo",
+                data: { SiteId, ProjectId, vendorId },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#ReqNo').removeAttr("disabled");
+                    $("#ReqNo").empty();
+                    $("#PONo").empty();
+                    $("#ItemName").empty();
+                    $("#ChallanNo").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#PONo').html(sites);
+                    $('#ItemName').html(sites);
+                    $('#ChallanNo').html(sites);
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#ReqQty').val("");
+                    $('#TotalAmount').val("");
 
-        $.ajax({
-            type: "post",
-            url: "/VendorPayments/ReqNo",
-            data: { SiteId, ProjectId, vendorId },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                $('#ReqNo').removeAttr("disabled");
+                    var listOfitems = data.ReqItems.length;
+                    var items = "<select id='ReqNo'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.ReqItems[i].Value + '>' + data.ReqItems[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ReqNo').html(items);
 
-                var listOfitems = data.ReqItems.length;
-                var items = "<select id='ReqNo'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.ReqItems[i].Value + '>' + data.ReqItems[i].Text + '</option>';
                 }
-                items = items + '</select>';
-                $('#ReqNo').html(items);
 
-            }
+            });
+        }
 
-        });
     });
 
 
@@ -451,34 +555,60 @@
         var ProjectId = $('#ProjectId option:selected').val();
         var ReqNo = $('#ReqNo option:selected').val();
         var vendorId = $('#VendorId option:selected').val();
-        //alert('ReqNo ' + ReqNo);
-        //alert(ProjectId);
 
-        $.ajax({
-            type: "post",
-            url: "/VendorPayments/GetPONo",
-            data: {
-                ReqNo: ReqNo,
-                vendorId: vendorId,
-                SiteId: SiteId
-            },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                $('#PONo').removeAttr("disabled");
+        if ($('#ReqNo option:selected').text() == "--Select--")
+        {
+            $("#PONo").empty();
+            $("#ItemName").empty();
+            $("#ChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#PONo').html(sites);
+            $('#ItemName').html(sites);
+            $('#ChallanNo').html(sites);
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#ReqQty').val("");
+            $('#TotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/VendorPayments/GetPONo",
+                data: {
+                    ReqNo: ReqNo,
+                    vendorId: vendorId,
+                    SiteId: SiteId
+                },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#PONo').removeAttr("disabled");
 
-                var listOfitems = data.POItems.length;
-                var items = "<select id='PONo'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.POItems[i].Value + '>' + data.POItems[i].Text + '</option>';
+                    $("#PONo").empty();
+                    $("#ItemName").empty();
+                    $("#ChallanNo").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#ItemName').html(sites);
+                    $('#ChallanNo').html(sites);
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#ReqQty').val("");
+                    $('#TotalAmount').val("");
+
+                    var listOfitems = data.POItems.length;
+                    var items = "<select id='PONo'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.POItems[i].Value + '>' + data.POItems[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#PONo').html(items);
+
                 }
-                items = items + '</select>';
-                $('#PONo').html(items);
 
-            }
+            });
+        }
 
-        });
     });
 
 
@@ -487,28 +617,50 @@
     $("#PONo").change(function () {
         var PONo = $('#PONo option:selected').val();
         // alert('PONo ' + PONo);
+        if ($('#PONo option:selected').text() == "--Select--") {
+            $("#ItemName").empty();
+            $("#ChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ItemName').html(sites);
+            $('#ChallanNo').html(sites);
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#ReqQty').val("");
+            $('#TotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/VendorPayments/GetItems",
+                data: { PONo: PONo },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#ItemName').removeAttr("disabled");
 
-        $.ajax({
-            type: "post",
-            url: "/VendorPayments/GetItems",
-            data: { PONo: PONo },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                $('#ItemName').removeAttr("disabled");
+                    $("#ItemName").empty();
+                    $("#ChallanNo").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#ChallanNo').html(sites);
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#ReqQty').val("");
+                    $('#TotalAmount').val("");
 
-                var listOfitems = data.POItems.length;
-                var items = "<select id='ItemName'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.POItems[i].Value + '>' + data.POItems[i].Text + '</option>';
+                    var listOfitems = data.POItems.length;
+                    var items = "<select id='ItemName'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.POItems[i].Value + '>' + data.POItems[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ItemName').html(items);
+
                 }
-                items = items + '</select>';
-                $('#ItemName').html(items);
 
-            }
+            });
+        }
 
-        });
     });
 
     $("#ItemName").change(function () {
@@ -516,37 +668,50 @@
         var ProjectId = $('#ProjectId option:selected').val();
         var SiteId = $('#SiteId option:selected').val();
         var PONo = $('#PONo option:selected').val();
-        //if (ProjectId == "" && SiteId == "") {
-        //    alert('Please Select Project Id and Site Id');
-        //}
-        //debugger;
-        $.ajax({
-            type: "post",
-            url: "/VendorPayments/GetVendorPayDetData",
-            data: { ItemId, ProjectId, SiteId, PONo },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                $('#ChallanNo').removeAttr("disabled");
-                $('#UnitId').val(data.UnitId);
-                $('#UnitName').val(data.UnitName);
-                $('#ReqQty').val(data.RemQty);
-                $('#Proc_MaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
+
+        if ($('#ItemName option:selected').text() == "--Select--") {
+            $("#ChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ChallanNo').html(sites);
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#ReqQty').val("");
+            $('#TotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/VendorPayments/GetVendorPayDetData",
+                data: { ItemId, ProjectId, SiteId, PONo },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#ChallanNo').removeAttr("disabled");
+
+                    $("#ChallanNo").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#TotalAmount').val("");
+                    $('#UnitId').val(data.UnitId);
+                    $('#UnitName').val(data.UnitName);
+                    $('#ReqQty').val(data.RemQty);
+                    $('#Proc_MaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
 
 
-                var listOfitems = data.ChallanNo.length;
-                var items = "<select id='ChallanNo'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.ChallanNo[i].Value + '>' + data.ChallanNo[i].Text + '</option>';
+                    var listOfitems = data.ChallanNo.length;
+                    var items = "<select id='ChallanNo'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.ChallanNo[i].Value + '>' + data.ChallanNo[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ChallanNo').html(items);
+
+
                 }
-                items = items + '</select>';
-                $('#ChallanNo').html(items);
 
+            });
+        }
 
-            }
-
-        });
     });
 
 
@@ -558,24 +723,29 @@
         var ChallanNo = $('#ChallanNo option:selected').val();
         //  var ProjectId = $('#ProjectId option:selected').val();
         //  var SiteId = $('#SiteId option:selected').val();
+        if ($('#ChallanNo option:selected').text() == "--Select--") {
+            $('#TotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/VendorPayments/GetTotalAmt",
+                data: { ChallanNo: ChallanNo },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    // $('#ChallanNo').removeAttr("disabled");
+                    //  $('#UnitId').val(data.UnitId);
+                    //  $('#UnitName').val(data.UnitName);
+                    //  $('#ReqQty').val(data.RemQty);
+                    // $('#Proc_MaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
+                    $('#TotalAmount').val(data.totalAmt);
+                }
+
+            });
+        }
 
 
-        $.ajax({
-            type: "post",
-            url: "/VendorPayments/GetTotalAmt",
-            data: { ChallanNo: ChallanNo },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                // $('#ChallanNo').removeAttr("disabled");
-                //  $('#UnitId').val(data.UnitId);
-                //  $('#UnitName').val(data.UnitName);
-                //  $('#ReqQty').val(data.RemQty);
-                // $('#Proc_MaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
-                $('#TotalAmount').val(data.totalAmt);
-            }
-
-        });
     });
 
 
@@ -789,19 +959,19 @@
                 var Payment = row.find('input[name=Payment]').val();
                 var Remarks = row.find('input[name=Remarks]').val();
                        
-
-                getModalItems(ItemId);
+                var vendorId = $('#VendorId option:selected').val();
+                getModalItems(vendorId, ProjectId, SiteId, ReqNo, PONo, ItemId, ChallanNo);
 
                 $('#ModalTaskId').val(TaskId);
-                $('#ModalProjectId').val(ProjectId);
-                $('#ModalSiteId').val(SiteId);
-                $('#ModalReqNo').val(ReqNo);
-                $('#ModalPONo').val(PONo);
-                $('#ModalItemName').val(ItemId);
+                //$('#ModalProjectId').val(ProjectId);
+                //$('#ModalSiteId').val(SiteId);
+                //$('#ModalReqNo').val(ReqNo);
+                //$('#ModalPONo').val(PONo);
+                //$('#ModalItemName').val(ItemId);
                 $('#ModalMaterialEntryDetId').val(MaterialEntryDetId);
                 $('#ModalReqQty').val(ReqQty);
                 $('#ModalUnitName').val(UnitName);
-                $('#ModalChallanNo').val(ChallanNo);
+                //$('#ModalChallanNo').val(ChallanNo);
                 $('#ModalBillNo').val(BillNo);
                 $('#ModalTotalAmount').val(TotalAmount);
                 $('#ModalPayment').val(Payment);
@@ -814,21 +984,65 @@
 
     });
 
-    function getModalItems(ItemId) {
+    function getModalItems(vendorId, ProjectId, SiteId, ReqNo, PONo, ItemId, ChallanNo) {
         var vendorId = $('#VendorId option:selected').val();
         //var selectedItem = ItemId;
         $.ajax({
             url: "/VendorPayments/GetSelectedItems",
             type: "post",
             data: {
-                VendorId: vendorId
-                //selectedItem: selectedItem
+                VendorId:vendorId,
+                ProjectId:ProjectId ,
+                SiteId:SiteId,
+                ReqNo:ReqNo, 
+                PONo:PONo, 
+                ItemId: ItemId
             },
             dataType: "json",
             success: function (data) {
-                //$('#SiteId').removeAttr("disabled");
-                var listOfItems = data.Items.length;
+              
+                var listOfprojects = data.ProjectList.length;
+                var sites = "<select id=''>";
+                sites = sites + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfprojects; i++) {
+                    sites = sites + '<option value=' + data.ProjectList[i].Value + '>' + data.ProjectList[i].Text + '</option>';
+                }
+                sites = sites + '</select>';
+                $('#ModalProjectId').html(sites);
+                $('#ModalProjectId').val(ProjectId);
 
+                var listOfSites = data.Sites.length;
+                var sites = "<select id=''>";
+                sites = sites + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfSites; i++) {
+                    sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+                }
+                sites = sites + '</select>';
+                $('#ModalSiteId').html(sites);
+                $('#ModalSiteId').val(SiteId);
+
+                var listOfReqs = data.ReqItems.length;
+                var sites = "<select id=''>";
+                sites = sites + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfReqs; i++) {
+                    sites = sites + '<option value=' + data.ReqItems[i].Value + '>' + data.ReqItems[i].Text + '</option>';
+                }
+                sites = sites + '</select>';
+                $('#ModalReqNo').html(sites);
+                $('#ModalReqNo').val(ReqNo);
+
+
+                var listOfPO = data.POItems.length;
+                var sites = "<select id=''>";
+                sites = sites + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfPO; i++) {
+                    sites = sites + '<option value=' + data.POItems[i].Value + '>' + data.POItems[i].Text + '</option>';
+                }
+                sites = sites + '</select>';
+                $('#ModalPONo').html(sites);
+                $('#ModalPONo').val(PONo);
+              
+                var listOfItems = data.Items.length;
                 var Items = "<select id='ModalItemName'>";
                 Items = Items + '<option value="">--Select--</option>';
                 for (var i = 0; i < listOfItems; i++) {
@@ -844,6 +1058,16 @@
                 Items = Items + '</select>';
                 $('#ModalItemName').html(Items);
 
+                var listOfChallan = data.ChallanNo.length;
+                var sites = "<select id=''>";
+                sites = sites + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfChallan; i++) {
+                    sites = sites + '<option value=' + data.ChallanNo[i].Value + '>' + data.ChallanNo[i].Text + '</option>';
+                }
+                sites = sites + '</select>';
+                $('#ModalChallanNo').html(sites);         
+                $('#ModalChallanNo').val(ChallanNo);
+
             },
             error: function (xhr) {
                 alert('error');
@@ -855,8 +1079,26 @@
         var id = $('#ModalProjectId option:selected').val();
         var vendorId = $('#VendorId option:selected').val();
 
+
         if (vendorId == "" || vendorId == null) {
             alert('Please select Party!!');
+        }
+        else if ($('#ModalProjectId option:selected').text() == "--Select--") {
+            $("#ModalSiteId").empty();
+            $("#ModalReqNo").empty();
+            $("#ModalPONo").empty();
+            $("#ModalItemName").empty();
+            $("#ModalChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $("#ModalSiteId").html(sites);
+            $('#ModalReqNo').html(sites);
+            $('#ModalPONo').html(sites);
+            $('#ModalItemName').html(sites);
+            $('#ModalChallanNo').html(sites);
+            $('#ModalUnitId').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalReqQty').val("");
+            $('#ModalTotalAmount').val("");
         }
         else {
             $.ajax({
@@ -869,6 +1111,23 @@
                 dataType: "json",
                 success: function (data) {
                     //$('#SiteId').removeAttr("disabled");
+
+                    $("#ModalSiteId").empty();
+                    $("#ModalReqNo").empty();
+                    $("#ModalPONo").empty();
+                    $("#ModalItemName").empty();
+                    $("#ModalChallanNo").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#ModalReqNo').html(sites);
+                    $('#ModalPONo').html(sites);
+                    $('#ModalItemName').html(sites);
+                    $('#ModalChallanNo').html(sites);
+                    $('#ModalUnitId').val("");
+                    $('#ModalUnitName').val("");
+                    $('#ModalReqQty').val("");
+                    $('#ModalTotalAmount').val("");
+
+
                     var listOfSites = data.Sites.length;
 
                     var sites = "<select id='ModalSiteId'>";
@@ -895,60 +1154,115 @@
         var ProjectId = $('#ModalProjectId option:selected').val();
         var vendorId = $('#VendorId option:selected').val();
         //alert(ProjectId);
+        if ($('#ModalSiteId option:selected').text() == "--Select--") {
+            $("#ModalReqNo").empty();
+            $("#ModalPONo").empty();
+            $("#ModalItemName").empty();
+            $("#ModalChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ModalReqNo').html(sites);
+            $('#ModalPONo').html(sites);
+            $('#ModalItemName').html(sites);
+            $('#ModalChallanNo').html(sites);
+            $('#ModalUnitId').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalReqQty').val("");
+            $('#ModalTotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/VendorPayments/ReqNo",
+                data: { SiteId, ProjectId, vendorId },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    //$('#ReqNo').removeAttr("disabled");
+                    $("#ModalReqNo").empty();
+                    $("#ModalPONo").empty();
+                    $("#ModalItemName").empty();
+                    $("#ModalChallanNo").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#ModalPONo').html(sites);
+                    $('#ModalItemName').html(sites);
+                    $('#ModalChallanNo').html(sites);
+                    $('#ModalUnitId').val("");
+                    $('#ModalUnitName').val("");
+                    $('#ModalReqQty').val("");
+                    $('#ModalTotalAmount').val("");
 
-        $.ajax({
-            type: "post",
-            url: "/VendorPayments/ReqNo",
-            data: { SiteId, ProjectId, vendorId },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                //$('#ReqNo').removeAttr("disabled");
 
-                var listOfitems = data.ReqItems.length;
-                var items = "<select id='ModalReqNo'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.ReqItems[i].Value + '>' + data.ReqItems[i].Text + '</option>';
+                    var listOfitems = data.ReqItems.length;
+                    var items = "<select id='ModalReqNo'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.ReqItems[i].Value + '>' + data.ReqItems[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ModalReqNo').html(items);
+
                 }
-                items = items + '</select>';
-                $('#ModalReqNo').html(items);
 
-            }
+            });
+        }
 
-        });
     });
 
 
     $("#ModalReqNo").change(function () {
-        //  var SiteId = $('#SiteId  option:selected').val();
+        var SiteId = $('#ModalSiteId  option:selected').val();
         //  var ProjectId = $('#ProjectId option:selected').val();
         var ReqNo = $('#ModalReqNo option:selected').val();
         var vendorId = $('#VendorId option:selected').val();
+
         //alert('ReqNo ' + ReqNo);
-        //alert(ProjectId);
+        if ($('#ModalReqNo option:selected').text() == "--Select--") {
+            $("#ModalPONo").empty();
+            $("#ModalItemName").empty();
+            $("#ModalChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ModalPONo').html(sites);
+            $('#ModalItemName').html(sites);
+            $('#ModalChallanNo').html(sites);
+            $('#ModalUnitId').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalReqQty').val("");
+            $('#ModalTotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/VendorPayments/GetPONo",
+                data: { ReqNo: ReqNo, vendorId: vendorId, SiteId: SiteId },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    //$('#PONo').removeAttr("disabled");
+                    $("#ModalPONo").empty();
+                    $("#ModalItemName").empty();
+                    $("#ModalChallanNo").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#ModalItemName').html(sites);
+                    $('#ModalChallanNo').html(sites);
+                    $('#ModalUnitId').val("");
+                    $('#ModalUnitName').val("");
+                    $('#ModalReqQty').val("");
+                    $('#ModalTotalAmount').val("");
 
-        $.ajax({
-            type: "post",
-            url: "/VendorPayments/GetPONo",
-            data: { ReqNo: ReqNo, vendorId: vendorId },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                //$('#PONo').removeAttr("disabled");
+                    var listOfitems = data.POItems.length;
+                    var items = "<select id='ModalPONo'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.POItems[i].Value + '>' + data.POItems[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ModalPONo').html(items);
 
-                var listOfitems = data.POItems.length;
-                var items = "<select id='ModalPONo'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.POItems[i].Value + '>' + data.POItems[i].Text + '</option>';
                 }
-                items = items + '</select>';
-                $('#ModalPONo').html(items);
 
-            }
+            });
+        }
 
-        });
     });
 
 
@@ -957,66 +1271,98 @@
     $("#ModalPONo").change(function () {
         var PONo = $('#ModalPONo option:selected').val();
         // alert('PONo ' + PONo);
+        if ($('#ModalPONo option:selected').text() == "--Select--") {
+            $("#ModalItemName").empty();
+            $("#ModalChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ModalItemName').html(sites);
+            $('#ModalChallanNo').html(sites);
+            $('#ModalUnitId').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalReqQty').val("");
+            $('#ModalTotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/VendorPayments/GetItems",
+                data: { PONo: PONo },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    //$('#ItemName').removeAttr("disabled");
+                    $("#ModalItemName").empty();
+                    $("#ModalChallanNo").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#ModalChallanNo').html(sites);
+                    $('#ModalUnitId').val("");
+                    $('#ModalUnitName').val("");
+                    $('#ModalReqQty').val("");
+                    $('#ModalTotalAmount').val("");
 
-        $.ajax({
-            type: "post",
-            url: "/VendorPayments/GetItems",
-            data: { PONo: PONo },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                //$('#ItemName').removeAttr("disabled");
+                    var listOfitems = data.POItems.length;
+                    var items = "<select id='ModalItemName'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.POItems[i].Value + '>' + data.POItems[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ModalItemName').html(items);
 
-                var listOfitems = data.POItems.length;
-                var items = "<select id='ModalItemName'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.POItems[i].Value + '>' + data.POItems[i].Text + '</option>';
                 }
-                items = items + '</select>';
-                $('#ModalItemName').html(items);
 
-            }
+            });
+        }
 
-        });
     });
 
     $("#ModalItemName").change(function () {
         var ItemId = $('#ModalItemName option:selected').val();
         var ProjectId = $('#ModalProjectId option:selected').val();
         var SiteId = $('#ModalSiteId option:selected').val();
+        var PONo = $("#ModalPONo option:selected").val();
 
-        //if (ProjectId == "" && SiteId == "") {
-        //    alert('Please Select Project Id and Site Id');
-        //}
-        //debugger;
-        $.ajax({
-            type: "post",
-            url: "/VendorPayments/GetVendorPayDetData",
-            data: { ItemId, ProjectId, SiteId },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                $('#ModalChallanNo').removeAttr("disabled");
-                $('#ModalUnitId').val(data.UnitId);
-                $('#ModalUnitName').val(data.UnitName);
-                $('#ModalReqQty').val(data.RemQty);
-                $('#ModalMaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
+        if ($('#ModalItemName option:selected').text() == "--Select--") {
+            $("#ModalChallanNo").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#ModalChallanNo').html(sites);
+            $('#ModalUnitId').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalReqQty').val("");
+            $('#ModalTotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/VendorPayments/GetVendorPayDetData",
+                data: { ItemId, ProjectId, SiteId, PONo },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#ModalChallanNo').removeAttr("disabled");
+                    $('#ModalTotalAmount').val("");
+
+                    $('#ModalUnitId').val(data.UnitId);
+                    $('#ModalUnitName').val(data.UnitName);
+                    $('#ModalReqQty').val(data.RemQty);
+                    $('#ModalMaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
 
 
-                var listOfitems = data.ChallanNo.length;
-                var items = "<select id='ModalChallanNo'>";
-                items = items + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfitems; i++) {
-                    items = items + '<option value=' + data.ChallanNo[i].Value + '>' + data.ChallanNo[i].Text + '</option>';
+                    var listOfitems = data.ChallanNo.length;
+                    var items = "<select id='ModalChallanNo'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.ChallanNo[i].Value + '>' + data.ChallanNo[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ModalChallanNo').html(items);
+
+
                 }
-                items = items + '</select>';
-                $('#ModalChallanNo').html(items);
 
+            });
+        }
 
-            }
-
-        });
     });
 
 
@@ -1026,23 +1372,28 @@
         //  var ProjectId = $('#ProjectId option:selected').val();
         //  var SiteId = $('#SiteId option:selected').val();
 
+        if ($('#ModalChallanNo option:selected').text() == "--Select--") {
+            $('#ModalTotalAmount').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/VendorPayments/GetTotalAmt",
+                data: { ChallanNo: ChallanNo },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    // $('#ChallanNo').removeAttr("disabled");
+                    //  $('#UnitId').val(data.UnitId);
+                    //  $('#UnitName').val(data.UnitName);
+                    //  $('#ReqQty').val(data.RemQty);
+                    // $('#Proc_MaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
+                    $('#ModalTotalAmount').val(data.totalAmt);
+                }
 
-        $.ajax({
-            type: "post",
-            url: "/VendorPayments/GetTotalAmt",
-            data: { ChallanNo: ChallanNo },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                // $('#ChallanNo').removeAttr("disabled");
-                //  $('#UnitId').val(data.UnitId);
-                //  $('#UnitName').val(data.UnitName);
-                //  $('#ReqQty').val(data.RemQty);
-                // $('#Proc_MaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
-                $('#ModalTotalAmount').val(data.totalAmt);
-            }
+            });
+        }
 
-        });
     });
 
 

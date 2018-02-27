@@ -493,9 +493,16 @@
                 var POQuantity = row.find('input[name=POQuantity]').val();
                 var TotalPrice = row.find('input[name=TotalPrice]').val();
 
-                //$('#ModalItemName').val(SiteName);
+                var ProjectId = $('#ProjectId option:selected').val();
+                var SiteId = $('#SiteId option:selected').val();
+                var VendorId = $('#VendorId  option:selected').val();
+                var Tenderid = $('#TenderId option:selected').val();
+
+                RebindModalfields(ProjectId, SiteId, VendorId, Tenderid, itemId);
+
                 $('#ModalTaskId').val(TaskId);
-                $('#ModalItemName').val(itemId).change();
+                //$('#ModalItemName').val(itemId).change();
+           
                 $('#modalunitId').val(UnitId);
                 $('#ModalUnitName').val(UnitName);
                 $('#ModalSize').val(Size);
@@ -506,6 +513,7 @@
 
                 totalItemCost();
             });
+
             $('#TotalPrice1').val("");
             $('#Size').val("");
             $('#UnitName').val("");
@@ -515,6 +523,61 @@
         }
 
         //end
+    });
+
+
+    function RebindModalfields(ProjectId, SiteId, VendorId, Tenderid, itemId) {
+        $.ajax({
+            type: "post",
+            url: "/PurchaseOrders/RebindModal",
+            data: { ProjectId, SiteId, VendorId, Tenderid },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var listOfitems = data.Items.length;
+                var Items = "<select id=''>";
+                Items = Items + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfitems; i++) {
+                    Items = Items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                }
+                Items = Items + '</select>';
+                $('#ModalItemName').html(Items);
+                $('#ModalItemName').val(itemId).change();
+            }
+
+        });
+    }
+
+    $('#ModalItemName').change(function () {
+        var ItemName = $('#ModalItemName option:selected').text();
+        var ItemId = $('#ModalItemName option:selected').val();
+        if (ItemName.trim() == "--Select--") {
+            $('#modalunitId').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalSize').val("");
+            $('#ModalUnitPrice').val("");
+            $('#ModalRequisitionQty').val("");
+            $('#ModalPOQuantity').val("");
+            $('#ModalTotalPrice').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/PurchaseOrders/GetSelectedItemInfo",
+                data: { ItemId },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#modalunitId').val(data.UnitId);
+                    $('#ModalUnitName').val(data.Unit);
+                    $('#ModalSize').val(data.Size);
+                    $('#ModalUnitPrice').val(data.UnitPrice);
+                    $('#ModalRequisitionQty').val(data.ReqQty);
+                    $('#ModalPOQuantity').val("");
+                    $('#ModalTotalPrice').val("");
+                }
+            });
+        }
     });
 
 
@@ -600,6 +663,34 @@
     $('#ModalClose').click(function () {
         $('#ModalItemName_Error').hide();
         $('#ModalPOQuantity_Error').hide();
+
+        var TaskId = selRow.find('input[name=TaskId]').val();
+        var itemName = selRow.find('input[name=ItemName]').val();
+        var itemId = selRow.find('input[name=ItemId]').val();
+        var UnitName = selRow.find('input[name=UnitName]').val();
+        var UnitId = selRow.find('input[name=UnitId]').val();
+        var Size = selRow.find('input[name=Size]').val();
+        var UnitPrice = selRow.find('input[name=UnitPrice]').val();
+        var RequisitionQty = selRow.find('input[name=RequisitionQty]').val();
+        var POQuantity = selRow.find('input[name=POQuantity]').val();
+        var TotalPrice = selRow.find('input[name=TotalPrice]').val();
+        var ProjectId = $('#ProjectId option:selected').val();
+        var SiteId = $('#SiteId option:selected').val();
+        var VendorId = $('#VendorId  option:selected').val();
+        var Tenderid = $('#TenderId option:selected').val();
+
+
+        
+        $('#ModalTaskId').val(TaskId);
+        $('#ModalItemName').val(itemId);
+        $('#modalunitId').val(UnitId);
+        $('#ModalUnitName').val(UnitName);
+        $('#ModalSize').val(Size);
+        $('#ModalUnitPrice').val(UnitPrice);
+        $('#ModalRequisitionQty').val(RequisitionQty);
+        $('#ModalPOQuantity').val(POQuantity);
+        $('#ModalTotalPrice').val(TotalPrice);
+
     });
 
     $('#Item-list').on({
@@ -902,82 +993,193 @@
 
     $('#ProjectId').change(function () {
         var id = $('#ProjectId option:selected').val();
-        $.ajax({
-            url: "/PurchaseOrders/GetPId",
-            type: "post",
-            data: {
-                ProjectId: id
-            },
-            dataType: "json",
-            success: function (data) {
-                $('#SiteId').removeAttr("disabled");
-                $('#ProjectManager').val(data.manager);
-                var listOfSites = data.Sites.length;
-                var sites = "<select id='sites'>";
-                sites = sites + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfSites; i++) {
-                    sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+        if ($('#ProjectId option:selected').text() == "--Select--")
+        {
+            $('#SiteId').empty();
+            $('#TenderId').empty();
+            $("#VendorId").empty();
+            $("#ItemName").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#SiteId').html(sites);
+            $('#TenderId').html(sites);
+            $("#VendorId").html(sites);
+            $("#ItemName").html(sites);
+            $('#ProjectManager').val("");
+            $('#PurchaseAddress').val("");
+            $('#RcvConcenPerson').val("");
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#Size').val("");
+            $('#UnitPrice').val("");
+            $('#RequisitionQty').val("");
+            $('#POQuantity1').val("");
+            $('#TotalPrice1').val("");
+        }
+        else {
+            $.ajax({
+                url: "/PurchaseOrders/GetPId",
+                type: "post",
+                data: {
+                    ProjectId: id
+                },
+                dataType: "json",
+                success: function (data) {
+                    $('#SiteId').removeAttr("disabled");
+                    $('#TenderId').empty();
+                    $("#VendorId").empty();
+                    $("#ItemName").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $('#TenderId').html(sites);
+                    $("#VendorId").html(sites);
+                    $("#ItemName").html(sites);
+                    $('#PurchaseAddress').val("");
+                    $('#RcvConcenPerson').val("");
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#Size').val("");
+                    $('#UnitPrice').val("");
+                    $('#RequisitionQty').val("");
+                    $('#POQuantity1').val("");
+                    $('#TotalPrice1').val("");
+
+                    $('#ProjectManager').val(data.manager);
+                    var listOfSites = data.Sites.length;
+                    var sites = "<select id='sites'>";
+                    sites = sites + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfSites; i++) {
+                        sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+                    }
+                    sites = sites + '</select>';
+                    $('#SiteId').html(sites);
+                },
+                error: function (xhr) {
+                    alert('error');
                 }
-                sites = sites + '</select>';
-                $('#SiteId').html(sites);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
+            });
+        }
+
     });
 
 
     $("#SiteId").change(function () {
         var SiteId = $('#SiteId').val();
-        $.ajax({
-            type: "post",
-            url: "/PurchaseOrders/GetSiteLocation",
-            data: { SiteId },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                $('#TenderId').removeAttr("disabled");
-                var listOfSites = data.TenderList.length;
-                var sites = "<select id='TenderId'>";
-                sites = sites + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfSites; i++) {
-                    sites = sites + '<option value=' + data.TenderList[i].Value + '>' + data.TenderList[i].Text + '</option>';
+        if ($('#SiteId option:selected').text() == "--Select--") {
+            $('#TenderId').empty();
+            $("#VendorId").empty();
+            $("#ItemName").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $('#TenderId').html(sites);
+            $("#VendorId").html(sites);
+            $("#ItemName").html(sites);
+            $('#PurchaseAddress').val("");
+            $('#RcvConcenPerson').val("");
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#Size').val("");
+            $('#UnitPrice').val("");
+            $('#RequisitionQty').val("");
+            $('#POQuantity1').val("");
+            $('#TotalPrice1').val("");
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/PurchaseOrders/GetSiteLocation",
+                data: { SiteId },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#TenderId').removeAttr("disabled");
+                    var listOfSites = data.TenderList.length;
+
+                    $('#TenderId').empty();
+                    $("#VendorId").empty();
+                    $("#ItemName").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $("#VendorId").html(sites);
+                    $("#ItemName").html(sites);
+                    $('#PurchaseAddress').val("");
+                    $('#RcvConcenPerson').val("");
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#Size').val("");
+                    $('#UnitPrice').val("");
+                    $('#RequisitionQty').val("");
+                    $('#POQuantity1').val("");
+                    $('#TotalPrice1').val("");
+
+                    var sites = "<select id='TenderId'>";
+                    sites = sites + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfSites; i++) {
+                        sites = sites + '<option value=' + data.TenderList[i].Value + '>' + data.TenderList[i].Text + '</option>';
+                    }
+                    sites = sites + '</select>';
+                    $('#TenderId').html(sites);
+                    $('#PurchaseAddress').val(data.sitesLoc);
+                    $('#RcvConcenPerson').val(data.siteEngineer);
                 }
-                sites = sites + '</select>';
-                $('#TenderId').html(sites);
-                $('#PurchaseAddress').val(data.sitesLoc);
-                $('#RcvConcenPerson').val(data.siteEngineer);
-            }
-        });
+            });
+        }
+
     });
 
     $('#TenderId').change(function () {
         var id = $('#TenderId option:selected').val();
         var SiteId = $('#SiteId').val();
-        $.ajax({
-            url: "/PurchaseOrders/GetVendorId",
-            type: "post",
-            data: {
-                TenderId: id,
-                SiteId: SiteId
-            },
-            dataType: "json",
-            success: function (data) {
-                $('#VendorId').removeAttr("disabled");
-                var listOfSites = data.Vendors.length;
-                var sites = "<select id='sites'>";
-                sites = sites + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfSites; i++) {
-                    sites = sites + '<option value=' + data.Vendors[i].Value + '>' + data.Vendors[i].Text + '</option>';
+
+        if ($('#TenderId option:selected').text() == "--Select--") {
+            $("#VendorId").empty();
+            $("#ItemName").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $("#VendorId").html(sites);
+            $("#ItemName").html(sites);
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#Size').val("");
+            $('#UnitPrice').val("");
+            $('#RequisitionQty').val("");
+            $('#POQuantity1').val("");
+            $('#TotalPrice1').val("");
+        }
+        else {
+            $.ajax({
+                url: "/PurchaseOrders/GetVendorId",
+                type: "post",
+                data: {
+                    TenderId: id,
+                    SiteId: SiteId
+                },
+                dataType: "json",
+                success: function (data) {
+                    $('#VendorId').removeAttr("disabled");
+
+                    $("#VendorId").empty();
+                    $("#ItemName").empty();
+                    var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                    $("#ItemName").html(sites);
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#Size').val("");
+                    $('#UnitPrice').val("");
+                    $('#RequisitionQty').val("");
+                    $('#POQuantity1').val("");
+                    $('#TotalPrice1').val("");
+
+                    var listOfSites = data.Vendors.length;
+                    var sites = "<select id='sites'>";
+                    sites = sites + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfSites; i++) {
+                        sites = sites + '<option value=' + data.Vendors[i].Value + '>' + data.Vendors[i].Text + '</option>';
+                    }
+                    sites = sites + '</select>';
+                    $('#VendorId').html(sites);
+                },
+                error: function (xhr) {
+                    alert('error');
                 }
-                sites = sites + '</select>';
-                $('#VendorId').html(sites);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
+            });
+        }
+
     });
 
 
@@ -985,6 +1187,22 @@
     $("#VendorId").change(function () {
         var VendorId = $('#VendorId').val();
         var Tenderid = $('#TenderId option:selected').val();
+        if ($('#VendorId option:selected').text() == "--Select--") {
+            $("#ItemName").empty();
+            var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+            $("#ItemName").html(sites);
+            $('#VContactPerson').val("");
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#Size').val("");
+            $('#UnitPrice').val("");
+            $('#RequisitionQty').val("");
+            $('#POQuantity1').val("");
+            $('#TotalPrice1').val("");
+        }
+        else {
+
+        }
         $.ajax({
             type: "post",
             url: "/PurchaseOrders/GetVendorContactPerson",
@@ -994,6 +1212,18 @@
             success: function (data) {
                 $('#ItemName').removeAttr("disabled");
                 $('#VContactPerson').val(data.vContactPerson);
+
+                $("#ItemName").empty();
+                var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                $('#UnitId').val("");
+                $('#UnitName').val("");
+                $('#Size').val("");
+                $('#UnitPrice').val("");
+                $('#RequisitionQty').val("");
+                $('#POQuantity1').val("");
+                $('#TotalPrice1').val("");
+
+
                 var listOfSites = data.ItemList.length;
                 var sites = "<select id='ItemName'>";
                 sites = sites + '<option value="">--Select--</option>';
@@ -1020,21 +1250,35 @@
     //debugger;
     $("#ItemName").change(function () {
         var ItemId = $('#ItemName option:selected').val();
-        //alert('itemid ' + ItemId);
-        $.ajax({
-            type: "post",
-            url: "/PurchaseOrders/GetSelectedItemInfo",
-            data: { ItemId },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                $('#UnitId').val(data.UnitId);
-                $('#UnitName').val(data.Unit);
-                $('#Size').val(data.Size);
-                $('#UnitPrice').val(data.UnitPrice);
-                $('#RequisitionQty').val(data.ReqQty);
-            }
-        });
+        if ($('#ItemName option:selected').text() == "--Select--") {
+            //alert('Test');
+            $('#UnitId').val("");
+            $('#UnitName').val("");
+            $('#Size').val("");
+            $('#UnitPrice').val("");
+            $('#RequisitionQty').val("");
+            $('#POQuantity1').val("");
+            $('#TotalPrice1').val("");
+
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "/PurchaseOrders/GetSelectedItemInfo",
+                data: { ItemId },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#UnitId').val(data.UnitId);
+                    $('#UnitName').val(data.Unit);
+                    $('#Size').val(data.Size);
+                    $('#UnitPrice').val(data.UnitPrice);
+                    $('#RequisitionQty').val(data.ReqQty);
+                    $('#POQuantity1').val("");
+                    $('#TotalPrice1').val("");
+                }
+            });
+        }
     });
 
     function RebindItemName() {

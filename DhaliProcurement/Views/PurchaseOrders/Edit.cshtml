@@ -146,7 +146,7 @@
                                 <tr>
                                     <td style="font-weight: bold;" class="col-lg-1">Item</td>
                                     <td class="col-lg-2">
-                                        @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                                        @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
                                     </td>
                                     <td style="font-weight: bold;" class="col-lg-1">Unit</td>
                                     <td class="col-lg-2">
@@ -276,7 +276,7 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
+                                @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
                                 <span class="error" id="ModalItemName_Error"></span>
                             </div>
                         </div>
@@ -441,8 +441,8 @@
         //   alert('TotalPrice ' + TotalPrice);
         //new
         var isValidItem = true;
-
-        if ($('#ItemName').val().trim() == '') {
+        
+        if ($('#ItemName').val().trim() == '' || $('#ItemName').text().trim()=="--Select--") {
             $('#ItemName_Error').show();
             isValidItem = false;
         }
@@ -613,21 +613,38 @@
         //debugger;
         $("#ItemName").change(function () {
             var ItemId = $('#ItemName option:selected').val();
-            //alert('itemid ' + ItemId);
-            $.ajax({
-                type: "post",
-                url: "/PurchaseOrders/GetSelectedItemInfo",
-                data: { ItemId },
-                datatype: "json",
-                traditional: true,
-                success: function (data) {
-                    $('#UnitId').val(data.UnitId);
-                    $('#UnitName').val(data.Unit);
-                    $('#Size').val(data.Size);
-                    $('#UnitPrice').val(data.UnitPrice);
-                    $('#RequisitionQty').val(data.ReqQty);
-                }
-            });
+            
+            //alert($('#ItemName option:selected').text());
+            if($('#ItemName option:selected').text()=="--Select--"){
+                //alert('Test');
+                $('#UnitId').val("");
+                $('#UnitName').val("");
+                $('#Size').val("");
+                $('#UnitPrice').val("");
+                $('#RequisitionQty').val("");
+                $('#POQuantity1').val("");
+                $('#TotalPrice1').val("");
+
+            }
+            else{
+                $.ajax({
+                    type: "post",
+                    url: "/PurchaseOrders/GetSelectedItemInfo",
+                    data: { ItemId },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        $('#UnitId').val(data.UnitId);
+                        $('#UnitName').val(data.Unit);
+                        $('#Size').val(data.Size);
+                        $('#UnitPrice').val(data.UnitPrice);
+                        $('#RequisitionQty').val(data.ReqQty);
+                        $('#POQuantity1').val("");
+                        $('#TotalPrice1').val("");
+                    }
+                });
+            }
+
         });
 
 
@@ -689,9 +706,12 @@
                         var POQuantity = row.find('input[name=POQuantity]').val();
                         var TotalPrice = row.find('input[name=TotalPrice]').val();
 
+                        alert(POQuantity);
+                        alert(TotalPrice);
+
                         //$('#ModalItemName').val(SiteName);
                         $('#ModalTaskId').val(TaskId);
-                        $('#ModalItemName').val(itemId).change();
+                        $('#ModalItemName').val(itemId);
                         $('#modalunitId').val(UnitId);
                         $('#ModalUnitName').val(UnitName);
                         $('#ModalSize').val(Size);
@@ -765,7 +785,37 @@
 
     });
 
-
+    $('#ModalItemName').change(function(){
+        var ItemName = $('#ModalItemName option:selected').text();
+        var ItemId = $('#ModalItemName option:selected').val();
+        if(ItemName.trim()=="--Select--"){
+            $('#modalunitId').val("");
+            $('#ModalUnitName').val("");
+            $('#ModalSize').val("");
+            $('#ModalUnitPrice').val("");
+            $('#ModalRequisitionQty').val("");
+            $('#ModalPOQuantity').val("");
+            $('#ModalTotalPrice').val("");
+        }
+        else{
+            $.ajax({
+                type: "post",
+                url: "/PurchaseOrders/GetSelectedItemInfo",
+                data: { ItemId },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $('#modalunitId').val(data.UnitId);
+                    $('#ModalUnitName').val(data.Unit);
+                    $('#ModalSize').val(data.Size);
+                    $('#ModalUnitPrice').val(data.UnitPrice);
+                    $('#ModalRequisitionQty').val(data.ReqQty);
+                    $('#ModalPOQuantity').val("");
+                    $('#ModalTotalPrice').val("");
+                }
+            });
+        }
+    });
 
 
     $('#ModalDetailSave').click(function () {
@@ -853,6 +903,28 @@
     $('#ModalClose').click(function () {
         $('#ModalItemName_Error').hide();
         $('#ModalPOQuantity_Error').hide();
+
+        
+        //var TaskId = selRow.find('input[name=TaskId]').val();
+        //var itemName = selRow.find('input[name=ItemName]').val();
+        //var itemId = selRow.find('input[name=ItemId]').val();
+        //var UnitName = selRow.find('input[name=UnitName]').val();
+        //var UnitId = selRow.find('input[name=UnitId]').val();
+        //var Size = selRow.find('input[name=Size]').val();
+        //var UnitPrice = selRow.find('input[name=UnitPrice]').val();
+        //var RequisitionQty = selRow.find('input[name=RequisitionQty]').val();
+        //var POQuantity = selRow.find('input[name=POQuantity]').val();
+        //var TotalPrice = selRow.find('input[name=TotalPrice]').val();
+
+        //$('#ModalTaskId').val(TaskId);
+        //$('#ModalItemName').val(itemId).change();
+        //$('#modalunitId').val(UnitId);
+        //$('#ModalUnitName').val(UnitName);
+        //$('#ModalSize').val(Size);
+        //$('#ModalUnitPrice').val(UnitPrice);
+        //$('#ModalRequisitionQty').val(RequisitionQty);
+        //$('#ModalPOQuantity').val(POQuantity);
+        //$('#ModalTotalPrice').val(TotalPrice);
     });
 
 

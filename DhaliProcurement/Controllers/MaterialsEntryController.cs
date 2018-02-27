@@ -537,6 +537,82 @@ namespace DhaliProcurement.Controllers
         }
 
 
+        public JsonResult RebindModal(int ProjectId, int SiteId, int itemId,int RCode)
+        {
+
+            List<SelectListItem> ItemList = new List<SelectListItem>();
+
+            var items = (from purchaseMas in db.Proc_PurchaseOrderMas
+                         join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
+                         join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                         join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                         join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                         join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                         join procproject in db.ProcProject on requisitionMas.ProcProjectId equals procproject.Id
+                         join procProjectItem in db.ProcProjectItem on procproject.Id equals procProjectItem.ProcProjectId
+                         join site in db.ProjectSite on procproject.ProjectSiteId equals site.Id
+                         join project in db.Project on site.ProjectId equals project.Id
+                         where project.Id == ProjectId && site.Id == SiteId && purchaseDet.ItemId == procProjectItem.ItemId
+                         select procProjectItem).Distinct().ToList();
+
+            foreach (var x in items)
+            {
+                var itemName = db.Item.SingleOrDefault(m => m.Id == x.ItemId);
+                ItemList.Add(new SelectListItem { Text = itemName.Name, Value = x.ItemId.ToString() });
+            }
+
+
+
+            var requisition = (from purchaseMas in db.Proc_PurchaseOrderMas
+                               join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
+                               join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                               join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                               join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                               join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                               join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                               join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                               where requisitionDet.ItemId == itemId && site.Id == SiteId && tenderDet.Proc_RequisitionDetId == requisitionDet.Id && tenderDet.Status == "A"
+                               select requisitionMas).Distinct();
+            List<SelectListItem> ReqList = new List<SelectListItem>();
+
+            foreach (var x in requisition)
+            {
+                ReqList.Add(new SelectListItem { Text = x.Rcode, Value = x.Id.ToString() });
+            }
+
+
+            var PO = (from requisitionDet in db.Proc_RequisitionDet
+                      join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                      join tenderDet in db.Proc_TenderDet on requisitionDet.Id equals tenderDet.Proc_RequisitionDetId
+                      join tenderMas in db.Proc_TenderMas on tenderDet.Proc_TenderMasId equals tenderMas.Id
+                      join purchaseMas in db.Proc_PurchaseOrderMas on tenderMas.Id equals purchaseMas.Proc_TenderMasId
+                      join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
+                      join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                      join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                      where requisitionMas.Id== RCode && purchaseDet.ItemId == itemId && site.Id == SiteId
+                      select purchaseMas).Distinct().ToList();
+
+            List<SelectListItem> POList = new List<SelectListItem>();
+
+            foreach (var x in PO)
+            {
+                POList.Add(new SelectListItem { Text = x.PONo, Value = x.PONo.ToString() });
+            }
+
+
+            var result = new
+            {
+                Items = ItemList,
+                ReqList = ReqList,
+                POs = POList
+            };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
         public JsonResult CreateMaterialsEntry(IEnumerable<VMMaterialsEntry> RequisitionItems, int ProjectId, int SiteId, string EDate)
         {
             var result = new

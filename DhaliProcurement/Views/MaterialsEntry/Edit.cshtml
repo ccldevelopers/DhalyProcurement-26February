@@ -443,15 +443,18 @@
                                 var UnitPrice = row.find('input[name=UnitPrice]').val();
                                 var Cost = row.find('input[name=Cost]').val();
 
-                                //alert(PayOrderNo);
+                                var ProjectId = $('#ProjectId').val();
+                                var SiteId = $('#SiteId').val();
+
+                                RebindModalfields(ProjectId, SiteId, itemId,RCode,PayOrderNo);
 
                                 //$('#ModalItemName').val(SiteName);
                                 $('#ModalTaskId').val(TaskId);
-                                $('#ModalItemName').val(itemId);
+                                //$('#ModalItemName').val(itemId);
                                 $('#modalunitId').val(UnitId);
                                 $('#ModalUnitName').val(UnitName);
-                                $('#ModalReqNo').val(RCode);
-                                $('#ModalPONo').val(PayOrderNo);
+                                //$('#ModalReqNo').val(RCode);
+                                //$('#ModalPONo').val(PayOrderNo);
                                 $('#ModalVendorName').val(VendorName);
                                 $('#ModalVendorId').val(VendorId);
                                 $('#ModalTotalMaterial').val(TotalMaterial);
@@ -521,6 +524,51 @@
 
         });
 
+
+        function RebindModalfields(ProjectId, SiteId, itemId,RCode,PayOrderNo) {
+            $.ajax({
+                type: "post",
+                url: "/MaterialsEntry/RebindModal",
+                data: { ProjectId, SiteId,itemId,RCode },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var listOfitems = data.Items.length;
+                    var Items = "<select id=''>";
+                    Items = Items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        Items = Items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                    }
+                    Items = Items + '</select>';
+                    $('#ModalItemName').html(Items);
+                    $('#ModalItemName').val(itemId);
+
+                    var listOfReq = data.ReqList.length;
+                    var Items = "<select id=''>";
+                    Items = Items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfReq; i++) {
+                        Items = Items + '<option value=' + data.ReqList[i].Value + '>' + data.ReqList[i].Text + '</option>';
+                    }
+                    Items = Items + '</select>';
+                    $('#ModalReqNo').html(Items);              
+                    $('#ModalReqNo').val(RCode);
+
+                    var listOfPOs = data.POs.length;
+                    var Items = "<select id=''>";
+                    Items = Items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfPOs; i++) {
+                        Items = Items + '<option value=' + data.POs[i].Value + '>' + data.POs[i].Text + '</option>';
+                    }
+                    Items = Items + '</select>';
+                    $('#ModalPONo').html(Items);
+                    $('#ModalPONo').val(PayOrderNo);
+                }
+
+            });
+        }
+
+
+
         $("#ModalItemName").change(function () {
             var ItemId = $('#ModalItemName  option:selected').val();
             var ProjectId = $('#ProjectId').val();
@@ -530,30 +578,73 @@
                 alert('Please Select Project Id and Site Id');
             }
 
-            $.ajax({
-                type: "post",
-                url: "/MaterialsEntry/GetUnit",
-                data: { ItemId, ProjectId, SiteId },
-                datatype: "json",
-                traditional: true,
-                success: function (data) {
-                    $('#modalunitId').val(data.UnitId);
-                    $('#ModalUnitName').val(data.UnitName);
-                    //$('#TotalRequired').val(data.TotalRequired);
-                    //$('#ReqNo').removeAttr("disabled");
-                    var listOfitems = data.ReqList.length;
-                    var items = "<select id='ModalReqNo'>";
-                    items = items + '<option value="">--Select--</option>';
-                    for (var i = 0; i < listOfitems; i++) {
-                        items = items + '<option value=' + data.ReqList[i].Value + '>' + data.ReqList[i].Text + '</option>';
+       
+            if ($('#ModalItemName option:selected').text() == "--Select--") {
+                $('#ModalReqNo').empty();
+                $("#ModalPONo").empty();
+                var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                $('#modalunitId').val("");
+                $('#ModalUnitName').val("");
+                $('#ModalReqNo').html(sites);
+                $('#ModalPONo').html(sites);
+                $('#ModalVendorName').val("");
+                $('#ModalVendorId').val("");
+                //$('#POQty').val("");
+                //$('#PORcv').val("");
+                $('#ModalCost').val("");
+                $('#ModalTotalMaterial').val("");
+                $('#ModalPreviousQty').val("");
+                $('#ModalRemainingQty').val("");
+                $('#ChallanNo').val("");
+                $('#ChallanDate').val("");
+                $('#MaterialEntry').val("");
+                $('#ModalUnitPrice').val("");
+            }
+            else {
+
+                $.ajax({
+                    type: "post",
+                    url: "/MaterialsEntry/GetUnit",
+                    data: { ItemId, ProjectId, SiteId },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+
+                        $('#ModalReqNo').empty();
+                        $("#ModalPONo").empty();
+                        var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                        $('#ModalPONo').html(sites);
+                        $('#ModalVendorName').val("");
+                        $('#ModalVendorId').val("");
+                        //$('#POQty').val("");
+                        //$('#PORcv').val("");
+                        $('#ModalCost').val("");
+                        $('#ModalTotalMaterial').val("");
+                        $('#ModalPreviousQty').val("");
+                        $('#ModalRemainingQty').val("");
+                        $('#ChallanNo').val("");
+                        $('#ChallanDate').val("");
+                        $('#MaterialEntry').val("");
+                        $('#ModalUnitPrice').val("");
+
+                        $('#modalunitId').val(data.UnitId);
+                        $('#ModalUnitName').val(data.UnitName);
+                        //$('#TotalRequired').val(data.TotalRequired);
+                        //$('#ReqNo').removeAttr("disabled");
+                        var listOfitems = data.ReqList.length;
+                        var items = "<select id='ModalReqNo'>";
+                        items = items + '<option value="">--Select--</option>';
+                        for (var i = 0; i < listOfitems; i++) {
+                            items = items + '<option value=' + data.ReqList[i].Value + '>' + data.ReqList[i].Text + '</option>';
+                        }
+                        items = items + '</select>';
+                        $('#ModalReqNo').html(items);
+
+
                     }
-                    items = items + '</select>';
-                    $('#ModalReqNo').html(items);
 
-
-                }
-
-            });
+                });
+            }
         });
 
 
@@ -567,37 +658,72 @@
                 alert('Please Select Project Id and Site Id');
             }
 
-            $.ajax({
-                type: "post",
-                url: "/MaterialsEntry/GetPO",
-                data: { ItemId, ProjectId, SiteId, ReqNo },
-                datatype: "json",
-                traditional: true,
-                success: function (data) {
-                    $('#ModalTotalMaterial').val(data.TotalMaterial);
-                    $('#ModalPreviousQty').val(data.PreviousReceived);
-                    $('#ModalUnitPrice').val(data.UnitPrice);
-                    var Remaining = data.TotalMaterial - data.PreviousReceived;
+            if ($('#ModalReqNo option:selected').text() == "--Select--") {
+                $("#ModalPONo").empty();
+                var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                $('#ModalPONo').html(sites);
+                $('#ModalVendorName').val("");
+                $('#ModalVendorId').val("");
+                //$('#POQty').val("");
+                //$('#PORcv').val("");
+                $('#ModalCost').val("");
+                $('#ModalTotalMaterial').val("");
+                $('#ModalPreviousQty').val("");
+                $('#ModalRemainingQty').val("");
+                $('#ChallanNo').val("");
+                $('#ChallanDate').val("");
+                $('#MaterialEntry').val("");
+                $('#ModalUnitPrice').val("");
+            }
+            else{
+                $.ajax({
+                    type: "post",
+                    url: "/MaterialsEntry/GetPO",
+                    data: { ItemId, ProjectId, SiteId, ReqNo },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
 
-                    $('#ModalRemainingQty').val(Remaining);
-                    //$('#PONo').removeAttr("disabled");
-                    //alert('test');
-                    var listOfitems = data.POs.length;
-                    //alert(listOfitems);
-                    var items = "<select id='ModalPONo'>";
-                    items = items + '<option value="">--Select--</option>';
+                        $("#ModalPONo").empty();
+                        var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                        $('#ModalVendorName').val("");
+                        $('#ModalVendorId').val("");
+                        //$('#POQty').val("");
+                        //$('#PORcv').val("");
+                        $('#ModalCost').val("");             
+                        $('#ChallanNo').val("");
+                        $('#ChallanDate').val("");
+                        $('#MaterialEntry').val("");
+                  
 
-                    for (var i = 0; i < listOfitems; i++) {
-                        items = items + '<option value=' + data.POs[i].Value + '>' + data.POs[i].Text + '</option>';
+
+                        $('#ModalTotalMaterial').val(data.TotalMaterial);
+                        $('#ModalPreviousQty').val(data.PreviousReceived);
+                        $('#ModalUnitPrice').val(data.UnitPrice);
+                        var Remaining = data.TotalMaterial - data.PreviousReceived;
+
+                        $('#ModalRemainingQty').val(Remaining);
+                        //$('#PONo').removeAttr("disabled");
+                        //alert('test');
+                        var listOfitems = data.POs.length;
+                        //alert(listOfitems);
+                        var items = "<select id='ModalPONo'>";
+                        items = items + '<option value="">--Select--</option>';
+
+                        for (var i = 0; i < listOfitems; i++) {
+                            items = items + '<option value=' + data.POs[i].Value + '>' + data.POs[i].Text + '</option>';
+                        }
+
+                        items = items + '</select>';
+                        $('#ModalPONo').html(items);
+
+
                     }
 
-                    items = items + '</select>';
-                    $('#ModalPONo').html(items);
+                });
+            }
 
 
-                }
-
-            });
         })
 
         $("#ModalPONo").change(function () {
@@ -605,34 +731,58 @@
             var ProjectId = $('#ProjectId').val();
             var SiteId = $('#SiteId').val();
             var ReqNo = $('#ModalReqNo option:selected').val();
-            var PONo = $('#ModalPONo option:selected').val();
+            var PONo = $('#ModalPONo option:selected').text();
+
+            //aler(PONo);
 
             if (ProjectId == "" && SiteId == "") {
                 alert('Please Select Project Id and Site Id');
             }
 
-            $.ajax({
-                type: "post",
-                url: "/MaterialsEntry/GetVendor",
-                data: { ItemId, ProjectId, SiteId, ReqNo, PONo },
-                datatype: "json",
-                traditional: true,
-                success: function (data) {
-                    $('#ModalVendorName').val(data.vendorName);
-                    $('#ModalVendorId').val(data.VendorId);
-                    //alert('data.POQuantity: ' + data.POQuantity);
-                    //$('#POQty').val(data.POQuantity);
-                    //$('#PORcv').val(data.POReceived);
-                    //$('#MaterialEntry').val(data.POQuantity);
+            if ($('#ModalPONo option:selected').text() == "--Select--") {             
+                $('#ModalVendorName').val("");
+                $('#ModalVendorId').val("");
+                //$('#POQty').val("");
+                //$('#PORcv').val("");
+                $('#ModalCost').val("");             
+                $('#ChallanNo').val("");
+                $('#ChallanDate').val("");
+                $('#MaterialEntry').val("");
+            }
+            else{
+                $.ajax({
+                    type: "post",
+                    url: "/MaterialsEntry/GetVendor",
+                    data: { ItemId, ProjectId, SiteId, ReqNo, PONo },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        $('#ModalVendorName').val("");
+                        $('#ModalVendorId').val("");
+                        //$('#POQty').val("");
+                        //$('#PORcv').val("");
+                        $('#ModalCost').val("");             
+                        $('#ChallanNo').val("");
+                        $('#ChallanDate').val("");
+                        $('#MaterialEntry').val("");
+
+                        $('#ModalVendorName').val(data.vendorName);
+                        $('#ModalVendorId').val(data.VendorId);
+                        //alert('data.POQuantity: ' + data.POQuantity);
+                        //$('#POQty').val(data.POQuantity);
+                        //$('#PORcv').val(data.POReceived);
+                        //$('#MaterialEntry').val(data.POQuantity);
 
 
-                    var entry = $('#ModalMaterialEntry').val();
-                    var unitprice = $('#ModalUnitPrice').val();
-                    var totalPrice = entry * unitprice;
-                    $('#ModalCost').val(totalPrice);
-                }
+                        var entry = $('#ModalMaterialEntry').val();
+                        var unitprice = $('#ModalUnitPrice').val();
+                        var totalPrice = entry * unitprice;
+                        $('#ModalCost').val(totalPrice);
+                    }
 
-            });
+                });
+            }
+
         });
 
 
@@ -734,7 +884,7 @@
                 var Itemname = $(this).find("td input[name=ChallanNo]").val();
                 var task = $(this).find("td input[name=TaskId]").val();
 
-                alert(task + "-->" + TaskId);
+                //alert(task + "-->" + TaskId);
                 if (task != TaskId.trim()) {
                     if (ModalChallanNo.trim().toUpperCase() == Itemname.trim().toUpperCase()) {
                         alert('This Challan No.already exists!');
@@ -895,34 +1045,74 @@
             var ProjectId = $('#ProjectId').val();
             var SiteId = $('#SiteId').val();
 
-            //if (ProjectId == "" && SiteId == "") {
-            //    alert('Please Select Project Id and Site Id');
-            //}
 
-            $.ajax({
-                type: "post",
-                url: "/MaterialsEntry/GetUnit",
-                data: { ItemId, ProjectId, SiteId },
-                datatype: "json",
-                traditional: true,
-                success: function (data) {
-                    $('#UnitId').val(data.UnitId);
-                    $('#UnitName').val(data.UnitName);
-                    //$('#TotalRequired').val(data.TotalRequired);
-                    $('#ReqNo').removeAttr("disabled");
-                    var listOfitems = data.ReqList.length;
-                    var items = "<select id='ReqNo'>";
-                    items = items + '<option value="">--Select--</option>';
-                    for (var i = 0; i < listOfitems; i++) {
-                        items = items + '<option value=' + data.ReqList[i].Value + '>' + data.ReqList[i].Text + '</option>';
+            if ($('#ItemName option:selected').text() == "--Select--") {
+                $('#ReqNo').empty();
+                $("#PONo").empty();
+                var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                $('#UnitId').val("");
+                $('#UnitName').val("");
+                $('#ReqNo').html(sites);
+                $('#PONo1').html(sites);
+                $('#VendorName').val("");
+                $('#VendorId').val("");
+                $('#POQty').val("");
+                $('#PORcv').val("");
+                $('#Cost').val("");
+                $('#TotalMaterial').val("");
+                $('#PreviousQty').val("");
+                $('#RemainingQty').val("");
+                $('#ChallanNo').val("");
+                $('#ChallanDate').val("");
+                $('#MaterialEntry').val("");
+                $('#UnitPrice').val("");
+            }
+            else {
+
+                $.ajax({
+                    type: "post",
+                    url: "/MaterialsEntry/GetUnit",
+                    data: { ItemId, ProjectId, SiteId },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        $("#PONo").empty();
+                        var sites = "<select id='sites'><option value=''>--Select--</option></select>";
+                        $('#UnitId').val("");
+                        $('#UnitName').val("");                      
+                        $('#PONo1').html(sites);
+                        $('#VendorName').val("");
+                        $('#VendorId').val("");
+                        $('#POQty').val("");
+                        $('#PORcv').val("");
+                        $('#Cost').val("");
+                        $('#TotalMaterial').val("");
+                        $('#PreviousQty').val("");
+                        $('#RemainingQty').val("");
+                        $('#ChallanNo').val("");
+                        $('#ChallanDate').val("");
+                        $('#MaterialEntry').val("");
+                        $('#UnitPrice').val("");
+
+
+                        $('#UnitId').val(data.UnitId);
+                        $('#UnitName').val(data.UnitName);
+                        //$('#TotalRequired').val(data.TotalRequired);
+                        $('#ReqNo').removeAttr("disabled");
+                        var listOfitems = data.ReqList.length;
+                        var items = "<select id='ReqNo'>";
+                        items = items + '<option value="">--Select--</option>';
+                        for (var i = 0; i < listOfitems; i++) {
+                            items = items + '<option value=' + data.ReqList[i].Value + '>' + data.ReqList[i].Text + '</option>';
+                        }
+                        items = items + '</select>';
+                        $('#ReqNo').html(items);
+
+
                     }
-                    items = items + '</select>';
-                    $('#ReqNo').html(items);
 
-
-                }
-
-            });
+                });
+            }
         });
         $("#ReqNo").change(function () {
             var ItemId = $('#ItemName option:selected').val();
@@ -934,38 +1124,63 @@
                 alert('Please Select Project Id and Site Id');
             }
 
-            $.ajax({
-                type: "post",
-                url: "/MaterialsEntry/GetPO",
-                data: { ItemId, ProjectId, SiteId, ReqNo },
-                datatype: "json",
-                traditional: true,
-                success: function (data) {
-                    //$('#VendorName').val(data.vendorName);
-                    //$('#VendorId').val(data.VendorId);
-                    $('#TotalMaterial').val(data.TotalMaterial);
-                    $('#RemainingQty').val(data.RemainingQty);
-                    $('#UnitPrice').val(data.UnitPrice);
-                    var previousRemaining = data.TotalMaterial - data.RemainingQty;
-                    $('#PreviousQty').val(previousRemaining);
-                    $('#PONo1').removeAttr("disabled");
-                    //alert('test');
-                    var listOfitems = data.POs.length;
-                    //alert(listOfitems);
-                    var items = "<select id='PONo1'>";
-                    items = items + '<option value="">--Select--</option>';
+            if ($('#ReqNo option:selected').text() == "--Select--") {
+                $("#PONo").empty();
+                var sites = "<select id='sites'><option value=''>--Select--</option></select>";                     
+                $('#PONo1').html(sites);
+                $('#VendorName').val("");
+                $('#VendorId').val("");
+                $('#Cost').val("");
+                $('#TotalMaterial').val("");
+                $('#PreviousQty').val("");
+                $('#RemainingQty').val("");
 
-                    for (var i = 0; i < listOfitems; i++) {
-                        items = items + '<option value=' + data.POs[i].Value + '>' + data.POs[i].Text + '</option>';
+            }
+            else{
+                $.ajax({
+                    type: "post",
+                    url: "/MaterialsEntry/GetPO",
+                    data: { ItemId, ProjectId, SiteId, ReqNo },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        //$('#VendorName').val(data.vendorName);
+                        //$('#VendorId').val(data.VendorId);
+                        $("#PONo1").empty();
+                        var sites = "<select id='sites'><option value=''>--Select--</option></select>";                     
+                      
+                        $('#VendorName').val("");
+                        $('#VendorId').val("");
+                        $('#POQty').val("");
+                        $('#Cost').val("");                                   
+
+                
+
+                        $('#TotalMaterial').val(data.TotalMaterial);
+                        $('#RemainingQty').val(data.RemainingQty);
+                        $('#UnitPrice').val(data.UnitPrice);
+                        var previousRemaining = data.TotalMaterial - data.RemainingQty;
+                        $('#PreviousQty').val(previousRemaining);
+                        $('#PONo1').removeAttr("disabled");
+                        //alert('test');
+                        var listOfitems = data.POs.length;
+                        //alert(listOfitems);
+                        var items = "<select id='PONo1'>";
+                        items = items + '<option value="">--Select--</option>';
+
+                        for (var i = 0; i < listOfitems; i++) {
+                            items = items + '<option value=' + data.POs[i].Value + '>' + data.POs[i].Text + '</option>';
+                        }
+
+                        items = items + '</select>';
+                        $('#PONo1').html(items);
+
+
                     }
 
-                    items = items + '</select>';
-                    $('#PONo1').html(items);
+                });
+            }
 
-
-                }
-
-            });
         })
 
         $("#PONo1").change(function () {
@@ -978,19 +1193,34 @@
             if (ProjectId == "" && SiteId == "") {
                 alert('Please Select Project Id and Site Id');
             }
+            if ($('#PONo1 option:selected').text() == "--Select--") {
+                $('#VendorName').val("");
+                $('#VendorId').val("");
+                $('#POQty').val("");
+                $('#Cost').val("");                                   
 
-            $.ajax({
-                type: "post",
-                url: "/MaterialsEntry/GetVendor",
-                data: { ItemId, ProjectId, SiteId, ReqNo, PONo },
-                datatype: "json",
-                traditional: true,
-                success: function (data) {
-                    $('#VendorName').val(data.vendorName);
-                    $('#VendorId').val(data.VendorId);
-                }
+            }
+            else{
+                $.ajax({
+                    type: "post",
+                    url: "/MaterialsEntry/GetVendor",
+                    data: { ItemId, ProjectId, SiteId, ReqNo, PONo },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        $('#VendorName').val("");
+                        $('#VendorId').val("");
+                        $('#POQty').val("");                       
+                        $('#Cost').val("");                                   
 
-            });
+                        $('#VendorName').val(data.vendorName);
+                        $('#VendorId').val(data.VendorId);
+                    }
+
+                });
+            }
+
+
         });
 
 
