@@ -39,17 +39,15 @@
                         <tr>
                             <td class="col-lg-">Project Manager</td>
                             <td class="col-lg-10">
-
                                 @Html.DropDownList("ProjectManager", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @tabindex = "2" })
-                                <input type="hidden" value="@ViewBag.TempPrManId" id="TempPrMan"/>
-                               
-                                  @*<button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal">Add</button>*@
+                                <input type="hidden" value="@ViewBag.TempPrManId" id="TempPrMan" />
+
+                                @*<button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal">Add</button>*@
                             </td>
                             <td class="col-lg-1">
                                 <button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal" style="background-color: grey;border: none;">Add</button>
                             </td>
                         </tr>
-
                         <tr>
                             <td>Project Start Date</td>
                             <td colspan="2">
@@ -82,7 +80,6 @@
                                 <span class="error" id="Remarks_Error">Site name required</span>
                             </td>
                         </tr>
-
                     </table>
                     <hr />
 
@@ -95,7 +92,6 @@
 
 
                 }
-
                 <div class="jumbotron" style="padding:10px;">
                     <table style="width: 100%;">
                         <tr>
@@ -147,7 +143,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="resourceProjectManagerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -170,7 +165,6 @@
                                 <input type="hidden" id="ProjectId" value="" />
                             </div>
                             <div class="form-group">
-
                                 @Html.Label("Name", htmlAttributes: new { @class = "control-label col-md-2" })
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
@@ -292,14 +286,12 @@
         </div>
     </div>
 </div>
-
 @*<style>
         .form-group .select2-container {
             width: 300px !important;
         }
     </style>*@
 @*<p><button type="button" class="btn btn-warning btn-sm" onclick="window.location.href='@Url.Action("Index")';"><i class="icon-circle-left2 position-left"></i> Go back</button></p>*@
-
 
 <script>
 
@@ -345,7 +337,7 @@
                     var newRow = jQuery('<tr>'
                         +'<td><input class="form-control" value="' + data[i].ProjectSiteId + '" type="hidden" name="ProjectSiteId"/><input class="form-control" value="' + data[i].SiteName + '" type="hidden" name="SiteName"/><label name="label_SiteName">' + data[i].SiteName + '</label><input type="hidden" name="TaskId" value="' + taskCounter + '"/></td>'
                        + '<td><input class="form-control" value="' + data[i].SiteLocation + '" type="hidden" name="SiteLocation"/><label name="label_SiteLocation">' + data[i].SiteLocation + '</label></td>'
-                       + '<td><input value="' + data[i].SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input class="form-control" value="' + data[i].SiteEngineer + '"  type="hidden" name="SiteEngineer" disabled="disabled"/><label name="label_SiteEngineer">' +  data[i].SiteEngineer  + '</label></td>'
+                       + '<td><input value="' + data[i].SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input value="' + data[i].SiteEngineerId + '" type="hidden" name="TempSiteEngineerId"/><input class="form-control" value="' + data[i].SiteEngineer + '"  type="hidden" name="SiteEngineer" disabled="disabled"/><label name="label_SiteEngineer">' +  data[i].SiteEngineer  + '</label></td>'
                        +'<td>'
                        //+'<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'
                        + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
@@ -562,7 +554,7 @@
                 $('#SiteName_Error').hide();
             }
         }
- 
+
 
         if ($('#SiteLocation').val().trim() == '') {
 
@@ -603,10 +595,11 @@
         //Add site to list if valid
         if (isValidSite)
         {
+            var TempSiteEngineerId=0;
             taskCounter++;
             var newRow = jQuery('<tr><td><input class="form-control" value="' + ProjectSiteId + '" type="hidden" name="ProjectSiteId"/><label name="label_SiteName">' + SiteName + '</label><input class="form-control" value="' + SiteName + '" type="hidden" name="SiteName"/><input type="hidden" name="TaskId" value="' + taskCounter + '"/></td>'
                 + '<td><input class="form-control" value="' + SiteLocation + '" type="hidden" name="SiteLocation"/><label name="label_SiteLocation">' + SiteLocation + '</label></td>'
-                + '<td><input value="' + SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input class="form-control" value="' + SiteEngineer + '"  type="hidden" name="SiteEngineer"/><label name="label_SiteEngineer">' + SiteEngineer + '</label></td>'
+                + '<td><input value="' + SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input value="' + TempSiteEngineerId + '" type="hidden" name="TempSiteEngineerId"/><input class="form-control" value="' + SiteEngineer + '"  type="hidden" name="SiteEngineer"/><label name="label_SiteEngineer">' + SiteEngineer + '</label></td>'
                 +'<td>'
                 + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                 +' <button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button>'
@@ -692,7 +685,6 @@
     }
     //end
 </script>
-
 <script>
 
     var counter = 0;
@@ -752,8 +744,8 @@
         var EndDate = $('#EndDate').val();
         var Remarks = $('#ProjectRemarks').val();
         var TempPrMan = $('#TempPrMan').val();
-        alert('TempPrMan '+TempPrMan);
-        
+       // alert('TempPrMan '+TempPrMan);
+
         if (Remarks.trim().length > 200) {
             isValid = false;
             $('#Remarks_Error').text("Remarks cannot be greater than 200 characters!").show();
@@ -769,8 +761,9 @@
         var SiteLocation = document.getElementsByName("SiteLocation");
         var SiteEngineerId = document.getElementsByName("SiteEngineerId");
         var SiteEngineer = document.getElementsByName("SiteEngineer");
-
-
+        
+        var TempSiteEngineerId = document.getElementsByName("TempSiteEngineerId");
+       
         var Length = $('.Resource-list tr').length; //detail table length
         //  alert('L '+Length);
 
@@ -791,7 +784,8 @@
                     SiteName: SiteName[i].value,
                     SiteLocation: SiteLocation[i].value,
                     SiteEngineerId: SiteEngineerId[i].value,
-                    SiteEngineer:SiteEngineer[i].value
+                    SiteEngineer:SiteEngineer[i].value,
+                    TempSiteEngineerId:TempSiteEngineerId[i].value
                 });
                 // alert(SiteEngineer[i].value);
                 // alert(ProjectSiteId[i].value);
@@ -879,11 +873,9 @@
 
 
 </script>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Plugins/select2/select2.min.js"></script>
-
     <script>
         $(".select2").select2();
     </script>

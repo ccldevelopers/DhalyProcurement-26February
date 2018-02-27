@@ -20,6 +20,8 @@ namespace DhaliProcurement.ViewModel
         // public DateTime EndDate { get; set; }
         public int SiteEngineerId { get; set; }
         public string SiteEngineer { get; set; }
+        
+        public int TempSiteEngineerId { get; set; }
 
     }
 }
