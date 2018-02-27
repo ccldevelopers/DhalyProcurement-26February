@@ -936,12 +936,15 @@ namespace DhaliProcurement.Controllers
 
                     vm.VendorId = vendors.Id;
                     vm.VendorName = db.Vendor.SingleOrDefault(x => x.Id == vendors.Id).Name;
+
                     var totalMaterial = (from total in db.ProcProjectItem
                                          join procProject in db.ProcProject on total.ProcProjectId equals procProject.Id
                                          join requisitionMas in db.Proc_RequisitionMas on procProject.Id equals requisitionMas.ProcProjectId
                                          join requisitionDet in db.Proc_RequisitionDet on requisitionMas.Id equals requisitionDet.Proc_RequisitionMasId
-                                         where total.ItemId == ItemId.Id && procProject.ProjectSiteId == requisitionDet.Proc_RequisitionMas.ProcProject.ProjectSiteId
+                                         //where total.ItemId == ItemId.Id && procProject.ProjectSiteId == requisitionDet.Proc_RequisitionMas.ProcProject.ProjectSiteId
+                                         where total.ItemId == i.Proc_PurchaseOrderDet.ItemId && procProject.ProjectSiteId == i.Proc_MaterialEntryMas.ProcProject.ProjectSiteId
                                          select total).FirstOrDefault();
+
 
                     var requiredQty = (from requisitionDet in db.Proc_RequisitionDet
                                        join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
