@@ -528,9 +528,15 @@
                 var POQuantity = row.find('input[name=POQuantity]').val();
                 var TotalPrice = row.find('input[name=TotalPrice]').val();
 
+                var ProjectId = $('#ProjectId').val();
+                var SiteId = $('#SiteId').val();
+                var VendorId = $('#VendorId').val();
+                var Tenderid = $('#TenderId').val();
+
+                RebindModalfields(ProjectId, SiteId, VendorId, Tenderid, itemId);
                 //$('#ModalItemName').val(SiteName);
                 $('#ModalTaskId').val(TaskId);
-                $('#ModalItemName').val(itemId).change();
+                //$('#ModalItemName').val(itemId).change();
                 $('#modalunitId').val(UnitId);
                 $('#ModalUnitName').val(UnitName);
                 $('#ModalSize').val(Size);
@@ -575,7 +581,29 @@
     //    }
     //});
 
+    function RebindModalfields(ProjectId, SiteId, VendorId, Tenderid, itemId) {
+       
+        $.ajax({
+            type: "post",
+            url: "/PurchaseOrders/RebindModal",
+            data: { ProjectId, SiteId, VendorId, Tenderid },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var listOfitems = data.ItemList.length;
+                var Items = "<select id=''>";
+                Items = Items + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfitems; i++) {
+                    Items = Items + '<option value=' + data.ItemList[i].Value + '>' + data.ItemList[i].Text + '</option>';
+                }
+                Items = Items + '</select>';
+                $('#ModalItemName').html(Items);
+              
+                $('#ModalItemName').val(itemId);
+            }
 
+        });
+    }
 
 
 
@@ -706,12 +734,17 @@
                         var POQuantity = row.find('input[name=POQuantity]').val();
                         var TotalPrice = row.find('input[name=TotalPrice]').val();
 
-                        alert(POQuantity);
-                        alert(TotalPrice);
 
+                        var ProjectId = $('#ProjectId').val();
+                        var SiteId = $('#SiteId').val();
+                        var VendorId = $('#VendorId').val();
+                        var Tenderid = $('#TenderId').val();
+
+                        RebindModalfields(ProjectId, SiteId, VendorId, Tenderid, itemId);
                         //$('#ModalItemName').val(SiteName);
                         $('#ModalTaskId').val(TaskId);
-                        $('#ModalItemName').val(itemId);
+                       
+                        //$('#ModalItemName').val(itemId);
                         $('#modalunitId').val(UnitId);
                         $('#ModalUnitName').val(UnitName);
                         $('#ModalSize').val(Size);

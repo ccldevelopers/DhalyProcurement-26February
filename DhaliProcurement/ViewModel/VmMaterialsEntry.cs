@@ -36,7 +36,8 @@ namespace DhaliProcurement.ViewModel
         public string RCodeName { get; set; }
         public int ItemId { get; set; }
         public string ItemName { get; set; }
-        public string PONo { get; set; }
+        public int PONo { get; set; }
+        public string PONoName { get; set; }
         public int PurchaseOrderDetId { get; set; }
         public int VendorId { get; set; }
         public string VendorName { get; set; }

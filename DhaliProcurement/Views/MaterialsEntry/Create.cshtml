@@ -621,7 +621,7 @@
         var ItemId = $('#ItemName option:selected').val();
         var ProjectId = $('#ProjectId option:selected').val();
         var SiteId = $('#SiteId option:selected').val();
-        var ReqNo = $('#ReqNo option:selected').text();
+        var ReqNo = $('#ReqNo option:selected').val();
 
         if (ProjectId == "" && SiteId == "") {
             alert('Please Select Project Id and Site Id');
@@ -702,8 +702,8 @@
         var ItemId = $('#ItemName option:selected').val();
         var ProjectId = $('#ProjectId option:selected').val();
         var SiteId = $('#SiteId option:selected').val();
-        var ReqNo = $('#ReqNo option:selected').text();
-        var PONo = $('#PONo option:selected').text();
+        var ReqNo = $('#ReqNo option:selected').val();
+        var PONo = $('#PONo option:selected').val();
 
         //alert(PONo);
 
@@ -865,7 +865,7 @@
         //var Qty = $('#Qty').val();
         //var PONo = $('#PONo').val();
         //var PONo = $('#PONo option:selected').val();
-        var PONo = $('#PONo option:selected').text();
+        var PONo = $('#PONo option:selected').val();
 
         //alert(Unit);
         //alert(UnitId);
@@ -894,14 +894,14 @@
             $('#ItemName_Error').hide();
         }
 
-        if (RCode == "" || RCode == "--Select--") {
+        if (RCode == "" || RCodename == "--Select--") {
             $('#ReqNo_Error').show();
             isAllValid = false;
         }
         else {
             $('#ReqNo_Error').hide();
         }
-        if (PONo == "" || PONo == "--Select--") {
+        if (PONo == "" || $('#PONo option:selected').text() == "--Select--") {
             $('#PONo_Error').show();
             isAllValid = false;
         }

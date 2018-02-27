@@ -6,7 +6,6 @@
     DhaliProcurement.Models.DCPSContext db = new DhaliProcurement.Models.DCPSContext();
     var counter = 0;
 }
-
 <div class="panel panel-flat">
     <div class="panel-heading">
         <h5 class="panel-title"><i class="icon-stack3 position-left"></i>Project Information Costing List</h5><hr />
@@ -19,11 +18,9 @@
     </div>
     <div class="panel-body">
         <div class="col-lg-12">
-
             <div class="col-md-3">
                 @Html.ActionLink("Create Costing", "Create", null, new { @class = "btn btn-info", @style = "background-color: grey;border: none;" })
             </div>
-
 
             <div class="col-md-6">
                 @using (@Html.BeginForm("Index", "ProcProjects", FormMethod.Post))
@@ -32,138 +29,112 @@
                         @*@Html.Hidden("ProjectId")*@
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-
                         <div class="form-group">
                             @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3" })
-
                             <div class="col-md-9">
-
                                 @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @Id = "ProjectId" })
-
                             </div>
                         </div>
-
                         <div class="form-group">
                             @Html.Label("Site", htmlAttributes: new { @class = "control-label col-md-3" })
-
                             <div class="col-md-9">
-
                                 @Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @Id = "SiteId" })
-
 
                             </div>
                         </div>
-
 
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-9">
-                                <input value="Search" class="btn btn-primary" type="submit"  style="background-color: grey;border: none;" />
+                                <input value="Search" class="btn btn-primary" type="submit" style="background-color: grey;border: none;" />
                             </div>
                         </div>
                     </div>
 
                 }
-
             </div>
-
             <!--End-->
-
         </div>
         <div class="col-lg-12">
-
-            <table class="table table-xs table-bordered table-responsive">
-                <tr class="bg-grey">
-                    <th class="col-xs-1">
-                        SL. No.
-                    </th>
-                    <th class="col-lg-3">
-                        Project Name
-                    </th>
-                    <th class="col-lg-3">
-                        Site Name
-                    </th>
-
-                    <th class="col-lg-1">Status</th>
-                    @*<th class="col-lg-1">BOQ Date</th>*@
-                    @*<th class="col-lg-">NOA Date</th>*@
-                    <th class="col-lg-3">&nbsp;</th>
-                </tr>
-
-
-                @*@{
-                    int counter = ViewBag.Row;
-                }*@
-
-
-                @foreach (var item in Model)
-            {
-                    counter++;
-                    <tr>
-                        <td>
-                            <label>@counter</label>
-                        </td>
-
-                        <td>
-                            @{
-                                var projName = (from site in db.ProjectSite
-                                                join project in db.Project on site.ProjectId equals project.Id
-                                                where site.Id == item.ProjectSite.Id
-                                                select project).FirstOrDefault();
-                            }
-                            @*<label>@projName.Name</label>*@
-                            @Html.ActionLink(projName.Name, "Edit", new { projectId = item.Id, siteId = item.ProjectSite.Id })
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectSite.Name)
-                        </td>
-
-                        <td>
-                            @*@Html.DisplayFor(model => item.Status)*@
-                            @if (item.Status.ToString() == "Running")
-                            {
-                                <span class="badge badge-info">@item.Status</span>
-                            }
-                            else
-                            {
-                                <span class="badge badge-warning">@item.Status</span>
-                            }
-                        </td>
-                        @*<td>@Html.DisplayFor(model => item.BOQDate)</td>*@
-                        @*<td>@Html.DisplayFor(model => item.NOADate)</td>*@
-                        @*<td>@Html.DisplayFor(model => item.Remarks)</td>*@
+            @*<table class="table table-xs table-bordered table-responsive">*@
+                <table class="table table-responsive table-bordered  datatable-show-all">
+                    <thead>
+                        <tr class="bg-slate">
+                            <th class="col-xs-1">
+                                SL. No.
+                            </th>
+                            <th class="col-lg-3">
+                                Project Name
+                            </th>
+                            <th class="col-lg-3">
+                                Site Name
+                            </th>
+                            <th class="col-lg-1">Status</th>
+                            @*<th class="col-lg-1">BOQ Date</th>*@
+                            @*<th class="col-lg-">NOA Date</th>*@
+                            <th class="col-lg-3">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    @*@{
+                int counter = ViewBag.Row;
+            }*@
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            counter++;
+                            <tr>
+                                <td>
+                                    <label>@counter</label>
+                                </td>
+                                <td>
+                                    @{
+                                        var projName = (from site in db.ProjectSite
+                                                        join project in db.Project on site.ProjectId equals project.Id
+                                                        where site.Id == item.ProjectSite.Id
+                                                        select project).FirstOrDefault();
+                                    }
+                                    @*<label>@projName.Name</label>*@
+                                    @Html.ActionLink(projName.Name, "Edit", new { projectId = item.Id, siteId = item.ProjectSite.Id })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProjectSite.Name)
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(model => item.Status)*@
+                                    @if (item.Status.ToString() == "Running")
+                                    {
+                                        <span class="badge badge-info">@item.Status</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-warning">@item.Status</span>
+                                    }
+                                </td>
+                                @*<td>@Html.DisplayFor(model => item.BOQDate)</td>*@
+                                @*<td>@Html.DisplayFor(model => item.NOADate)</td>*@
+                                @*<td>@Html.DisplayFor(model => item.Remarks)</td>*@
 
 
-
-
-                        <td>
-                            @Html.ActionLink(" ", "Edit", new { projectId = item.Id, siteId = item.ProjectSiteId }, new { @class = "btn btn-xs text-info icon-pencil4", @title = "Edit" })
-                            @Html.ActionLink(" ", "Details", new { projectId = item.Id, siteId = item.ProjectSiteId }, new { @class = "btn btn-xs text-info  icon-file-text2", @title = "Details" })
-                            @*@Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "btn btn-xs text-danger icon-cross2", @title = "Delete" })*@
-                            @if (User.IsInRole("Management"))
-                            {
-                                <a class="btn btn-xs text-danger icon-cross2" title="Delete" href="javascript:deleteFunction(@item.Id,@item.Id)"></a>
-                            }
-                        </td>
-                    </tr>
-                                }
-
-            </table>
-
+                                <td>
+                                    @Html.ActionLink(" ", "Edit", new { projectId = item.Id, siteId = item.ProjectSiteId }, new { @class = "btn btn-xs text-info icon-pencil4", @title = "Edit" })
+                                    @Html.ActionLink(" ", "Details", new { projectId = item.Id, siteId = item.ProjectSiteId }, new { @class = "btn btn-xs text-info  icon-file-text2", @title = "Details" })
+                                    @*@Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "btn btn-xs text-danger icon-cross2", @title = "Delete" })*@
+                                    @if (User.IsInRole("Management"))
+                                    {
+                                        <a class="btn btn-xs text-danger icon-cross2" title="Delete" href="javascript:deleteFunction(@item.Id,@item.Id)"></a>
+                                    }
+                                </td>
+                            </tr>
+                                        }
+                    </tbody>
+                </table>
         </div>
-
 
     </div>
 
 
 
- 
-
-
-
 
 </div>
-
-
 
 
 <script>
@@ -248,27 +219,17 @@
 
 </script>
 
-
-
 @section Scripts {
 
-
     @Scripts.Render("~/bundles/jqueryval")
-
     <script src="~/Plugins/select2/select2.min.js"></script>
     <script>
         $(".select2").select2();
     </script>
 
+<script src="~/Scripts/data Table/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/data Table/datatables_advanced.js"></script>
 }
-
-
-
-
-
-
-
-
 
 
 

@@ -124,7 +124,7 @@ namespace DhaliProcurement.Controllers
 
             //ViewBag.ItemName = new SelectList(itemName, "Id", "Name");
             ViewBag.ReqNo = new SelectList(db.Proc_RequisitionMas, "Id", "RCode");
-            ViewBag.PONo = new SelectList(db.Proc_PurchaseOrderMas, "PONo", "PONo");
+            ViewBag.PONo = new SelectList(db.Proc_PurchaseOrderMas, "Id", "PONo");
             //ViewBag.VendorId = new SelectList(db.Vendor, "Id", "Name");
             return View();
         }
@@ -204,7 +204,7 @@ namespace DhaliProcurement.Controllers
             //var items = from requisitionDet in db.Proc_RequisitionDet
 
             ViewBag.ItemName = ItemList;
-            ViewBag.PONo = new SelectList(db.Proc_PurchaseOrderMas, "PONo", "PONo");
+            ViewBag.PONo = new SelectList(db.Proc_PurchaseOrderMas, "Id", "PONo");
             ViewBag.ReqNo = new SelectList(db.Proc_RequisitionMas, "Id", "RCode");
             ViewBag.MaterialEntryMasId = MaterialEntryMasId;
 
@@ -394,61 +394,21 @@ namespace DhaliProcurement.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        //[HttpPost]
-        //public JsonResult GetVendor(int itemId, int projectId, int siteId, string ReqNo)
-        //{
-        //    var vendor = (from requisitionDet in db.Proc_RequisitionDet
-        //                      join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-        //                      join tenderDet in db.Proc_TenderDet on requisitionDet.Id equals tenderDet.Proc_RequisitionDetId
-        //                      where requisitionMas.Rcode == ReqNo && requisitionDet.ItemId == itemId
-        //                  select tenderDet).FirstOrDefault();
 
-        //    var totalMaterial = (from total in db.ProcProjectItem
-        //                         join procProject in db.ProcProject on total.ProcProjectId equals procProject.Id
-        //                         where procProject.ProjectSiteId == siteId && total.ItemId == itemId
-        //                         select total).FirstOrDefault();
-
-        //    var requiredQty = (from requisitionDet in db.Proc_RequisitionDet
-        //                       join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-        //                       where requisitionMas.Rcode == ReqNo && requisitionDet.ItemId == itemId
-        //                       select requisitionDet).FirstOrDefault();
-
-        //    var unitPrice = (from tenderDet in db.Proc_TenderDet
-        //                     join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
-        //                     join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-        //                     where requisitionMas.Rcode == ReqNo && requisitionDet.ItemId == itemId
-        //                     select tenderDet).FirstOrDefault();
-
-        //    var result = new
-        //    {
-        //        VendorId = vendor.VendorId,
-        //        vendorName = db.Vendor.SingleOrDefault(x=>x.Id == vendor.VendorId).Name,
-        //        TotalMaterial = totalMaterial.PQuantity,
-        //        RemainingQty = requiredQty.ReqQty,
-        //        UnitPrice = unitPrice.TQPrice
-        //    };
-        //    return Json(result, JsonRequestBehavior.AllowGet);
-        //}
 
         [HttpPost]
-        public JsonResult GetVendor(int itemId, int projectId, int siteId, string ReqNo, string PONo)
+        public JsonResult GetVendor(int itemId, int projectId, int siteId, int ReqNo, int PONo)
         {
-            //var vendors = (from purchaseDet in db.Proc_PurchaseOrderDet
-            //              join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
-            //              join entryDet in db.Proc_MaterialEntryDet on purchaseDet.Id equals entryDet.Proc_PurchaseOrderDetId 
-            //              join vendor in db.Vendor on purchaseMas.VendorId equals vendor.Id
-            //              where purchaseMas.PONo == PONo && purchaseMas.VendorId == vendor.Id
-            //              select vendor).Distinct().FirstOrDefault();
 
 
             var vendors = (from purchaseDet in db.Proc_PurchaseOrderDet
                            join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
                            //join entryDet in db.Proc_MaterialEntryDet on purchaseDet.Id equals entryDet.Proc_PurchaseOrderDetId
                            join vendor in db.Vendor on purchaseMas.VendorId equals vendor.Id
-                           where purchaseMas.PONo == PONo
+                           where purchaseMas.Id == PONo
                            select vendor).Distinct().FirstOrDefault();
 
-            var POQty = db.Proc_PurchaseOrderDet.SingleOrDefault(x => x.ItemId == itemId && x.Proc_PurchaseOrderMas.PONo == PONo.Trim());
+            var POQty = db.Proc_PurchaseOrderDet.SingleOrDefault(x => x.ItemId == itemId && x.Proc_PurchaseOrderMas.Id == PONo);
 
             var result = new
             {
@@ -461,7 +421,7 @@ namespace DhaliProcurement.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetPO(int itemId, int projectId, int siteId, string ReqNo)
+        public JsonResult GetPO(int itemId, int projectId, int siteId, int ReqNo)
         {
             var PO = (from requisitionDet in db.Proc_RequisitionDet
                       join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
@@ -471,7 +431,7 @@ namespace DhaliProcurement.Controllers
                       join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
                       join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
                       join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
-                      where requisitionMas.Rcode == ReqNo && purchaseDet.ItemId == itemId && site.Id == siteId
+                      where requisitionMas.Id == ReqNo && purchaseDet.ItemId == itemId && site.Id == siteId
                       select purchaseMas).Distinct().ToList();
 
             var totalMaterial = (from total in db.ProcProjectItem
@@ -483,13 +443,13 @@ namespace DhaliProcurement.Controllers
 
             var requiredQty = (from requisitionDet in db.Proc_RequisitionDet
                                join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-                               where requisitionMas.Rcode == ReqNo && requisitionDet.ItemId == itemId
+                               where requisitionMas.Id == ReqNo && requisitionDet.ItemId == itemId
                                select requisitionDet).FirstOrDefault();
 
             var unitPrice = (from tenderDet in db.Proc_TenderDet
                              join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
                              join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-                             where requisitionMas.Rcode == ReqNo && requisitionDet.ItemId == itemId
+                             where requisitionMas.Id == ReqNo && requisitionDet.ItemId == itemId
                              select tenderDet).FirstOrDefault();
 
 
@@ -521,7 +481,7 @@ namespace DhaliProcurement.Controllers
 
             foreach (var x in PO)
             {
-                POList.Add(new SelectListItem { Text = x.PONo, Value = x.PONo.ToString() });
+                POList.Add(new SelectListItem { Text = x.PONo, Value = x.Id.ToString() });
             }
 
             var result = new
@@ -596,7 +556,7 @@ namespace DhaliProcurement.Controllers
 
             foreach (var x in PO)
             {
-                POList.Add(new SelectListItem { Text = x.PONo, Value = x.PONo.ToString() });
+                POList.Add(new SelectListItem { Text = x.PONo, Value = x.Id.ToString() });
             }
 
 
@@ -909,7 +869,9 @@ namespace DhaliProcurement.Controllers
                                 where entryDet.Proc_MaterialEntryMas.Id == MaterialEntryMasId && purchaseOrderDet.Id == i.Proc_PurchaseOrderDetId
                                 select purchaseOrderMas).FirstOrDefault();
 
-                    vm.PONo = PONo.PONo;
+                    vm.PONo = PONo.Id;
+                    vm.PONoName = PONo.PONo;
+
                     vm.PurchaseOrderDetId = db.Proc_PurchaseOrderDet.FirstOrDefault(x => x.Proc_PurchaseOrderMasId == PONo.Id).Id;
 
 

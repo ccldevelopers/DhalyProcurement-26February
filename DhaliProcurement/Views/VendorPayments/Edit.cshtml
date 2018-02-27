@@ -303,7 +303,7 @@
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="ModalClose">Close</button>
                             </div>
                         </div>
                     </div>
@@ -1059,6 +1059,18 @@
             selRow.find('label[name=label_Remarks]').text(ModalRemarks);
             $('#detailForm').modal('hide');
         }
+    });
+
+    $('#ModalClose').click(function () {
+        $('#ModalProjectId_Error').hide();
+        $('#ModalSiteId_Error').hide();
+        $('#ModalReq_Error').hide();
+        $('#ModalPO_Error').hide();
+        $('#ModalItemId_Error').hide();
+        $('#ModalChallan_Error').hide();
+        $('#ModalBillNo_Error').hide();
+        $('#ModalPayment_Error').hide();
+        $('#ModalRemarks_Error').hide();
     });
 
 

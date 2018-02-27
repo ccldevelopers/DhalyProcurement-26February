@@ -152,7 +152,7 @@
                             <tr>
                                 <td style="font-weight: bold;" class="col-lg-1">Item</td>
                                 <td class="col-lg-2">
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                                    @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Unit</td>
                                 <td class="col-lg-2">
@@ -271,7 +271,7 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
+                                @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
                                 <span class="error" id="ModalItemName_Error"></span>
                             </div>
                         </div>
@@ -498,10 +498,11 @@
                 var VendorId = $('#VendorId  option:selected').val();
                 var Tenderid = $('#TenderId option:selected').val();
 
+
                 RebindModalfields(ProjectId, SiteId, VendorId, Tenderid, itemId);
 
                 $('#ModalTaskId').val(TaskId);
-                //$('#ModalItemName').val(itemId).change();
+                //$('#ModalItemName').val(itemId);
            
                 $('#modalunitId').val(UnitId);
                 $('#ModalUnitName').val(UnitName);
@@ -527,6 +528,7 @@
 
 
     function RebindModalfields(ProjectId, SiteId, VendorId, Tenderid, itemId) {
+       
         $.ajax({
             type: "post",
             url: "/PurchaseOrders/RebindModal",
@@ -534,15 +536,16 @@
             datatype: "json",
             traditional: true,
             success: function (data) {
-                var listOfitems = data.Items.length;
+                var listOfitems = data.ItemList.length;
                 var Items = "<select id=''>";
                 Items = Items + '<option value="">--Select--</option>';
                 for (var i = 0; i < listOfitems; i++) {
-                    Items = Items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                    Items = Items + '<option value=' + data.ItemList[i].Value + '>' + data.ItemList[i].Text + '</option>';
                 }
                 Items = Items + '</select>';
                 $('#ModalItemName').html(Items);
-                $('#ModalItemName').val(itemId).change();
+                alert(itemId);
+                $('#ModalItemName').val(itemId);
             }
 
         });

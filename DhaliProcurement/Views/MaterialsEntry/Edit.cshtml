@@ -394,7 +394,7 @@
                                + '<input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + data.List[i].ItemName + '</label><input class="form-control" value="' + data.List[i].ItemName + '" readonly="true" type="hidden" name="ItemName"  style="width:90px;" disabled="disabled"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
                                + '<td><input value="" type="hidden" name="UnitId"/><label name="label_UnitName">' + data.List[i].UnitName + '</label><input class="form-control" value="' + data.List[i].UnitName + '" readonly="true" type="hidden" name="UnitName"  style="width:90px;" disabled="disabled"/></td>'
                                + '<td><input value="' + data.List[i].RCode + '" type="hidden" class="form-control"  name="RCode" style="width:90px;"/><label name="label_RCodeName">' + data.List[i].RCodeName + '</label><input value="' + data.List[i].RCodeName + '" type="hidden" class="form-control"  name="RCodeName" style="width:90px;" disabled="disabled"/></td>'
-                               + '<td><input value="' + data.List[i].PONo + '" type="hidden" name="PurchaseOrder" class="form-control" style="width:90px;" disabled="disabled"/><label name="label_PONo">' + data.List[i].PONo + '</label></td>'
+                               + '<td><input value="' + data.List[i].PONo + '" type="hidden" name="PurchaseOrder" class="form-control" style="width:90px;" disabled="disabled"/><label name="label_PONo">' + data.List[i].PONoName + '</label></td>'
                                + '<td><input value="' + data.List[i].VendorId + '" type="hidden" name="VendorId"/><label name="label_VendorName">' + data.List[i].VendorName + '</label><input class="form-control" value="' + data.List[i].VendorName + '" readonly="true" type="hidden" name="VendorName"  style="width:90px;"/></td>'
                                + '<td><input value="' + data.List[i].TotalMaterial + '" type="hidden" name="TotalMaterial" class="form-control" style="width:90px;" disabled="disabled"/><label name="label_TotalMaterial">' + data.List[i].TotalMaterial + '</label></td>'
                                //+ '<td><input value="' + PreviousReceived + '" type="hidden" name="PreviousQty" class="form-control" style="width:50px;"/><label>' + PreviousReceived + '</label></td>'
@@ -455,6 +455,7 @@
                                 $('#ModalUnitName').val(UnitName);
                                 //$('#ModalReqNo').val(RCode);
                                 //$('#ModalPONo').val(PayOrderNo);
+                                //alert(VendorName);
                                 $('#ModalVendorName').val(VendorName);
                                 $('#ModalVendorId').val(VendorId);
                                 $('#ModalTotalMaterial').val(TotalMaterial);
@@ -560,7 +561,7 @@
                         Items = Items + '<option value=' + data.POs[i].Value + '>' + data.POs[i].Text + '</option>';
                     }
                     Items = Items + '</select>';
-                    $('#ModalPONo').html(Items);
+                    $('#ModalPONo').html(Items);                   
                     $('#ModalPONo').val(PayOrderNo);
                 }
 
@@ -652,7 +653,7 @@
             var ItemId = $('#ModalItemName').val();
             var ProjectId = $('#ProjectId').val();
             var SiteId = $('#SiteId').val();
-            var ReqNo = $('#ModalReqNo option:selected').text();
+            var ReqNo = $('#ModalReqNo option:selected').val();
 
             if (ProjectId == "" && SiteId == "") {
                 alert('Please Select Project Id and Site Id');
@@ -731,9 +732,8 @@
             var ProjectId = $('#ProjectId').val();
             var SiteId = $('#SiteId').val();
             var ReqNo = $('#ModalReqNo option:selected').val();
-            var PONo = $('#ModalPONo option:selected').text();
+            var PONo = $('#ModalPONo option:selected').val();
 
-            //aler(PONo);
 
             if (ProjectId == "" && SiteId == "") {
                 alert('Please Select Project Id and Site Id');
@@ -1118,7 +1118,7 @@
             var ItemId = $('#ItemName option:selected').val();
             var ProjectId = $('#ProjectId').val();
             var SiteId = $('#SiteId').val();
-            var ReqNo = $('#ReqNo option:selected').text();
+            var ReqNo = $('#ReqNo option:selected').val();
 
             if (ProjectId == "" && SiteId == "") {
                 alert('Please Select Project Id and Site Id');
@@ -1187,7 +1187,7 @@
             var ItemId = $('#ItemName option:selected').val();
             var ProjectId = $('#ProjectId').val();
             var SiteId = $('#SiteId').val();
-            var ReqNo = $('#ReqNo option:selected').text();
+            var ReqNo = $('#ReqNo option:selected').val();
             var PONo = $('#PONo1 option:selected').val();
 
             if (ProjectId == "" && SiteId == "") {
@@ -1301,6 +1301,7 @@
             var RCodeName = $('#ReqNo option:selected').text();
             //alert('Requisition: ' + RCode);
             var PONo = $('#PONo1 option:selected').val();
+            var PONoName = $('#PONo1 option:selected').text();
             //alert('PO NO:'+PONo);
             var VendorId = $('#VendorId').val();
             //alert('Vendor Id: ' + VendorId);
@@ -1395,6 +1396,7 @@
                 }
             });
 
+          
             if (isAllValid) {
                 taskCounter++;
                 var newRow = jQuery('<tr>'
@@ -1404,7 +1406,7 @@
                     + '<input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input value="' + ItemName + '" type="hidden" name="ItemName" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + UnitName + '</label><input value="' + UnitName + '" type="hidden" name="UnitName" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + RCode + '" type="hidden" name="RCode" class="form-control" style="width:50px;"/><label name="label_RCodeName">' + RCodeName + '</label><input value="' + RCodeName + '" type="hidden" name="RCodeName" class="form-control" style="width:90px;"/></td>'
-                    + '<td><input value="' + PONo + '" type="hidden" name="PurchaseOrder" class="form-control" style="width:90px;"/><label name="label_PONo">' + PONo + '</label></td>'
+                    + '<td><input value="' + PONo + '" type="hidden" name="PurchaseOrder" class="form-control" style="width:90px;"/><label name="label_PONo">' + PONoName + '</label></td>'
                     + '<td><input value="' + VendorId + '" type="hidden" name="VendorId"/><label name="label_VendorName">' + VendorName + '</label><input value="' + VendorName + '" type="hidden" name="VendorName" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + TotalMaterial + '" type="hidden" name="TotalMaterial" class="form-control" style="width:90px;"/><label name="label_TotalMaterial">' + TotalMaterial + '</label></td>'
                     + '<td><input value="' + PreviousQty + '" type="hidden" name="PreviousQty" class="form-control" style="width:90px;"/><label name="label_PreviousQty">' + PreviousQty + '</label></td>'
@@ -1447,12 +1449,13 @@
                 var row = $(this).closest('tr');
                 selRow = $(this).closest('tr');
 
+                var TaskId = row.find('input[name=TaskId]').val();
                 var itemName = row.find('input[name=ItemName]').val();
                 var itemId = row.find('input[name=ItemId]').val();
                 var UnitName = row.find('input[name=UnitName]').val();
                 var UnitId = row.find('input[name=UnitId]').val();
                 var RCode = row.find('input[name=RCode]').val();
-                var PayOrderNo = row.find('input[name=PayOrderNo]').val();
+                var PayOrderNo = row.find('input[name=PurchaseOrder]').val();
                 var VendorId = row.find('input[name=VendorId]').val();
                 var VendorName = row.find('input[name=VendorName]').val();
                 var TotalMaterial = row.find('input[name=TotalMaterial]').val();
@@ -1464,12 +1467,19 @@
                 var UnitPrice = row.find('input[name=UnitPrice]').val();
                 var Cost = row.find('input[name=Cost]').val();
 
+                var ProjectId = $('#ProjectId').val();
+                var SiteId = $('#SiteId').val();
+
+                $('#ModalTaskId').val(TaskId);
+                RebindModalfields(ProjectId, SiteId, itemId,RCode,PayOrderNo);
                 //$('#ModalItemName').val(SiteName);
-                $('#ModalItemName').val(itemId);
+                //$('#ModalItemName').val(itemId);
                 $('#modalunitId').val(UnitId);
                 $('#ModalUnitName').val(UnitName);
-                $('#ModalReqNo').val(RCode).change();
-                $('#ModalPONo').val(PayOrderNo);
+                //$('#ModalReqNo').val(RCode).change();
+                //$('#ModalPONo').val(PayOrderNo);
+
+                //alert(VendorName);
                 $('#ModalVendorName').val(VendorName);
                 $('#ModalVendorId').val(VendorId);
                 $('#ModalTotalMaterial').val(TotalMaterial);
