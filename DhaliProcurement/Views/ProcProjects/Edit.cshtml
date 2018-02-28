@@ -345,22 +345,41 @@
                         //if(data[i].Remarks == "null"){
                         //    data[i].Remarks = "";
                         //}
-                       
-                        
-                        taskCounter++;
-                        var newRow = jQuery('<tr><td><input type="hidden" name="DetailId" value="' + data[i].DetailId + '"/> <input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + data[i].ItemISLNO + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + data[i].ItemName  + '</label></td>'
-                            +'<td><input class="form-control" value="' + data[i].PQuantity + '" type="hidden" name="Quantity"/><label name="label_Quantity">' + data[i].PQuantity + '</label></td>'
-                            +'<td><input value="' + data[i].UnitUSLNO + '" type="hidden" name="UnitId"/><input type="hidden" class="form-control" value="' + data[i].UnitName + '" " readonly="true" type="hidden" name="ItemUnit"/><label name="label_ItemUnit">' + data[i].UnitName + '</label></td>'
-                            +'<td><input class="form-control" value="' + data[i].PCost + '"  type="hidden" name="ItemCost"/><label name="label_ItemCost">' + data[i].PCost  + '</label></td>'
-                            +'<td><input class="form-control" value="' + data[i].Remarks + '" type="hidden" name="ItemRemarks"/><label name="label_ItemRemarks">' + data[i].Remarks + '</label></td>'
-                        +'<td>'
-                         + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
-                         +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
-                       // +'<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'
-                        +'</td>'
-                        +' </tr>');
+                        if(data[i].Checkflag==0)
+                        {
+                            taskCounter++;
+                            var newRow = jQuery('<tr><td><input type="hidden" name="DetailId" value="' + data[i].DetailId + '"/> <input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + data[i].ItemISLNO + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + data[i].ItemName  + '</label></td>'
+                                +'<td><input class="form-control" value="' + data[i].PQuantity + '" type="hidden" name="Quantity"/><label name="label_Quantity">' + data[i].PQuantity + '</label></td>'
+                                +'<td><input value="' + data[i].UnitUSLNO + '" type="hidden" name="UnitId"/><input type="hidden" class="form-control" value="' + data[i].UnitName + '" " readonly="true" type="hidden" name="ItemUnit"/><label name="label_ItemUnit">' + data[i].UnitName + '</label></td>'
+                                +'<td><input class="form-control" value="' + data[i].PCost + '"  type="hidden" name="ItemCost"/><label name="label_ItemCost">' + data[i].PCost  + '</label></td>'
+                                +'<td><input class="form-control" value="' + data[i].Remarks + '" type="hidden" name="ItemRemarks"/><label name="label_ItemRemarks">' + data[i].Remarks + '</label></td>'
+                            +'<td>'
+                             + '<input type="hidden" name="Checkflag" value="' + data[i].Checkflag + '"/><button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                             +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
+                           // +'<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'
+                            +'</td>'
+                            +' </tr>');
 
-                        jQuery('table.Resource-list tbody').append(newRow);
+                            jQuery('table.Resource-list tbody').append(newRow);
+                        }
+                        else{
+                            taskCounter++;
+                            var newRow = jQuery('<tr><td><input type="hidden" name="DetailId" value="' + data[i].DetailId + '"/> <input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + data[i].ItemISLNO + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + data[i].ItemName  + '</label></td>'
+                                +'<td><input class="form-control" value="' + data[i].PQuantity + '" type="hidden" name="Quantity"/><label name="label_Quantity">' + data[i].PQuantity + '</label></td>'
+                                +'<td><input value="' + data[i].UnitUSLNO + '" type="hidden" name="UnitId"/><input type="hidden" class="form-control" value="' + data[i].UnitName + '" " readonly="true" type="hidden" name="ItemUnit"/><label name="label_ItemUnit">' + data[i].UnitName + '</label></td>'
+                                +'<td><input class="form-control" value="' + data[i].PCost + '"  type="hidden" name="ItemCost"/><label name="label_ItemCost">' + data[i].PCost  + '</label></td>'
+                                +'<td><input class="form-control" value="' + data[i].Remarks + '" type="hidden" name="ItemRemarks"/><label name="label_ItemRemarks">' + data[i].Remarks + '</label></td>'
+                            +'<td>'
+                             + '<input type="hidden" name="Checkflag" value="' + data[i].Checkflag + '"/><button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                             +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
+                           // +'<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'
+                            +'</td>'
+                            +' </tr>');
+
+                            jQuery('table.Resource-list tbody').append(newRow);
+                        }
+                        
+
                     }
 
                     totalItemCost();
@@ -378,8 +397,20 @@
                         var UnitId = row.find('input[name=UnitId]').val();
                         var ItemCost = row.find('input[name=ItemCost]').val();
                         var ItemRemarks = row.find('input[name=ItemRemarks]').val();
-                        //alert(itemName);
+                        var Checkflag = row.find('input[name=Checkflag]').val();
+                        
+                        //alert(Checkflag);
 
+                        if(Checkflag==0)
+                        {
+                            $('#ModalItemName').removeAttr("disabled");
+                            $('#ModalUnit').removeAttr("disabled");
+
+                        }
+                        else{
+                            $("#ModalItemName").attr("disabled", "true");
+                            $("#ModalUnit").attr("disabled", "true");
+                        }
 
                         //$('#ModalItemName').val(SiteName);
                         $('#ModalTaskId').val(TaskId);
@@ -851,7 +882,7 @@
 
             //});
 
-
+            var Checkflag =0;
             //Add item to list if valid
             if (isValidItem) {
                 taskCounter++;
@@ -861,7 +892,7 @@
                     +'<td><input class="form-control" value="' + Cost + '"  type="hidden" name="ItemCost"/><label name="label_ItemCost">' + Cost  + '</label></td>'
                     +'<td><input class="form-control" value="' + ItemRemarks + '" type="hidden" name="ItemRemarks"/><label name="label_ItemRemarks">' + ItemRemarks + '</label></td>'
                     +' <td> '
-                         + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                         + '<input type="hidden" name="Checkflag" value="' + Checkflag + '"/><button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                        //+'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteClick"  onclick="$(this).parent().parent().remove();" ><i class="icon-cross"></i></button>'
                              + '<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteClick" value="Delete"><i class="icon-cross"></i></button>'
                        +'</td></tr>');
@@ -891,7 +922,20 @@
                     var UnitId = row.find('input[name=UnitId]').val();
                     var ItemCost = row.find('input[name=ItemCost]').val();
                     var ItemRemarks = row.find('input[name=ItemRemarks]').val();
-                    //alert(itemName);
+                    var Checkflag = row.find('input[name=Checkflag]').val();
+                        
+                    //alert(Checkflag);
+
+                    if(Checkflag==0)
+                    {
+                        $('#ModalItemName').removeAttr("disabled");
+                        $('#ModalUnit').removeAttr("disabled");
+
+                    }
+                    else{
+                        $("#ModalItemName").attr("disabled", "true");
+                        $("#ModalUnit").attr("disabled", "true");
+                    }
 
 
                     //$('#ModalItemName').val(SiteName);

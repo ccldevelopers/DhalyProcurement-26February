@@ -628,6 +628,16 @@ namespace DhaliProcurement.Controllers
                 var unitsName = db.ProcProjectItem.FirstOrDefault(x => x.UnitId == i.UnitId);
                 p.UnitName = unitsName.Unit.Name;
                 check.Add(p);
+
+                var editCheck = db.Proc_RequisitionDet.Where(x=>x.ItemId==i.ItemId && x.Proc_RequisitionMas.ProcProjectId == i.ProcProjectId).ToList();
+                if (editCheck.Count == 0)
+                {
+                    p.Checkflag = 0;
+                }
+                else
+                {
+                    p.Checkflag = 1;
+                }
             }
 
             return Json(check, JsonRequestBehavior.AllowGet);

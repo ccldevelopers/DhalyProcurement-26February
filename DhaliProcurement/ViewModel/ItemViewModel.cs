@@ -18,5 +18,6 @@ namespace DhaliProcurement.ViewModel
         public string Remarks { get; set; }
         public string ItemName { get; set; }
         public string UnitName { get; set; }
+        public int Checkflag { get; set; }
     }
 }

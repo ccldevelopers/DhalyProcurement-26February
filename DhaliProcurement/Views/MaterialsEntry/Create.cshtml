@@ -311,7 +311,7 @@
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="ModalClose">Close</button>
                             </div>
                         </div>
                     </div>
@@ -1188,7 +1188,7 @@
         var ItemId = $('#ModalItemName option:selected').val();
         var ProjectId = $('#ProjectId option:selected').val();
         var SiteId = $('#SiteId option:selected').val();
-        var ReqNo = $('#ModalReqNo option:selected').text();
+        var ReqNo = $('#ModalReqNo option:selected').val();
 
         if (ProjectId == "" && SiteId == "") {
             alert('Please Select Project Id and Site Id');
@@ -1318,10 +1318,18 @@
 
     });
 
-
+    $('#ModalClose').click(function () {
+        $('#ModalItemName_Error').hide();
+        $('#ModalReqNo_Error').hide();
+        $('#ModalPONo_Error').hide();
+        $('#ModalChallanNo_Error').hide();
+        $('#ModalMaterialEntry_Error').hide();
+    });
 
     $('#ModalDetailSave').click(function () {
         var isAllValid = true;
+
+
 
         var TaskId = $('#ModalTaskId').val();
         var ItemName = $('#ModalItemName option:selected').text();
@@ -1343,7 +1351,7 @@
 
 
         if (ItemName == "" || ItemName == "--Select--") {
-            $('#ModalItemName_Error').show();
+            $('#ModalItemName_Error').text('Item required').show();
             isAllValid = false;
         }
         else {
@@ -1351,21 +1359,21 @@
         }
 
         if (ReqNo == "" || ReqNo == "--Select--") {
-            $('#ModalReqNo_Error').show();
+            $('#ModalReqNo_Error').text('Req No. required').show();
             isAllValid = false;
         }
         else {
             $('#ModalReqNo_Error').hide();
         }
         if (ModalPONo == "" || ModalPONo == "--Select--") {
-            $('#ModalPONo_Error').show();
+            $('#ModalPONo_Error').text('PO No. required').show();
             isAllValid = false;
         }
         else {
             $('#ModalPONo_Error').hide();
         }
         if (ModalChallanNo == "") {
-            $('#ModalChallanNo_Error').show();
+            $('#ModalChallanNo_Error').text('Challan No. required').show();
             isAllValid = false;
         }
         else {
@@ -1382,12 +1390,14 @@
         }
 
         if (ModalMaterialEntry == "") {
-            $('#ModalMaterialEntry_Error').show();
+            $('#ModalMaterialEntry_Error').text('Material Entry required').show();
             isAllValid = false;
         }
         else {
             $('#ModalMaterialEntry_Error').hide();
         }
+
+       
 
 
         if (ModalMaterialEntry != "") {
@@ -1406,6 +1416,8 @@
 
             }
         }
+
+       
 
         $('table.Resource-list tbody tr').each(function () {
             var Itemname = $(this).find("td input[name=ChallanNo]").val();
