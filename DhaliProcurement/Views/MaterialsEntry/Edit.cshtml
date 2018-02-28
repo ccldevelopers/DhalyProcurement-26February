@@ -268,7 +268,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.Label("VendorName", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.Label("Vendor Name", htmlAttributes: new { @class = "control-label col-md-2" })
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
                                     <input type="hidden" id="ModalVendorId" />
@@ -412,7 +412,7 @@
                                    + '<td><input value="' + data.List[i].EntryQty * data.List[i].UnitPrice + '" type="hidden" name="Cost" class="form-control Cost" style="width:80px;" disabled="disabled"/><label name="label_Cost">' + data.List[i].EntryQty * data.List[i].UnitPrice + '</label></td>'
                                    + '</td> <td><input value="' + data.List[i].Status + '" type="hidden" name="Status"/>'
                                    //+'<button  onclick="RemoveTask('+data.List[i].Proc_MaterialEntryDetId+')" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'
-                                   + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                                   + '<input type="hidden" name="Checkflag" value="' + data.List[i].Checkflag + '"/><button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                                    +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
                                    +'</td></tr>');
                                 //+'<td">'+
@@ -444,7 +444,7 @@
                                    + '<td><input value="' + data.List[i].EntryQty * data.List[i].UnitPrice + '" type="hidden" name="Cost" class="form-control Cost" style="width:80px;" disabled="disabled"/><label name="label_Cost">' + data.List[i].EntryQty * data.List[i].UnitPrice + '</label></td>'
                                    + '</td> <td><input value="' + data.List[i].Status + '" type="hidden" name="Status"/>'
                                    //+'<button  onclick="RemoveTask('+data.List[i].Proc_MaterialEntryDetId+')" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'
-                                  // + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                                   + '<input type="hidden" name="Checkflag" value="' + data.List[i].Checkflag + '"/><button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                                    +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
                                    +'</td></tr>');
                                 //+'<td">'+
@@ -483,7 +483,25 @@
                                 var ProjectId = $('#ProjectId').val();
                                 var SiteId = $('#SiteId').val();
 
+                                //alert(PreviousQty);
+                                //alert(RemainingQty);
+
                                 RebindModalfields(ProjectId, SiteId, itemId,RCode,PayOrderNo);
+
+                                var Checkflag = row.find('input[name=Checkflag]').val();
+                        
+                                if(Checkflag==0)
+                                {
+                                    $('#ModalItemName').removeAttr("disabled");
+                                    $('#ModalReqNo').removeAttr("disabled");
+                                    $('#ModalPONo').removeAttr("disabled");
+
+                                }
+                                else{
+                                    $("#ModalItemName").attr("disabled", "true");
+                                    $("#ModalReqNo").attr("disabled", "true");
+                                    $("#ModalPONo").attr("disabled", "true");
+                                }
 
                                 //$('#ModalItemName').val(SiteName);
                                 $('#ModalTaskId').val(TaskId);
@@ -588,7 +606,8 @@
                         Items = Items + '<option value=' + data.ReqList[i].Value + '>' + data.ReqList[i].Text + '</option>';
                     }
                     Items = Items + '</select>';
-                    $('#ModalReqNo').html(Items);              
+                    $('#ModalReqNo').html(Items);   
+                    //alert(RCode);
                     $('#ModalReqNo').val(RCode);
 
                     var listOfPOs = data.POs.length;
@@ -1439,7 +1458,7 @@
                 }
             });
 
-          
+            var Checkflag =0;
             if (isAllValid) {
                 taskCounter++;
                 var newRow = jQuery('<tr>'
@@ -1461,7 +1480,7 @@
                     + '<td><input value="' + UnitPrice + '" type="hidden" name="UnitPrice" class="form-control UnitPrice" style="width:90px;"/><label name="label_UnitPrice">' + UnitPrice + '</label></td>'
                     + '<td><input value="' + Cost + '" type="hidden" name="Cost" class="form-control Cost" style="width:90px;"/><label name="label_Cost">' + Cost + '</label></td>'
                     + '</td><input value="' + Status + '" type="hidden" name="Status"/> <td> '
-                    + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                    + '<input type="hidden" name="Checkflag" value="' + Checkflag + '"/><button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                     +'<button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td></tr>');
                 //+ '<td> <input type="button" class="btn btn-danger btn-xs" value="Delete" onclick="$(this).parent().parent().remove();" /></td></tr>');
 
