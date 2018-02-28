@@ -245,6 +245,7 @@
                                                                              join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
                                                                              join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
                                                                              join tenderDet in db.Proc_TenderDet on purchaseMas.Proc_TenderMasId equals tenderDet.Proc_TenderMasId
+                                                                             //where purchaseDet.ItemId == item.ItemId
                                                                              where purchaseDet.ItemId == item.ItemId
                                                                              select entryDet.EntryQty).Distinct().ToList();
 
