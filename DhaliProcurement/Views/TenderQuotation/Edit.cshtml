@@ -185,7 +185,8 @@
                                 <table class="Resource-list table table-bordered" id="RequisitionDetails">
                                     <thead>
                                         <tr class="bg-grey">
-                                            <th>Sl. No.</th>
+                                            @*<th>Sl. No.</th>*@
+                                            <th></th>
                                             <th>Project Name</th>
                                             <th>Site</th>
                                             <th>Req. No.</th>
@@ -434,7 +435,7 @@
                                     if(data.List[i].Checkflag ==0){
 
                                         var row = $('<tr bgcolor="#D0F0C0" style="font-weight:bold;">'
-                                           +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
+                                           +'<td class="index"><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
                                            + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label style="font-weight:bold;width:150px;">' + data.List[i].ProjectName + '<label></td>'
                                            + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label style="font-weight:bold;width:150px;">' + data.List[i].SitetName + '<label></td>'
                                            + '<td><input value="' + data.List[i].RCode + '" type="hidden" name="ReqCode" style="font-weight:bold;"/><label style="font-weight:bold;width:150px;">' + data.List[i].RCodeName + '<label><input value="' + data.List[i].RCodeName + '" type="hidden" name="RCodeName" style="font-weight:bold;"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
@@ -466,7 +467,7 @@
                                     else{
 
                                         var row = $('<tr bgcolor="#D0F0C0" style="font-weight:bold;">'
-                                           +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
+                                           +'<td class="index"><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
                                            + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label style="font-weight:bold;width:150px;">' + data.List[i].ProjectName + '<label></td>'
                                            + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label style="font-weight:bold;width:150px;">' + data.List[i].SitetName + '<label></td>'
                                            + '<td><input value="' + data.List[i].RCode + '" type="hidden" name="ReqCode" style="font-weight:bold;"/><label style="font-weight:bold;width:150px;">' + data.List[i].RCodeName + '<label><input value="' + data.List[i].RCodeName + '" type="hidden" name="RCodeName" style="font-weight:bold;"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
@@ -500,7 +501,7 @@
                                 else{
                                     counter++;
                                     var row = $('<tr>'
-                                       +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
+                                       +'<td class="index"><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
                                        + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label name="label_ProjectName" style="width:150px;">'+ data.List[i].ProjectName + '</label><input class="form-control" value="' + data.List[i].ProjectName + '" type="hidden" name="ProjectName" style="width:90px;" disabled="disabled"/></td>'
                                        + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label name="label_SiteName" style="width:150px;">' + data.List[i].SitetName + '</label><input class="form-control" value="' + data.List[i].SitetName + '" type="hidden" name="SiteName" style="width:90px;"  disabled="disabled"/></td>'
                                        + '<td><input value="' + data.List[i].RCode + '" type="hidden" class="form-control" name="ReqCode"  style="width:150px;"/><label name="label_RCodeName" style="width:150px;">' + data.List[i].RCodeName + '</label><input value="' + data.List[i].RCodeName+ '" type="hidden" class="form-control" name="RCodeName"  style="width:90px;"  disabled="disabled"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
@@ -537,7 +538,7 @@
                                     counter++;
                                     if(data.List[i].Checkflag ==0){
                                         var row = $('<tr bgcolor="#D0F0C0" style="font-weight:bold;">'
-                                              +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
+                                              +'<td class="index"><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
                                               + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label style="font-weight:bold;">' + data.List[i].ProjectName + '<label></td>'
                                               + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label style="font-weight:bold;">' + data.List[i].SitetName + '<label></td>'
                                               + '<td><input value="' + data.List[i].RCode + '" type="hidden" name="ReqCode"/><label style="font-weight:bold;">' + data.List[i].RCodeName + '<label><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
@@ -566,7 +567,7 @@
                                     }
                                     else{
                                         var row = $('<tr bgcolor="#D0F0C0" style="font-weight:bold;">'
-                                             +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
+                                             +'<td class="index"><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
                                              + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label style="font-weight:bold;">' + data.List[i].ProjectName + '<label></td>'
                                              + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label style="font-weight:bold;">' + data.List[i].SitetName + '<label></td>'
                                              + '<td><input value="' + data.List[i].RCode + '" type="hidden" name="ReqCode"/><label style="font-weight:bold;">' + data.List[i].RCodeName + '<label><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
@@ -598,7 +599,7 @@
                                 else{
                                     counter++;
                                     var row = $('<tr>'
-                                       +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
+                                       +'<td class="index"><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
                                       + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label name="label_ProjectName">' + data.List[i].ProjectName  + '</label><input class="form-control" value="' + data.List[i].ProjectName + '" type="hidden" name="ProjectName" style="width:90px;" disabled="disabled"/></td>'
                                        + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label name="label_SiteName">' + data.List[i].SitetName  + '</label><input class="form-control" value="' + data.List[i].SitetName + '" type="hidden" name="SiteName" style="width:90px;" disabled="disabled"/></td>'
                                        + '<td><input value="' + data.List[i].RCode + '" type="hidden" class="form-control" name="ReqCode"  style="width:90px;"/><label name="label_RCodeName">' + data.List[i].RCodeName + '</label><input value="' + data.List[i].RCodeName + '" type="hidden" class="form-control" name="RCodeName"  style="width:90px;" disabled="disabled"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
@@ -658,7 +659,7 @@
 
                         var Checkflag = row.find('input[name=Checkflag]').val();
 
-                        alert(Checkflag);
+                        //alert(Checkflag);
 
                         //if(Checkflag==0)
                         //{
@@ -1569,7 +1570,7 @@
 
             if (isAllValid) {
                 var newRow = jQuery('<tr>'
-                     +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+TenderDetailId+'"/></td>'
+                     +'<td class="index"><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+TenderDetailId+'"/></td>'
                     + '<td><input value="' + ProjectId + '" type="hidden" name="ProjectId"/><label name="label_ProjectName" style="width:150px;">' + ProjectName  + '</label><input type="hidden" value="'+ ProjectName+'" class="form-control" name="ProjectName"  style="width:90px;" disabled="disabled"/></td>'
                     + '<td><input value="' + SiteId + '" type="hidden" name="SiteId"/><label name="label_SiteName" style="width:150px;">' + SiteName  + '</label><input type="hidden" value="'+ SiteName+'" class="form-control" name="SiteName"  style="width:90px;" disabled="disabled"/></td>'
                     + '<td><input value="' + RCode + '" type="hidden" class="form-control" name="ReqCode"/><label name="label_RCodeName" style="width:150px;">' + RCodeName + '</label><input value="' + RCodeName + '" type="hidden" class="form-control" name="RCodeName" style="width:90px;" disabled="disabled"/><input value="' + Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'

@@ -693,55 +693,131 @@
 
         });
 
-        $('#ProjectId').change(function () {
+        $("#ProjectId").change(function () {
+            var newVal = $(this).val();
+            var tbody = $(".Resource-list tbody");
+            if (tbody.children('tr').length == 0) {
+                if ($('#ProjectId option:selected').text() == "--Select--") {
+                    $('#SiteId').empty();
+                    var sites = "<select id='sites'>";
+                    sites = sites + '<option value="">--Select--</option>';
+                    sites = sites + '</select>';
+                    $('#SiteId').html(sites);
+                    $('#projStartDate').val("");
+                    $('#projEndDate').val("");
+                    $('#SiteEngineer').val("");
+                    $('#ProjectManager').val("");
+                }
+                else {
+                    $.ajax({
+                        url: "/ProcProjects/GetPId",
+                        type: "post",
+                        data: {
+                            ProjectId: newVal
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            $('#SiteId').removeAttr("disabled");
+                            $('#projStartDate').val("");
+                            $('#projEndDate').val("");
+                            $('#SiteEngineer').val("");
+                            $('#ProjectManager').val("");
 
-            var id = $('#ProjectId option:selected').val();
+                            //alert(data.start);
+                            //alert(data.end);
+                            //alert(data.manager);
 
-            if ($('#ProjectId option:selected').text() == "--Select--") {
-                $('#SiteId').empty();
-                var sites = "<select id='sites'>";
-                sites = sites + '<option value="">--Select--</option>';
-                sites = sites + '</select>';
-                $('#SiteId').html(sites);
-                $('#projStartDate').val("");
-                $('#projEndDate').val("");
-                $('#SiteEngineer').val("");
-                $('#ProjectManager').val("");
+                            $('#projStartDate').val(data.start);
+                            $('#projEndDate').val(data.end);
+                            $('#ProjectManager').val(data.manager);
+                            var listOfSites = data.Sites.length;
+
+                            var sites = "<select id='sites'>";
+                            sites = sites + '<option value="">--Select--</option>';
+                            for (var i = 0; i < listOfSites; i++) {
+                                sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+                            }
+                            sites = sites + '</select>';
+                            $('#SiteId').html(sites);
+
+                        },
+                        error: function (xhr) {
+                            alert('error');
+                        }
+                    });
+                }
             }
             else {
-                $.ajax({
-                    url: "/ProcProjects/GetPId",
-                    type: "post",
-                    data: {
-                        ProjectId: id
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        $('#SiteId').removeAttr("disabled");
-                        $('#projStartDate').val(data.start);
-                        $('#projEndDate').val(data.end);
-                        $('#ProjectManager').val(data.manager);
-                        var listOfSites = data.Sites.length;
 
+                if (!confirm("If you change this than the table will be empty!Are you sure?")) {
+                    $(this).val($.data(this, 'val')); //set back previous value
+                    return;                           //abort!
+                }
+                else {
+                    tbody.empty();
+                    if ($('#ProjectId option:selected').text() == "--Select--") {
+                        $('#SiteId').empty();
                         var sites = "<select id='sites'>";
                         sites = sites + '<option value="">--Select--</option>';
-                        for (var i = 0; i < listOfSites; i++) {
-                            sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
-                        }
                         sites = sites + '</select>';
                         $('#SiteId').html(sites);
+                        $('#projStartDate').val("");
+                        $('#projEndDate').val("");
+                        $('#SiteEngineer').val("");
+                        $('#ProjectManager').val("");
 
-                    },
-                    error: function (xhr) {
-                        alert('error');
                     }
-                });
+                    else {
+                        $.ajax({
+                            url: "/ProcProjects/GetPId",
+                            type: "post",
+                            data: {
+                                ProjectId: newVal
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                $('#SiteId').removeAttr("disabled");
+                                $('#projStartDate').val("");
+                                $('#projEndDate').val("");
+                                $('#SiteEngineer').val("");
+                                $('#ProjectManager').val("");
+
+                                //alert(data.start);
+                                //alert(data.end);
+                                //alert(data.manager);
+                                $('#projStartDate').val(data.start);
+                                $('#projEndDate').val(data.end);
+                                $('#ProjectManager').val(data.manager);
+                                var listOfSites = data.Sites.length;
+
+                                var sites = "<select id='sites'>";
+                                sites = sites + '<option value="">--Select--</option>';
+                                for (var i = 0; i < listOfSites; i++) {
+                                    sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+                                }
+                                sites = sites + '</select>';
+                                $('#SiteId').html(sites);
+
+                            },
+                            error: function (xhr) {
+                                alert('error');
+                            }
+                        });
+                    }
+                }
+
             }
-           
+            //destroy branches
+            $.data(this, 'val', newVal);        //store new value for next time
         });
 
         $("#SiteId").change(function () {
             var SiteId = $('#SiteId').val();
+            var newVal = $(this).val();
+            var tbody = $(".Resource-list tbody");
+            if (tbody.children('tr').length == 0) {
+            }
+
             $.ajax({
                 type: "post",
                 url: "/ProcProjects/GetSiteEngineer",
