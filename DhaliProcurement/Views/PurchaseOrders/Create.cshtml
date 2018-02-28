@@ -191,9 +191,11 @@
                                 <td class="col-lg-2">
                                     <input type="text" id="TotalPrice1" class="form-control" disabled="disabled" />
                                 </td>
-                                <td class="col-lg-1"></td>
+                                <td class="col-lg-1">
+                                    <button type="button" id="addNewRow" class="btn btn-info" style="background-color: grey;border: none;"><i class="glyphicon glyphicon-plus"></i></button>
+                                </td>
                                 <td class="col-lg-2">
-                                    <input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />
+                                    @*<input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />*@
                                 </td>
                             </tr>
                             <tr>
@@ -1017,6 +1019,8 @@
             $('#RequisitionQty').val("");
             $('#POQuantity1').val("");
             $('#TotalPrice1').val("");
+
+
         }
         else {
             $.ajax({
