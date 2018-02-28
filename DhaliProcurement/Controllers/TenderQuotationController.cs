@@ -640,6 +640,20 @@ namespace DhaliProcurement.Controllers
                     vm.TQPrice = i.TQPrice;
                     vm.Status = i.Status;
 
+                    var vendorCheck = (from purMas in db.Proc_PurchaseOrderMas
+                                       join tenderDet in db.Proc_TenderDet on purMas.VendorId equals tenderDet.VendorId
+                                       where tenderDet.Id == i.Id
+                                       select tenderDet).ToList();
+                    //var checkEdit = db.Proc_PurchaseOrderMas.Where()
+                    if (vendorCheck.Count == 0)
+                    {
+                        vm.Checkflag = 0;
+                    }
+                    else
+                    {
+                        vm.Checkflag = 1;
+                    }
+
                     detailsList.Add(vm);
                 }
 

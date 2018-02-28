@@ -44,6 +44,7 @@ namespace DhaliProcurement.ViewModel
         public string TQNo { get; set; }
         public decimal TQPrice { get; set; }
         public string Status { get; set; }
+        public int Checkflag { get; set; }
     }
 
     public class VMPendingTender {
