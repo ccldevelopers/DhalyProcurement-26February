@@ -165,6 +165,26 @@ namespace DhaliProcurement.Controllers
             foreach (var projCostingMaster in projCostingMasters)
             {
 
+
+                dsProjInfoCost.ProcProjMaster.AddProcProjMasterRow(projCostingMaster.ProcProjId,
+                                                     projCostingMaster.BOQNo,
+                                                     NullHelper.DateToString(projCostingMaster.BOQDate),
+                                                     projCostingMaster.NOANo,
+                                                     NullHelper.DateToString(projCostingMaster.NOADate),
+                                                     projCostingMaster.ProjectId,
+                                                     projCostingMaster.ProjectName,
+                                                     projCostingMaster.ProjectResId,
+                                                     projCostingMaster.SiteId,
+                                                     projCostingMaster.SiteName,
+                                                     projCostingMaster.ProjectSiteResId,
+                                                     NullHelper.DateToString(projCostingMaster.ProjectStartDate),
+                                                     NullHelper.DateToString(projCostingMaster.ProjectEndDate),
+                                                     projCostingMaster.ProjectResName,
+                                                     projCostingMaster.ProjectSiteResName,
+                                                     PrManMobile,
+                                                     StEngrMobile);
+
+
                 //details
                 var projCosting = (from proj in db.Project
                                    join projSite in db.ProjectSite on proj.Id equals projSite.ProjectId
@@ -195,23 +215,7 @@ namespace DhaliProcurement.Controllers
 
 
 
-                dsProjInfoCost.ProcProjMaster.AddProcProjMasterRow(projCostingMaster.ProcProjId,
-                                                      projCostingMaster.BOQNo,
-                                                      NullHelper.DateToString(projCostingMaster.BOQDate),
-                                                      projCostingMaster.NOANo,
-                                                      NullHelper.DateToString(projCostingMaster.NOADate),
-                                                      projCostingMaster.ProjectId,
-                                                      projCostingMaster.ProjectName,
-                                                      projCostingMaster.ProjectResId,
-                                                      projCostingMaster.SiteId,
-                                                      projCostingMaster.SiteName,
-                                                      projCostingMaster.ProjectSiteResId,
-                                                      NullHelper.DateToString(projCostingMaster.ProjectStartDate),
-                                                      NullHelper.DateToString(projCostingMaster.ProjectEndDate),
-                                                      projCostingMaster.ProjectResName,
-                                                      projCostingMaster.ProjectSiteResName,
-                                                      PrManMobile,
-                                                      StEngrMobile);
+               
 
                 foreach (var item in projCosting)
                 {
