@@ -410,12 +410,33 @@ namespace DhaliProcurement.Controllers
 
             var POQty = db.Proc_PurchaseOrderDet.SingleOrDefault(x => x.ItemId == itemId && x.Proc_PurchaseOrderMas.Id == PONo);
 
+            decimal total = 0;
+            var totalReceived = (from entryDet in db.Proc_MaterialEntryDet
+                                 join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
+                                 join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
+                                 join tenderDet in db.Proc_TenderDet on purchaseMas.Proc_TenderMasId equals tenderDet.Proc_TenderMasId
+                                 join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                                 join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                                 join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                                 join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
+                                 //where purchaseDet.ItemId == item.ItemId
+                                 where entryDet.Proc_PurchaseOrderDet.ItemId == itemId && procProject.ProjectSiteId == siteId
+                                 select entryDet.EntryQty).Distinct().ToList();
+
+            foreach (var i in totalReceived)
+            {
+                total = total + i;
+            }
+
+
+
             var result = new
             {
                 VendorId = vendors.Id,
                 vendorName = db.Vendor.SingleOrDefault(x => x.Id == vendors.Id).Name,
                 POQuantity = POQty.POQty,
-                POReceived = POQty.PORcv
+                //POReceived = POQty.PORcv
+                POReceived = total
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -454,28 +475,28 @@ namespace DhaliProcurement.Controllers
 
 
             //decimal receivedQuantity = 0;
-            var totalReceived = (from entryDet in db.Proc_MaterialEntryDet
-                                 join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
-                                 join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
-                                 join tenderDet in db.Proc_TenderDet on purchaseMas.Proc_TenderMasId equals tenderDet.Proc_TenderMasId
-                                 where purchaseDet.ItemId == itemId
-                                 select entryDet).Distinct().ToList();
+            //var totalReceived = (from entryDet in db.Proc_MaterialEntryDet
+            //                     join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
+            //                     join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
+            //                     join tenderDet in db.Proc_TenderDet on purchaseMas.Proc_TenderMasId equals tenderDet.Proc_TenderMasId
+            //                     where purchaseDet.ItemId == itemId
+            //                     select entryDet).Distinct().ToList();
 
 
-            decimal receivedQuantity = 0;
-            if (totalReceived.Count == 0)
-            {
-                receivedQuantity = 0;
-            }
-            else
-            {
-                foreach (var i in totalReceived)
-                {
-                    receivedQuantity = receivedQuantity + i.EntryQty;
-                }
+            //decimal receivedQuantity = 0;
+            //if (totalReceived.Count == 0)
+            //{
+            //    receivedQuantity = 0;
+            //}
+            //else
+            //{
+            //    foreach (var i in totalReceived)
+            //    {
+            //        receivedQuantity = receivedQuantity + i.EntryQty;
+            //    }
 
-                //receivedQuantity = totalrecv;
-            }
+               
+            //}
 
             List<SelectListItem> POList = new List<SelectListItem>();
 
@@ -489,8 +510,8 @@ namespace DhaliProcurement.Controllers
                 TotalMaterial = totalMaterial.PQuantity,
                 RemainingQty = requiredQty.ReqQty,
                 UnitPrice = unitPrice.TQPrice,
-                POs = POList,
-                PreviousReceived = receivedQuantity
+                POs = POList
+                //PreviousReceived = receivedQuantity
 
             };
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -783,6 +804,12 @@ namespace DhaliProcurement.Controllers
         public JsonResult getEditMaterialEntry(int MaterialEntryMasId)
         {
             bool flag = false;
+            var id = (from entryMas in db.Proc_MaterialEntryMas
+                      join procProject in db.ProcProject on entryMas.ProcProjectId equals procProject.Id
+                      join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                      join project in db.Project on site.ProjectId equals project.Id
+                      where entryMas.Id == MaterialEntryMasId
+                      select new { site, project }).SingleOrDefault();
 
             var check = db.Proc_MaterialEntryDet.Where(x => x.Proc_MaterialEntryMasId == MaterialEntryMasId).Count();
             if (check > 0)
@@ -930,11 +957,17 @@ namespace DhaliProcurement.Controllers
 
                     vm.TotalMaterial = totalMaterial.PQuantity;
 
+
                     var totalReceived = (from entryDet in db.Proc_MaterialEntryDet
                                          join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
                                          join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
                                          join tenderDet in db.Proc_TenderDet on purchaseMas.Proc_TenderMasId equals tenderDet.Proc_TenderMasId
-                                         where purchaseDet.ItemId == ItemId.Id
+                                         join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                                         join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                                         join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                                         join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
+                                         //where purchaseDet.ItemId == ItemId.Id
+                                         where entryDet.Proc_PurchaseOrderDet.ItemId == ItemId.Id && procProject.ProjectSiteId== id.site.Id
                                          select entryDet).Distinct().ToList();
 
 

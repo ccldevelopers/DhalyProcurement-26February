@@ -706,11 +706,14 @@ namespace DhaliProcurement.Controllers
             var result = new
             {
                 flag = false,
-                message = "Purchase order saving error !"
+                message = "Purchase order saving error !",
+                TenderMasterId = 0,
+                PurchaseOrderMasterId =0
             };
             var flag = false;
 
-
+            var TenderMasterId = TenderId;
+            var PurchaseOrderMasterId = 0;
 
 
             var orderList = db.Proc_PurchaseOrderMas.Where(x => x.PONo.Trim() == PONo.Trim()).ToList();
@@ -742,6 +745,7 @@ namespace DhaliProcurement.Controllers
                         flag = db.SaveChanges() > 0;
 
                         var PurchaseOrderId = master.Id;
+                        PurchaseOrderMasterId = PurchaseOrderId;
                         foreach (var item in AddedDetItems)
                         {
                             Proc_PurchaseOrderDet detail = new Proc_PurchaseOrderDet();
@@ -765,7 +769,9 @@ namespace DhaliProcurement.Controllers
                             result = new
                             {
                                 flag = true,
-                                message = "Save Successful!"
+                                message = "Save Successful!",
+                                TenderMasterId = TenderMasterId,
+                                PurchaseOrderMasterId = PurchaseOrderMasterId
                             };
                         }
                     }
@@ -776,7 +782,9 @@ namespace DhaliProcurement.Controllers
                         {
 
                             flag = false,
-                            message = "Saving failed! Error occurred."
+                            message = "Saving failed! Error occurred.",
+                            TenderMasterId = TenderMasterId,
+                            PurchaseOrderMasterId = PurchaseOrderMasterId
                             //message = ex.Message
                         };
                     }
@@ -789,7 +797,9 @@ namespace DhaliProcurement.Controllers
                 {
 
                     flag = false,
-                    message = "PO already exists!"
+                    message = "PO already exists!",
+                    TenderMasterId= TenderMasterId,
+                    PurchaseOrderMasterId = PurchaseOrderMasterId
                 };
             }
                 return Json(result, JsonRequestBehavior.AllowGet);

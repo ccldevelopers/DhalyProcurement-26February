@@ -250,7 +250,7 @@
                                                                              join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
                                                                              join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
                                                                              //where purchaseDet.ItemId == item.ItemId
-                                                                             where procProjectItem.ItemId == item.ItemId && procProject.ProjectSiteId == sid
+                                                                             where entryDet.Proc_PurchaseOrderDet.ItemId == item.ItemId && procProject.ProjectSiteId == sid
                                                                              select entryDet.EntryQty).Distinct().ToList();
 
                                                         foreach (var i in totalReceived)
@@ -350,7 +350,7 @@
                 else
                 {
                     <button type="button" id="SaveItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>Update</button>
-                    <button type="button" id="ApproveItem" class="btn btn-danger"><i class="icon-select2 position-left"></i>Approve</button>
+                    <button type="button" id="ApproveItem" class="btn btn-warning"><i class="icon-select2 position-left"></i>Approve</button>
                 }
             }
             else
@@ -362,7 +362,7 @@
                 else
                 {
 
-                    <button type="button" id="ApproveItem" class="btn btn-danger" disabled="disabled"><i class="icon-select2 position-left"></i>Pending Approval</button>
+                    <button type="button" id="ApproveItem" class="btn btn-warning" disabled="disabled"><i class="icon-select2 position-left"></i>Pending Approval</button>
                 }
             }
         </div>

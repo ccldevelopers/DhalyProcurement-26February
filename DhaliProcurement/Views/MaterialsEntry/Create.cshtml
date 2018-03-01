@@ -674,11 +674,11 @@
 
 
                     $('#TotalMaterial').val(data.TotalMaterial);
-                    $('#PreviousQty').val(data.PreviousReceived);
+                    //$('#PreviousQty').val(data.PreviousReceived);
                     $('#UnitPrice').val(data.UnitPrice);
-                    var Remaining = data.TotalMaterial - data.PreviousReceived;
+                    //var Remaining = data.TotalMaterial - data.PreviousReceived;
 
-                    $('#RemainingQty').val(Remaining);
+                    //$('#RemainingQty').val(Remaining);
                     $('#PONo').removeAttr("disabled");
                     //alert('test');
                     var listOfitems = data.POs.length;
@@ -741,13 +741,24 @@
                     $('#ChallanNo').val("");
                     $('#ChallanDate').val("");
                     $('#MaterialEntry').val("");                   
-
+                    
 
                     $('#VendorName').val(data.vendorName);
                     $('#VendorId').val(data.VendorId);
                     //alert('data.POQuantity: ' + data.POQuantity);
                     $('#POQty').val(data.POQuantity);
                     $('#PORcv').val(data.POReceived);
+                    
+                    $('#PreviousQty').val(data.POReceived);
+
+                    var totalMaterial = $('#TotalMaterial').val();
+
+                    var Remaining = totalMaterial - data.POReceived;
+                  
+
+                    $('#RemainingQty').val(Remaining);
+                  
+                    
                     //$('#MaterialEntry').val(data.POQuantity);
 
 
