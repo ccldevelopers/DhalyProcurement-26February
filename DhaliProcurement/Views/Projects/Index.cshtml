@@ -46,8 +46,8 @@
 
                 </div>*@
         <div class="col-md-2">
-            @*@Html.ActionLink("Create Project", "Create", null, new { @class = "btn btn-info", @style = "background-color: grey;border: none;" })*@
-            @Html.ActionLink("Create Project", "Create", null, new { @class = "btn btn-success"})
+            @Html.ActionLink("Create Project", "Create", null, new { @class = "btn btn-info", @style = "background-color: grey;border: none;" })
+            @*@Html.ActionLink("Create Project", "Create", null, new { @class = "btn btn-success"})*@
         </div>
 
         @using (@Html.BeginForm("Index", "Projects", FormMethod.Post))
@@ -64,16 +64,17 @@
                     </div>
                 </div>
             </div>
-            @*<input value="Search" class="btn btn-primary" type="submit" style="background-color: grey;border: none;" />*@
-            <input value="Search" class="btn btn-info btn-xs pull-left" type="submit"  />
+            <input value="Search" class="btn btn-primary" type="submit" style="background-color: grey;border: none;" />
+            @*<input value="Search" class="btn btn-info btn-xs pull-left" type="submit"  />*@
         }
 
         <!--End-->
         <div class="row">
-            @*<table class="table table-responsive table-bordered">*@
-                <table class="table table-responsive table-bordered  datatable-show-all">
+            <table class="table table-responsive table-bordered">
+                @*<table class="table table-responsive table-bordered  datatable-show-all">*@
                     <thead>
-                        <tr class="bg-slate">
+                        @*<tr class="bg-slate">*@
+                        <tr class="bg-grey">
                             <th class="col-xs-1">
                                 SL. No.
                             </th>
