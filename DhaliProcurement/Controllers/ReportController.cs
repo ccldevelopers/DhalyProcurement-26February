@@ -672,7 +672,7 @@ namespace DhaliProcurement.Controllers
             }
             else if (ProjectId != null && SiteId != null && VendorId != null)
             {
-                purchaseOrderMasters = purchaseOrderMasters.Where(x => x.ProjectId == ProjectId && x.SiteId == SiteId && x.PurchaseMasId == PONo).Distinct().ToList();
+                purchaseOrderMasters = purchaseOrderMasters.Where(x => x.ProjectId == ProjectId && x.SiteId == SiteId && x.VendorId == VendorId).Distinct().ToList();
             }
             else if (ProjectId != null && SiteId != null)
             {
