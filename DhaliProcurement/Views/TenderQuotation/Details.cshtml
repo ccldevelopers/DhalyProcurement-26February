@@ -85,7 +85,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-5 col-md-10">
-            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
+            <p><button type="button" class="btn btn-warning btn-sm" onclick="window.location.href='@Url.Action("Index")';"><i class="icon-circle-left2 position-left"></i> Go back</button></p>
             @*<button type="button" id="SaveItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>Save</button>*@
         </div>
     </div>
