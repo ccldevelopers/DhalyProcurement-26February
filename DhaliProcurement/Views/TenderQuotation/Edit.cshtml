@@ -219,16 +219,19 @@
             @*@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" ,@style = "background-color: grey;border: none;" })*@
             @if (User.IsInRole("Management"))
             {
-                if (Model.proc_TenderMas.isApproved.Trim() == "A")
+                @*if (Model.proc_TenderMas.isApproved.Trim() == "A")
                 {
                     <button type="button" id="SaveItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>Update</button>
-                    <button type="button" id="ApproveItem" class="btn btn-danger"><i class="icon-select2 position-left"></i>Approve Selected</button>
+                    <button type="button" id="ApproveItem" class="btn btn-warning"><i class="icon-select2 position-left"></i>Approve Selected</button>
                 }
                 else
                 {
                     <button type="button" id="SaveItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>Update</button>
-                    <button type="button" id="ApproveItem" class="btn btn-danger"><i class="icon-select2 position-left"></i>Approve Selected</button>
-                }
+                    <button type="button" id="ApproveItem" class="btn btn-warning"><i class="icon-select2 position-left"></i>Approve Selected</button>
+                }*@
+
+                <button type="button" id="SaveItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>Update</button>
+                <button type="button" id="ApproveItem" class="btn btn-warning"><i class="icon-select2 position-left"></i>Approve Selected</button>
             }
             else
             {
@@ -238,7 +241,7 @@
                 }
                 else
                 {
-                    <button type="button" id="ApproveItem" class="btn btn-danger" disabled="disabled"><i class="icon-floppy-disk position-left"></i>Pending Approval</button>
+                    <button type="button" id="ApproveItem" class="btn btn-warning" disabled="disabled"><i class="icon-floppy-disk position-left"></i>Pending Approval</button>
                 }
             }
         </div>

@@ -979,7 +979,10 @@
                     console.log(result);
                     if (result.flag === true) {
                         alert("Record created successfully!");
-                        window.location.replace("/PurchaseOrders/Index");
+
+                        //window.location.replace("/PurchaseOrders/Index");
+                        //window.location = "/PurchaseOrders/Edit?purchaseOrderId=" + PurchaseOrderMasterId + "&tenderMasId=" + TenderMasterId;
+                        window.location.replace("/PurchaseOrders/Edit?purchaseOrderId=" + result.PurchaseOrderMasterId + "&tenderMasId=" + result.TenderMasterId);
                     }
                     else {
                         alert(result.message);

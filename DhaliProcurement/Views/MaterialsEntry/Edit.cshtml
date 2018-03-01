@@ -1219,10 +1219,10 @@
                 
 
                         $('#TotalMaterial').val(data.TotalMaterial);
-                        $('#RemainingQty').val(data.RemainingQty);
+                        //$('#RemainingQty').val(data.RemainingQty);
                         $('#UnitPrice').val(data.UnitPrice);
-                        var previousRemaining = data.TotalMaterial - data.RemainingQty;
-                        $('#PreviousQty').val(previousRemaining);
+                        //var previousRemaining = data.TotalMaterial - data.RemainingQty;
+                        //$('#PreviousQty').val(previousRemaining);
                         $('#PONo1').removeAttr("disabled");
                         //alert('test');
                         var listOfitems = data.POs.length;
@@ -1277,6 +1277,15 @@
 
                         $('#VendorName').val(data.vendorName);
                         $('#VendorId').val(data.VendorId);
+
+                        $('#PreviousQty').val(data.POReceived);
+
+                        var totalMaterial = $('#TotalMaterial').val();
+
+                        var Remaining = totalMaterial - data.POReceived;
+                  
+
+                        $('#RemainingQty').val(Remaining);
                     }
 
                 });
