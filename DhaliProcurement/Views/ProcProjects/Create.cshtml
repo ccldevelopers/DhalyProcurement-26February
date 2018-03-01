@@ -1,6 +1,7 @@
 ﻿@model DhaliProcurement.ViewModel.DemoVM
 @{
     ViewBag.Title = "Project Procurement";
+
 }
 
 <div class="row">
@@ -226,6 +227,7 @@
                         @Html.AntiForgeryToken()
                         <div class="form-horizontal">
                             <div class="form-group">
+                                <input type="hidden" id="ModalTaskId" />
                                 <input type="hidden" id="ProjectId" value="" />
                             </div>
                             <div class="form-group">
@@ -284,6 +286,7 @@
     <script>
         var counter = 0; //counter for the serial
         var selRow;
+        var taskCounter = 0;
         //add new row
         $('#addNewRow').click(function (event) {
 
@@ -429,9 +432,9 @@
 
             //Add item to list if valid
             if (isValidItem) {
-
+                taskCounter++;
                 var newRow = jQuery('<tr>'
-                    + '<td> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + ItemName + '</label></td>'
+                    + '<td><input type="hidden" name="TaskId" value="' + taskCounter + '"/> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + ItemName + '</label></td>'
                     + '<td><input class="form-control" value="' + Qty + '" type="hidden" name="Quantity"/><label name="label_Quantity">' + Qty + '</label></td>'
                     + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input class="form-control" value="' + Unit + '" " readonly="true" type="hidden" name="ItemUnit"/><label name="label_ItemUnit">' + Unit + '</label></td>'
                     + '<td><input class="form-control" value="' + Cost + '"  type="hidden" name="ItemCost"/><label name="label_ItemCost">' + Cost + '</label></td>'
@@ -459,6 +462,7 @@
                 $('.editSite').click(function () {
                     var row = $(this).closest('tr');
                     selRow = $(this).closest('tr');
+                    var TaskId = row.find('input[name=TaskId]').val();
                     var itemName = row.find('input[name=ItemName]').val();
                     var itemId = row.find('input[name=ItemId]').val();
                     var Quantity = row.find('input[name=Quantity]').val();
@@ -470,6 +474,7 @@
 
 
                     //$('#ModalItemName').val(SiteName);
+                    $('#ModalTaskId').val(TaskId);
                     $('#ModalQty').val(Quantity);
                     $('#ModalCost').val(ItemCost);
                     $('#ModalRemarks').val(ItemRemarks);
@@ -508,6 +513,7 @@
         $('#ModalDetailSave').click(function () {
             var isValidItem = true;
 
+            var TaskId = $('#ModalTaskId').val();
             var ItemName = $('#ModalItemName option:selected').text();
             var ItemId = $('#ModalItemName option:selected').val();
             var Qty = $('#ModalQty').val();
@@ -592,6 +598,19 @@
             //    }
 
             //});
+
+            $('table.Resource-list tbody tr').each(function () {
+                var name = $(this).find("td input[name=ItemId]").val();
+                var task = $(this).find("td input[name=TaskId]").val();
+
+                if (task != TaskId.trim()) {
+                    if (ItemId.trim() == name.trim()) {
+                        alert('This item already exists!');
+                        isValidItem = false;
+                    }
+                }
+            });
+
 
             if (isValidItem) {
                 //update input fields
