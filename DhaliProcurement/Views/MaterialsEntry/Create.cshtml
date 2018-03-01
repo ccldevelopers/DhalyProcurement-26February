@@ -380,6 +380,7 @@
             $('#ChallanDate').val("");
             $('#MaterialEntry').val("");
             $('#UnitPrice').val("");
+            $('#ItemPOQuantity').val("");
         }
         else {
             $.ajax({
@@ -414,7 +415,7 @@
                     $('#ChallanDate').val("");
                     $('#MaterialEntry').val("");
                     $('#UnitPrice').val("");
-
+                    $('#ItemPOQuantity').val("");
 
 
                     $('#ProjectManager').val(data.manager);
@@ -463,6 +464,7 @@
             $('#ChallanDate').val("");
             $('#MaterialEntry').val("");
             $('#UnitPrice').val("");
+            $('#ItemPOQuantity').val("");
         }
         else {
             $.ajax({
@@ -495,7 +497,7 @@
                     $('#ChallanDate').val("");
                     $('#MaterialEntry').val("");
                     $('#UnitPrice').val("");
-
+                    $('#ItemPOQuantity').val("");
 
                     var listOfitems = data.Items.length;
                     var items = "<select id='ItemName'>";
@@ -543,6 +545,7 @@
             $('#ChallanDate').val("");
             $('#MaterialEntry').val("");
             $('#UnitPrice').val("");
+            $('#ItemPOQuantity').val("");
         }
         else {
             $.ajax({
@@ -574,7 +577,7 @@
                     $('#ChallanDate').val("");
                     $('#MaterialEntry').val("");
                     $('#UnitPrice').val("");
-
+                    $('#ItemPOQuantity').val("");
 
                     $('#UnitId').val(data.UnitId);
                     $('#UnitName').val(data.UnitName);
@@ -649,6 +652,7 @@
             $('#ChallanDate').val("");
             $('#MaterialEntry').val("");
             $('#UnitPrice').val("");
+            $('#ItemPOQuantity').val("");
         }
         else {
             $.ajax({
@@ -674,7 +678,7 @@
                     $('#ChallanDate').val("");
                     $('#MaterialEntry').val("");
                     $('#UnitPrice').val("");
-
+                    $('#ItemPOQuantity').val("");
 
 
                     $('#TotalMaterial').val(data.TotalMaterial);
@@ -727,6 +731,7 @@
             $('#ChallanNo').val("");
             $('#ChallanDate').val("");
             $('#MaterialEntry').val("");
+            $('#ItemPOQuantity').val("");
         }
         else {
             $.ajax({
@@ -1024,6 +1029,7 @@
             $('#ChallanDate').val("");
             $('#MaterialEntry').val("");
             $('#UnitPrice').val("");
+            $('#ItemPOQuantity').val("");
             $('#Cost').val("");
             $("#PONo").empty();
             var sites = "<select id='sites'><option value=''>--Select--</option></select>";
@@ -1252,11 +1258,11 @@
                     $('#MaterialEntry').val("");
 
                     $('#ModalTotalMaterial').val(data.TotalMaterial);
-                    $('#ModalPreviousQty').val(data.PreviousReceived);
                     $('#ModalUnitPrice').val(data.UnitPrice);
-                    var Remaining = data.TotalMaterial - data.PreviousReceived;
 
-                    $('#ModalRemainingQty').val(Remaining);
+                    //$('#ModalPreviousQty').val(data.PreviousReceived);               
+                    //var Remaining = data.TotalMaterial - data.PreviousReceived;
+                    //$('#ModalRemainingQty').val(Remaining);
                     //$('#PONo').removeAttr("disabled");
                     //alert('test');
                     var listOfitems = data.POs.length;
@@ -1322,6 +1328,10 @@
 
                     $('#ModalVendorName').val(data.vendorName);
                     $('#ModalVendorId').val(data.VendorId);
+
+                    $('#ModalPreviousQty').val(data.POReceived);
+                    var Remaining = $('#ModalTotalMaterial').val(); -data.POReceived;
+                    $('#ModalRemainingQty').val(Remaining);
                     //alert('data.POQuantity: ' + data.POQuantity);
                     //$('#POQty').val(data.POQuantity);
                     //$('#PORcv').val(data.POReceived);

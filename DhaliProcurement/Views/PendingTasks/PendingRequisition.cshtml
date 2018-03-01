@@ -26,44 +26,45 @@
         @*<button type="button" id="btnAuthorize" class="btn btn-success btn-ladda btn-ladda-spinner" data-spinner-color="#333" data-style="zoom-in"><span class="ladda-label">Authorize</span></button>*@
         <div class="panel-body">
             <div class="table-responsive">
-
-                <table class="table table-xxs table-bordered">
-                    <tr class="bg-grey">
-                        <th>
-                            @*<input type="checkbox" id="myCheckAll">*@
-                            <label>SL. No.</label>
-                        </th>
-                        <th>Requisition No.</th>
-                        <th>Requisition Date</th>
-                        @*<th>Input By</th>*@
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-
-                    @foreach (var item in Model)
-                {
-                        counter++;
-                        <tr>
-
-                            <td>
-                                @*<input type="checkbox" class="cbCheck" name="TaskId" id="TaskId" value="@item.PlanId" />*@
-                                @*<input type="hidden" name="PlanId" value="@item.PlanId" />*@
-                                <label>@counter</label>
-                                <input type="hidden" name="ReqDate" value="@DhaliProcurement.Helper.NullHelper.DateToString(item.ReqDate)" />
-                            </td>
-                            <td>@Html.ActionLink(item.Rcode, "Edit", "MaterialRequisition", new { RequisitionMasId = item.Id }, new { }) @*@item.TNo*@</td>
-                            @*<td>@item.SiteName</td>*@
-                            <td>@DhaliProcurement.Helper.NullHelper.DateToString(item.ReqDate)</td>
-                            @*<td>@item.InputBy</td>*@
-                            <td><span class="label label-danger">Pending</span></td>
-                            @*<td>@Html.ActionLink("View Status", "ProjectSitePlanTaskInfoExisting", "ProjectSitePlanTasks", new { PId = item.PlanId, SiteStatusDate = item.StatusDate.ToString("MM/dd/yyyy") }, new { @class = "label label-info" })</td>*@
-                            <td>
-                                @*<button type="button" onclick="AuthorizeStatus(@item.Id,'@DhaliProcurement.Helper.NullHelper.DateToString(item.ReqDate)')" class="btn btn-success btn-ladda btn-ladda-spinner btn-xs" data-spinner-color="#333" data-style="zoom-in"><span class="ladda-label">Approve</span></button>*@
-                            </td>
+                <table class="table table-responsive table-bordered  datatable-show-all">
+                    <thead>
+                        <tr class="bg-slate">
+                            <th>
+                                @*<input type="checkbox" id="myCheckAll">*@
+                                <label>SL. No.</label>
+                            </th>
+                            <th>Requisition No.</th>
+                            <th>Requisition Date</th>
+                            @*<th>Input By</th>*@
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
-                    }
+                        </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            counter++;
+                            <tr>
+                                <td>
+                                    @*<input type="checkbox" class="cbCheck" name="TaskId" id="TaskId" value="@item.PlanId" />*@
+                                    @*<input type="hidden" name="PlanId" value="@item.PlanId" />*@
+                                    <label>@counter</label>
+                                    <input type="hidden" name="ReqDate" value="@DhaliProcurement.Helper.NullHelper.DateToString(item.ReqDate)" />
+                                </td>
+                                <td>@Html.ActionLink(item.Rcode, "Edit", "MaterialRequisition", new { RequisitionMasId = item.Id }, new { }) @*@item.TNo*@</td>
+                                @*<td>@item.SiteName</td>*@
+                                <td>@DhaliProcurement.Helper.NullHelper.DateToString(item.ReqDate)</td>
+                                @*<td>@item.InputBy</td>*@
+                                <td><span class="label label-danger">Pending</span></td>
+                                @*<td>@Html.ActionLink("View Status", "ProjectSitePlanTaskInfoExisting", "ProjectSitePlanTasks", new { PId = item.PlanId, SiteStatusDate = item.StatusDate.ToString("MM/dd/yyyy") }, new { @class = "label label-info" })</td>*@
+                                <td>
+                                    @*<button type="button" onclick="AuthorizeStatus(@item.Id,'@DhaliProcurement.Helper.NullHelper.DateToString(item.ReqDate)')" class="btn btn-success btn-ladda btn-ladda-spinner btn-xs" data-spinner-color="#333" data-style="zoom-in"><span class="ladda-label">Approve</span></button>*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
-             </div>
+            </div>
           </div>
        </div>
 

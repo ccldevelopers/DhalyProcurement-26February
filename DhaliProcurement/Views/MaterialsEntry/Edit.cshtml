@@ -759,11 +759,10 @@
 
 
                         $('#ModalTotalMaterial').val(data.TotalMaterial);
-                        $('#ModalPreviousQty').val(data.PreviousReceived);
+                        //$('#ModalPreviousQty').val(data.PreviousReceived);
                         $('#ModalUnitPrice').val(data.UnitPrice);
-                        var Remaining = data.TotalMaterial - data.PreviousReceived;
-
-                        $('#ModalRemainingQty').val(Remaining);
+                        //var Remaining = data.TotalMaterial - data.PreviousReceived;
+                        //$('#ModalRemainingQty').val(Remaining);
                         //$('#PONo').removeAttr("disabled");
                         //alert('test');
                         var listOfitems = data.POs.length;
@@ -832,6 +831,9 @@
                         //$('#POQty').val(data.POQuantity);
                         //$('#PORcv').val(data.POReceived);
                         //$('#MaterialEntry').val(data.POQuantity);
+                        $('#ModalPreviousQty').val(data.POReceived);
+                        var Remaining = $('#ModalTotalMaterial').val(); -data.POReceived;
+                        $('#ModalRemainingQty').val(Remaining);
 
 
                         var entry = $('#ModalMaterialEntry').val();
@@ -1132,6 +1134,7 @@
                 $('#ChallanDate').val("");
                 $('#MaterialEntry').val("");
                 $('#UnitPrice').val("");
+                $('#ItemPOQuantity').val("");
             }
             else {
 
@@ -1159,7 +1162,7 @@
                         $('#ChallanDate').val("");
                         $('#MaterialEntry').val("");
                         $('#UnitPrice').val("");
-
+                        $('#ItemPOQuantity').val("");
 
                         $('#UnitId').val(data.UnitId);
                         $('#UnitName').val(data.UnitName);
@@ -1200,6 +1203,7 @@
                 $('#TotalMaterial').val("");
                 $('#PreviousQty').val("");
                 $('#RemainingQty').val("");
+                $('#ItemPOQuantity').val("");
 
             }
             else{
@@ -1219,7 +1223,7 @@
                         $('#VendorId').val("");
                         $('#POQty').val("");
                         $('#Cost').val("");                                   
-
+                        $('#ItemPOQuantity').val("");
                 
 
                         $('#TotalMaterial').val(data.TotalMaterial);
@@ -1263,7 +1267,8 @@
                 $('#VendorName').val("");
                 $('#VendorId').val("");
                 $('#POQty').val("");
-                $('#Cost').val("");                                   
+                $('#Cost').val("");    
+                $('#ItemPOQuantity').val("");
 
             }
             else{
@@ -1515,7 +1520,7 @@
                 $('#MaterialEntry').val("");
                 $('#UnitPrice').val("");
                 $('#Cost').val("");
-
+                $('#ItemPOQuantity').val("");
                 //$('#SiteId').attr("disabled", true);
                 $('#ReqNo').attr("disabled", true);
                 //$('#ItemName').attr("disabled", true);
