@@ -5,6 +5,7 @@
 @{
     ViewBag.Title = "Users Permission List";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var counter = 0;
 }
 
 
@@ -21,45 +22,47 @@
     </div>
     <div class="panel-body">
         <p>
-            @Html.ActionLink("Assign Roles", "RoleAssign", null, new { @class = "btn btn-info btn-xs", @style = "background-color: grey;border: none;" })
+            @Html.ActionLink("Assign Roles", "RoleAssign", null, new { @class = "btn btn-success" })
+            @*@Html.ActionLink("Assign Roles", "RoleAssign", null, new { @class = "btn btn-info btn-xs", @style = "background-color: grey;border: none;" })*@
         </p>
         <div class="table-responsive">
-
-            <table class="table table-xxs table-bordered">
-                <tr class="bg-grey">
-
-                    <th class="col col-lg-4">
-                        User Name
-                    </th>
-                    <th class="col col-lg-4">
-                        Role
-                    </th>                    
-                    <th class="col1 col-lg-4"></th>
-                </tr>
-
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.User.UserName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Role.RoleName)
-                        </td>                        
-                        <td>
-                            @Html.ActionLink(" ", "EditUserRole", new { id = item.Id }, new { @class = "btn btn-xs text-info icon-pencil4", @title = "Edit" }) |
-                            @*@Html.ActionLink(" ", "UserDetails", new { id = item.UserId }, new { @class = "btn btn-xs text-info  icon-file-text2", @title = "Details" }) |*@
-                            @*@Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "btn btn-xs text-danger icon-cross2", @title = "Delete" })*@
-                            <a class="btn btn-xs text-danger icon-cross2" , title="Delete" href="javascript:deleteFunction(@item.Id)"></a>
-
-                        </td>
+            <table class="table table-responsive table-bordered  datatable-show-all">
+                <thead>
+                    <tr class="bg-slate">
+                        <th class="col-xs-1">SL.No.</th>
+                        <th class="col col-lg-4">
+                            User Name
+                        </th>
+                        <th class="col col-lg-4">
+                            Role
+                        </th>
+                        <th class="col1 col-lg-4"></th>
                     </tr>
-                }
-
+                    </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        counter++;
+                        <tr>
+                            <td><label>@counter</label></td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Role.RoleName)
+                            </td>
+                            <td>
+                                @Html.ActionLink(" ", "EditUserRole", new { id = item.Id }, new { @class = "btn btn-xs text-info icon-pencil4", @title = "Edit" }) |
+                                @*@Html.ActionLink(" ", "UserDetails", new { id = item.UserId }, new { @class = "btn btn-xs text-info  icon-file-text2", @title = "Details" }) |*@
+                                @*@Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "btn btn-xs text-danger icon-cross2", @title = "Delete" })*@
+                                <a class="btn btn-xs text-danger icon-cross2" , title="Delete" href="javascript:deleteFunction(@item.Id)"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
             </table>
-            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-            @Html.PagedListPager(Model, page => Url.Action("ListUserRole", new { page = page }))
+            @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("ListUserRole", new { page = page }))*@
         </div>
     </div>
 
@@ -105,3 +108,5 @@
     }
 </script>
 
+<script src="~/Scripts/data Table/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/data Table/datatables_advanced.js"></script>
