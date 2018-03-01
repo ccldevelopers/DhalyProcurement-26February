@@ -146,6 +146,10 @@
                                     <td class="col-lg-3">
                                         <input type="text" id="Cost" class="form-control" disabled="disabled" />
                                     </td>
+                                    <td style="font-weight: bold;" class="col-lg-1">PO Qty</td>
+                                    <td class="col-lg-3">
+                                        <input type="text" id="ItemPOQuantity" class="form-control" disabled="disabled" />
+                                    </td>
                                     <td>
                                       
                                     </td>
@@ -746,6 +750,10 @@
                     $('#VendorName').val(data.vendorName);
                     $('#VendorId').val(data.VendorId);
                     //alert('data.POQuantity: ' + data.POQuantity);
+                    
+
+                    $('#ItemPOQuantity').val(data.POQuantity);
+
                     $('#POQty').val(data.POQuantity);
                     $('#PORcv').val(data.POReceived);
                     

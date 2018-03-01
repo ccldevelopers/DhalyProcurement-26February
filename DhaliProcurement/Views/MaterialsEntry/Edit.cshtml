@@ -171,6 +171,10 @@
                                     <td class="col-lg-3">
                                         <input type="text" id="Cost" class="form-control" disabled="disabled" />
                                     </td>
+                                    <td style="font-weight: bold;" class="col-lg-1">PO Qty</td>
+                                    <td class="col-lg-3">
+                                        <input type="text" id="ItemPOQuantity" class="form-control" disabled="disabled" />
+                                    </td>
                                     <td></td>
                                     <td class="col-lg-3">
                                         <input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />
@@ -1278,6 +1282,7 @@
                         $('#VendorName').val(data.vendorName);
                         $('#VendorId').val(data.VendorId);
 
+                        $('#ItemPOQuantity').val(data.POQuantity);
                         $('#PreviousQty').val(data.POReceived);
 
                         var totalMaterial = $('#TotalMaterial').val();
