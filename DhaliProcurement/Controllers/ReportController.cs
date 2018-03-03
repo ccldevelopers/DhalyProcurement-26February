@@ -1253,14 +1253,8 @@ namespace DhaliProcurement.Controllers
 
             var projEntryMasters = (from entryDet in db.Proc_MaterialEntryDet
                                     join entryMas in db.Proc_MaterialEntryMas on entryDet.Proc_MaterialEntryMasId equals entryMas.Id
-                                    join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
-                                    join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
-                                    join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
-                                    join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                                    join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
-                                    join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
-                                    join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
-                                    join procItem in db.ProcProjectItem on procProj.Id equals procItem.ProcProjectId
+                                    join procProj in db.ProcProject on entryMas.ProcProjectId equals procProj.Id
+                                   // join procItem in db.ProcProjectItem on procProj.Id equals procItem.ProcProjectId
                                     join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
                                     join proj in db.Project on projSite.ProjectId equals proj.Id
                                     where procProj.ProjectSite.ProjectId == proj.Id && procProj.ProjectSiteId == projSite.Id
@@ -1313,19 +1307,11 @@ namespace DhaliProcurement.Controllers
 
                 var projReqDet = (from entryDet in db.Proc_MaterialEntryDet
                                   join entryMas in db.Proc_MaterialEntryMas on entryDet.Proc_MaterialEntryMasId equals entryMas.Id
-                                  join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
-                                  join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
-                                  join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
-                                  join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                                  join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
-                                  join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
-                                  join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+                                  join procProj in db.ProcProject on entryMas.ProcProjectId equals procProj.Id
                                   join procItem in db.ProcProjectItem on procProj.Id equals procItem.ProcProjectId
-                                  join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
                                   join items in db.Item on procItem.ItemId equals items.Id
                                   join units in db.Unit on procItem.UnitId equals units.Id
-                                  where entryDet.Proc_PurchaseOrderDetId == purchaseDet.Id && projSite.Id == entryMaster.SiteId && entryDet.Proc_PurchaseOrderDet.ItemId == items.Id
-                                  //where entryDet.Proc_MaterialEntryMasId == entryMaster.EntryMasId && reqDet.ItemId == items.Id && projSite.Id == entryMaster.SiteId
+                                  where entryDet.Proc_MaterialEntryMasId == entryMaster.EntryMasId && entryDet.Proc_PurchaseOrderDet.ItemId == procItem.ItemId
                                   select new
                                   {
                                       EntryDetId = entryDet.Id,
@@ -1338,7 +1324,7 @@ namespace DhaliProcurement.Controllers
                                       UnitId = units.Id,
                                       UnitName = units.Name,
                                       ReceivedQty = entryDet.EntryQty
-                                  }).AsEnumerable().Distinct().ToList();
+                                  }).Distinct().ToList();
 
 
                 foreach (var item in projReqDet.Distinct())
