@@ -652,16 +652,6 @@ namespace DhaliProcurement.Controllers
             //}
 
 
-            //var tenderProjects = (from tendarMas in db.Proc_TenderMas
-            //                      join tenderDet in db.Proc_TenderDet on tendarMas.Id equals tenderDet.Proc_TenderMasId
-            //                      join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
-            //                      join procItem in db.ProcProjectItem on reqDet.ItemId equals procItem.ItemId
-            //                      join procProj in db.ProcProject on procItem.ProcProjectId equals procProj.Id
-            //                      join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
-            //                      join proj in db.Project on projSite.ProjectId equals proj.Id
-            //                      where procProj.ProjectSite.ProjectId == proj.Id && tendarMas.isApproved=="A"
-            //                      select projSite).ToList();
-
             var tenderProjects = (from tendarMas in db.Proc_TenderMas
                                   join tenderDet in db.Proc_TenderDet on tendarMas.Id equals tenderDet.Proc_TenderMasId
                                   join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
@@ -669,8 +659,18 @@ namespace DhaliProcurement.Controllers
                                   join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
                                   join Site in db.ProjectSite on procProj.ProjectSiteId equals Site.Id
                                   join proj in db.Project on Site.ProjectId equals proj.Id
-                                  where procProj.ProjectSiteId == Site.Id && tendarMas.isApproved == "A" && tenderDet.Status=="A"
+                                  where procProj.ProjectSite.ProjectId == proj.Id && tendarMas.isApproved == "A" && tenderDet.Status == "A"
                                   select Site).ToList();
+
+            //var tenderProjects = (from tendarMas in db.Proc_TenderMas
+            //                      join tenderDet in db.Proc_TenderDet on tendarMas.Id equals tenderDet.Proc_TenderMasId
+            //                      join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+            //                      join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+            //                      join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+            //                      join Site in db.ProjectSite on procProj.ProjectSiteId equals Site.Id
+            //                      join proj in db.Project on Site.ProjectId equals proj.Id
+            //                      where procProj.ProjectSiteId == Site.Id && tendarMas.isApproved == "A" && tenderDet.Status=="A"
+            //                      select Site).ToList();
 
             List<ProjectSite> sites = new List<ProjectSite>();
             foreach (var i in tenderProjects)
