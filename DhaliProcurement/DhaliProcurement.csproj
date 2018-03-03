@@ -1775,7 +1775,7 @@
     <Content Include="Reports\ProjectInformationCosting.rpt" />
     <Content Include="Reports\MaterialRequisitionSummary.rpt" />
     <Content Include="Reports\MaterialRequisitionSummary - Copy.rpt" />
-    <Content Include="Reports\MaterialsEntry.rpt" />
+    <Content Include="Reports\MaterialsEntry previous.rpt" />
     <Content Include="Reports\PurchaseOrderReport.rpt" />
     <Content Include="Reports\MaterialRequisitionList_Different.rpt" />
     <Content Include="Reports\MaterialRequisitionList.rpt" />
@@ -1793,6 +1793,7 @@
     </EmbeddedResource>
     <Content Include="Reports\ProjectList.rpt" />
     <Content Include="Reports\VendorPaymentProject.rpt" />
+    <Content Include="Reports\MaterialsEntry.rpt" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
