@@ -330,24 +330,26 @@ namespace DhaliProcurement.Controllers
             }
 
             decimal receivedQuantity = 0;
+            var totalReceived = (from entryDet in db.Proc_MaterialEntryDet
+                                 join entryMas in db.Proc_MaterialEntryMas on entryDet.Proc_MaterialEntryMasId equals entryMas.Id
+                                 join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
+                                 join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
+                                 join procProject in db.ProcProject on entryMas.ProcProjectId equals procProject.Id
+                                 join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
+                                 where entryDet.Proc_PurchaseOrderDet.ItemId == itemId && procProject.ProjectSiteId == siteId
+                                 select entryDet).Distinct().ToList();
+
             //var totalReceived = (from entryDet in db.Proc_MaterialEntryDet
             //                     join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
             //                     join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
             //                     join tenderDet in db.Proc_TenderDet on purchaseMas.Proc_TenderMasId equals tenderDet.Proc_TenderMasId
-            //                     where purchaseDet.ItemId == itemId
+            //                     join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+            //                     join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+            //                     join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+            //                     join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
+            //                     //where purchaseDet.ItemId == ItemId.Id
+            //                     where entryDet.Proc_PurchaseOrderDet.ItemId == itemId && procProject.ProjectSiteId == siteId
             //                     select entryDet).Distinct().ToList();
-
-            var totalReceived = (from entryDet in db.Proc_MaterialEntryDet
-                                 join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
-                                 join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
-                                 join tenderDet in db.Proc_TenderDet on purchaseMas.Proc_TenderMasId equals tenderDet.Proc_TenderMasId
-                                 join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
-                                 join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-                                 join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
-                                 join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
-                                 //where purchaseDet.ItemId == ItemId.Id
-                                 where entryDet.Proc_PurchaseOrderDet.ItemId == itemId && procProject.ProjectSiteId == siteId
-                                 select entryDet).Distinct().ToList();
 
             decimal total = 0;
             if (totalReceived == null)
