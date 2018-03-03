@@ -893,7 +893,7 @@
         //var PONo = $('#PONo').val();
         //var PONo = $('#PONo option:selected').val();
         var PONo = $('#PONo option:selected').val();
-
+        var PONoName = $('#PONo option:selected').text();
         //alert(Unit);
         //alert(UnitId);
         var VendorId = $('#VendorId').val();
@@ -999,7 +999,7 @@
                 + '<td><input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"  style="width:90px;"/>'
                 + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + UnitName + '</label><input class="form-control" value="' + UnitName + '" readonly="true" type="hidden" name="UnitName"  style="width:90px;"/></td>'
                 + '<td><input value="' + RCode + '" type="hidden" name="RCode" class="form-control" style="width:90px;"/><label name="label_RCodeName">' + RCodeName + '</label><input value="' + RCodeName + '" type="hidden" name="RCodeName" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + PONo + '" type="hidden" name="PayOrderNo" class="form-control" style="width:90px;"/><label name="label_PONo">' + PONo + '</label></td>'
+                + '<td><input value="' + PONo + '" type="hidden" name="PayOrderNo" class="form-control" style="width:90px;"/><label name="label_PONo">' + PONoName + '</label></td>'
                 + '<td><input value="' + VendorId + '" type="hidden" name="VendorId"/><label name="label_VendorName">' + VendorName + '</label><input class="form-control" value="' + VendorName + '" readonly="true" type="hidden" name="VendorName"  style="width:90px;"/></td>'
                 + '<td><input value="' + TotalMaterial + '" type="hidden" name="TotalMaterial" class="form-control" style="width:90px;"/><label name="label_TotalMaterial">' + TotalMaterial + '</label></td>'
                 + '<td><input value="' + PreviousQty + '" type="hidden" name="PreviousQty" class="form-control" style="width:90px;"/><label name="label_PreviousQty">' + PreviousQty + '</label></td>'
@@ -1370,6 +1370,7 @@
         var UnitName = $('#ModalUnitName').val();
         var ReqNo = $('#ModalReqNo option:selected').val();
         var ModalPONo = $('#ModalPONo option:selected').val();
+        var ModalPONoName = $('#ModalPONo option:selected').text();
         var ModalVendorName = $('#ModalVendorName').val();
         var ModalVendorId = $('#ModalVendorId').val();
         var ModalTotalMaterial = $('#ModalTotalMaterial').val();
@@ -1485,7 +1486,7 @@
             selRow.find('label[name=label_ItemName]').text(ItemName);
             selRow.find('label[name=label_UnitName]').text(UnitName);
             selRow.find('label[name=label_RCodeName]').text(ReqNo);
-            selRow.find('label[name=label_PONo]').text(ModalPONo);
+            selRow.find('label[name=label_PONo]').text(ModalPONoName);
             selRow.find('label[name=label_VendorName]').text(ModalVendorName);
             selRow.find('label[name=label_TotalMaterial]').text(ModalTotalMaterial);
             selRow.find('label[name=label_PreviousQty]').text(ModalPreviousQty);
@@ -1495,6 +1496,7 @@
             selRow.find('label[name=label_MaterialEntry]').text(ModalMaterialEntry);
             selRow.find('label[name=label_UnitPrice]').text(ModalUnitPrice);
             selRow.find('label[name=label_Cost]').text(ModalTotalPrice);
+
 
             $('#detailForm').modal('hide');
         }
