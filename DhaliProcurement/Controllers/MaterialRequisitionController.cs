@@ -308,10 +308,16 @@ namespace DhaliProcurement.Controllers
         public JsonResult GetUnit(int itemId, int projectId, int siteId)
         {
             //var unit = db.Unit.SingleOrDefault(x => x.Id == itemId);
-            var unit = (from procProjectItem in db.ProcProjectItem
-                        join units in db.Unit on procProjectItem.UnitId equals units.Id
-                        where procProjectItem.ItemId == itemId
-                        select units).FirstOrDefault();
+            //var unit = (from procProjectItem in db.ProcProjectItem
+            //            join units in db.Unit on procProjectItem.UnitId equals units.Id
+            //            where procProjectItem.ItemId == itemId
+            //            select units).FirstOrDefault();
+
+            var unit = (from procProject in db.ProcProject 
+                        join ProcProjectItem in db.ProcProjectItem on procProject.Id equals ProcProjectItem.ProcProjectId
+                        join units in db.Unit on ProcProjectItem.UnitId equals units.Id
+                        where ProcProjectItem.ItemId == itemId && procProject.ProjectSiteId== siteId
+                        select units).SingleOrDefault();
 
             var totalRequired = (from procProjectItem in db.ProcProjectItem
                                  join procproject in db.ProcProject on procProjectItem.ProcProjectId equals procproject.Id

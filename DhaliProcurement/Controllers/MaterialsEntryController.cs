@@ -342,11 +342,15 @@ namespace DhaliProcurement.Controllers
         [HttpPost]
         public JsonResult GetUnit(int itemId, int projectId, int siteId)
         {
-            //var unit = db.Unit.SingleOrDefault(x => x.Id == itemId);
-            var unit = (from procProjectItem in db.ProcProjectItem
-                        join units in db.Unit on procProjectItem.UnitId equals units.Id
-                        where procProjectItem.ItemId == itemId
-                        select units).FirstOrDefault();
+            //var unit = (from procProjectItem in db.ProcProjectItem
+            //            join units in db.Unit on procProjectItem.UnitId equals units.Id
+            //            where procProjectItem.ItemId == itemId
+            //            select units).FirstOrDefault();
+            var unit = (from procProject in db.ProcProject
+                        join ProcProjectItem in db.ProcProjectItem on procProject.Id equals ProcProjectItem.ProcProjectId
+                        join units in db.Unit on ProcProjectItem.UnitId equals units.Id
+                        where ProcProjectItem.ItemId == itemId && procProject.ProjectSiteId == siteId
+                        select units).SingleOrDefault();
 
             var totalRequired = (from procProjectItem in db.ProcProjectItem
                                  join procproject in db.ProcProject on procProjectItem.ProcProjectId equals procproject.Id
@@ -454,6 +458,8 @@ namespace DhaliProcurement.Controllers
         [HttpPost]
         public JsonResult GetPO(int itemId, int projectId, int siteId, int ReqNo)
         {
+
+
             var PO = (from requisitionDet in db.Proc_RequisitionDet
                       join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
                       join tenderDet in db.Proc_TenderDet on requisitionDet.Id equals tenderDet.Proc_RequisitionDetId
@@ -912,11 +918,29 @@ namespace DhaliProcurement.Controllers
                     vm.PurchaseOrderDetId = db.Proc_PurchaseOrderDet.FirstOrDefault(x => x.Proc_PurchaseOrderMasId == PONo.Id).Id;
 
 
+                    var getSites = (from materialEntry in db.Proc_MaterialEntryDet
+                                    join purchaseDet in db.Proc_PurchaseOrderDet on materialEntry.Proc_PurchaseOrderDetId equals purchaseDet.Id
+                                    join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
+                                    join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                                    join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                                    join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                                    join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                                    join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                                    join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                                    where materialEntry.Id == i.Id && purchaseMas.Id == PONo.Id && requisitionMas.Id== requisitionId.Id
+                                    select site).Distinct().FirstOrDefault();
+
                     //var unit = db.Unit.FirstOrDefault(x => x.Id == ItemId.Id);
-                    var unit = (from procProjectItem in db.ProcProjectItem
-                                join units in db.Unit on procProjectItem.UnitId equals units.Id
-                                where procProjectItem.ItemId == ItemId.Id
-                                select units).FirstOrDefault();
+                    //var unit = (from procProjectItem in db.ProcProjectItem
+                    //            join units in db.Unit on procProjectItem.UnitId equals units.Id
+                    //            where procProjectItem.ItemId == ItemId.Id
+                    //            select units).FirstOrDefault();
+
+                    var unit = (from procProject in db.ProcProject
+                                join ProcProjectItem in db.ProcProjectItem on procProject.Id equals ProcProjectItem.ProcProjectId
+                                join units in db.Unit on ProcProjectItem.UnitId equals units.Id
+                                where ProcProjectItem.ItemId == ItemId.Id && procProject.ProjectSiteId == getSites.Id
+                                select units).SingleOrDefault();
                     vm.UnitId = unit.Id;
                     vm.UnitName = unit.Name;
 

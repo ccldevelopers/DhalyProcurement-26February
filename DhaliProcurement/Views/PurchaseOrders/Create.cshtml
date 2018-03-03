@@ -546,7 +546,7 @@
                 }
                 Items = Items + '</select>';
                 $('#ModalItemName').html(Items);
-                alert(itemId);
+             
                 $('#ModalItemName').val(itemId);
             }
 
@@ -556,6 +556,8 @@
     $('#ModalItemName').change(function () {
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
+        var SiteId = $('#SiteId').val();
+
         if (ItemName.trim() == "--Select--") {
             $('#modalunitId').val("");
             $('#ModalUnitName').val("");
@@ -569,7 +571,7 @@
             $.ajax({
                 type: "post",
                 url: "/PurchaseOrders/GetSelectedItemInfo",
-                data: { ItemId },
+                data: { ItemId, SiteId },
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
@@ -1260,6 +1262,7 @@
     //debugger;
     $("#ItemName").change(function () {
         var ItemId = $('#ItemName option:selected').val();
+        var SiteId = $('#SiteId').val();
         if ($('#ItemName option:selected').text() == "--Select--") {
             //alert('Test');
             $('#UnitId').val("");
@@ -1275,7 +1278,7 @@
             $.ajax({
                 type: "post",
                 url: "/PurchaseOrders/GetSelectedItemInfo",
-                data: { ItemId },
+                data: { ItemId, SiteId },
                 datatype: "json",
                 traditional: true,
                 success: function (data) {

@@ -153,16 +153,26 @@ namespace DhaliProcurement.Controllers
 
             List<SelectListItem> POList = new List<SelectListItem>();
 
+            //var itemsPONo = (from purMas in db.Proc_PurchaseOrderMas
+            //                 join purdet in db.Proc_PurchaseOrderDet on purMas.Id equals purdet.Proc_PurchaseOrderMasId
+            //                 join metDet in db.Proc_MaterialEntryDet on purdet.Id equals metDet.Proc_PurchaseOrderDetId
+            //                 join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+            //                 join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+            //                 join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+            //                 join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+            //                 join procProject in db.ProcProject on reqMas.ProcProjectId equals procProject.Id
+            //                 join vendors in db.Vendor on purMas.VendorId equals vendors.Id
+            //                 where reqMas.Id == ReqNo && tenderDet.VendorId == VendorId && procProject.ProjectSiteId == SiteId
+            //                 select purMas).Distinct().ToList();
+
             var itemsPONo = (from purMas in db.Proc_PurchaseOrderMas
                              join purdet in db.Proc_PurchaseOrderDet on purMas.Id equals purdet.Proc_PurchaseOrderMasId
                              join metDet in db.Proc_MaterialEntryDet on purdet.Id equals metDet.Proc_PurchaseOrderDetId
-                             join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
-                             join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                             join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
-                             join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
-                             join procProject in db.ProcProject on reqMas.ProcProjectId equals procProject.Id
+                             join metMas in db.Proc_MaterialEntryMas on metDet.Proc_MaterialEntryMasId equals metMas.Id
+                             join procProject in db.ProcProject on metMas.ProcProjectId equals procProject.Id
+                             join reqMas in db.Proc_RequisitionMas on procProject.Id equals reqMas.ProcProjectId
                              join vendors in db.Vendor on purMas.VendorId equals vendors.Id
-                             where reqMas.Id == ReqNo && tenderDet.VendorId == VendorId && procProject.ProjectSiteId == SiteId
+                             where reqMas.Id == ReqNo && purMas.VendorId == VendorId && procProject.ProjectSiteId == SiteId
                              select purMas).Distinct().ToList();
 
 
@@ -634,16 +644,27 @@ namespace DhaliProcurement.Controllers
         {
             List<SelectListItem> POList = new List<SelectListItem>();
 
+
+            //var itemsPONo = (from purMas in db.Proc_PurchaseOrderMas
+            //                 join purdet in db.Proc_PurchaseOrderDet on purMas.Id equals purdet.Proc_PurchaseOrderMasId
+            //                 join metDet in db.Proc_MaterialEntryDet on purdet.Id equals metDet.Proc_PurchaseOrderDetId
+            //                 join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+            //                 join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+            //                 join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+            //                 join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+            //                 join procProject in db.ProcProject on reqMas.ProcProjectId equals procProject.Id
+            //                 join vendors in db.Vendor on purMas.VendorId equals vendors.Id
+            //                 where reqMas.Id == ReqNo && tenderDet.VendorId == vendorId && procProject.ProjectSiteId == SiteId && metDet.Proc_PurchaseOrderDetId == purdet.Id
+            //                 select purMas).Distinct().ToList();
+
             var itemsPONo = (from purMas in db.Proc_PurchaseOrderMas
                              join purdet in db.Proc_PurchaseOrderDet on purMas.Id equals purdet.Proc_PurchaseOrderMasId
                              join metDet in db.Proc_MaterialEntryDet on purdet.Id equals metDet.Proc_PurchaseOrderDetId
-                             join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
-                             join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                             join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
-                             join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
-                             join procProject in db.ProcProject on reqMas.ProcProjectId equals procProject.Id
+                             join metMas in db.Proc_MaterialEntryMas on metDet.Proc_MaterialEntryMasId equals metMas.Id
+                             join procProject in db.ProcProject on metMas.ProcProjectId equals procProject.Id
+                             join reqMas in db.Proc_RequisitionMas on procProject.Id equals reqMas.ProcProjectId
                              join vendors in db.Vendor on purMas.VendorId equals vendors.Id
-                             where reqMas.Id == ReqNo && tenderDet.VendorId == vendorId && procProject.ProjectSiteId == SiteId
+                             where reqMas.Id == ReqNo && purMas.VendorId == vendorId && procProject.ProjectSiteId == SiteId
                              select purMas).Distinct().ToList();
 
 
@@ -763,6 +784,12 @@ namespace DhaliProcurement.Controllers
                         where procProjectItem.ItemId == itemId && procProjectItem.ProcProject.ProjectSiteId == siteId
                         select new { units, procReqDet }).FirstOrDefault();
 
+            var unit = (from procProject in db.ProcProject
+                        join ProcProjectItem in db.ProcProjectItem on procProject.Id equals ProcProjectItem.ProcProjectId
+                        join units in db.Unit on ProcProjectItem.UnitId equals units.Id
+                        where ProcProjectItem.ItemId == itemId && procProject.ProjectSiteId == siteId
+                        select units).SingleOrDefault();
+
 
             var challanData = (from metEntry in db.Proc_MaterialEntryDet
                                join purDet in db.Proc_PurchaseOrderDet on metEntry.Proc_PurchaseOrderDetId equals purDet.Id
@@ -810,8 +837,8 @@ namespace DhaliProcurement.Controllers
             var result = new
             {
                 //flag = true,
-                UnitName = data.units.Name,
-                UnitId = data.units.Id,
+                UnitName = unit.Name,
+                UnitId = unit.Id,
                 RemQty = data.procReqDet.ReqQty,
                 ChallanNo = challanList.Distinct(),
                 Proc_MaterialEntryDetId = metEntryDet.metEntry.Id
@@ -1123,8 +1150,14 @@ namespace DhaliProcurement.Controllers
                                      where procProjectItem.ItemId == ItemId.Id
                                      select new { units, procReqDet }).FirstOrDefault();
 
-                    vm.UnitId = dataUnits.units.Id;
-                    vm.UnitName = dataUnits.units.Name;
+                    var unit = (from procProject in db.ProcProject
+                                join ProcProjectItem in db.ProcProjectItem on procProject.Id equals ProcProjectItem.ProcProjectId
+                                join units in db.Unit on ProcProjectItem.UnitId equals units.Id
+                                where ProcProjectItem.ItemId == ItemId.Id && procProject.ProjectSiteId == projectId.site.Id
+                                select units).SingleOrDefault();
+
+                    vm.UnitId = unit.Id;
+                    vm.UnitName = unit.Name;
 
                     if (i.BillNo == "" || i.BillNo == null)
                     {

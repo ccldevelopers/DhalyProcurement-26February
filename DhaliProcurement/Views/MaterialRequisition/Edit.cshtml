@@ -214,10 +214,12 @@
                                                 <td>
                                                     @{
                                                         var unit = (from requisitionDet in db.Proc_RequisitionDet
-                                                                    join ProcProjectItem in db.ProcProjectItem on requisitionDet.ItemId equals ProcProjectItem.ItemId
+                                                                    join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                                                                    join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                                                                    join ProcProjectItem in db.ProcProjectItem on procProject.Id equals ProcProjectItem.ProcProjectId
                                                                     join units in db.Unit on ProcProjectItem.UnitId equals units.Id
-                                                                    where ProcProjectItem.ItemId == item.ItemId
-                                                                    select units).FirstOrDefault();
+                                                                    where requisitionDet.ItemId == ProcProjectItem.ItemId && requisitionDet.Id == item.Id
+                                                                    select units).SingleOrDefault();
                                                     }
                                                     <label name="label_ItemUnit">@unit.Name</label>
                                                     <input type="hidden" value="@unit.Name" class="form-control" name="ItemUnit" style="width:80px;" disabled="disabled" />

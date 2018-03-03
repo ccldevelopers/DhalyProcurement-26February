@@ -577,6 +577,8 @@
     $("#ItemName").change(function () {
         var ItemId = $('#ItemName option:selected').val();
         var Rcode = $('#RCode  option:selected').text();
+        var SiteId = $('#SiteId  option:selected').val();
+
         if ($('#ItemName option:selected').text() == "--Select--") {
             $('#UnitId').val("");
             $('#UnitName').val("");
@@ -592,7 +594,7 @@
             $.ajax({
                 type: "post",
                 url: "/TenderQuotation/GetUnit",
-                data: { ItemId, Rcode },
+                data: { ItemId, Rcode, SiteId },
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
@@ -1317,10 +1319,12 @@
     $("#ModalItemName").change(function () {
         var ItemId = $('#ModalItemName option:selected').val();
         var Rcode = $('#ModalRequisition  option:selected').text();
+        var SiteId = $('#ModalSiteId  option:selected').val();
+
         $.ajax({
             type: "post",
             url: "/TenderQuotation/GetUnit",
-            data: { ItemId, Rcode },
+            data: { ItemId, Rcode, SiteId },
             datatype: "json",
             traditional: true,
             success: function (data) {

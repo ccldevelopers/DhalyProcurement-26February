@@ -653,7 +653,7 @@
         //debugger;
         $("#ItemName").change(function () {
             var ItemId = $('#ItemName option:selected').val();
-            
+            var SiteId = @ViewBag.SiteId;
             //alert($('#ItemName option:selected').text());
             if($('#ItemName option:selected').text()=="--Select--"){
                 //alert('Test');
@@ -670,7 +670,7 @@
                 $.ajax({
                     type: "post",
                     url: "/PurchaseOrders/GetSelectedItemInfo",
-                    data: { ItemId },
+                    data: { ItemId ,SiteId},
                     datatype: "json",
                     traditional: true,
                     success: function (data) {
@@ -876,6 +876,8 @@
     $('#ModalItemName').change(function(){
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
+        var SiteId = @ViewBag.SiteId;
+
         if(ItemName.trim()=="--Select--"){
             $('#modalunitId').val("");
             $('#ModalUnitName').val("");
@@ -889,7 +891,7 @@
             $.ajax({
                 type: "post",
                 url: "/PurchaseOrders/GetSelectedItemInfo",
-                data: { ItemId },
+                data: { ItemId,SiteId },
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
